@@ -206,6 +206,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AutoMedIdentity.cs" />
     <Compile Include="Models\AutoMedPrincipal.cs" />
+    <Compile Include="Models\Gender.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\DataModels\AutoMedUser.cs" />
     <Compile Include="Models\Document.cs" />

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Web;
 
 namespace AutoMed.Models
+
 {
-    public class Location
+    public enum Gender
     {
-        public string Name { get; set; }
+        Male, Female, None
     }
 }
