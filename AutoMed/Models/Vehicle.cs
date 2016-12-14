@@ -15,7 +15,6 @@ namespace AutoMed.Models
 
         public int Year { get; set; }
 
-        protected int Id { get; set; }
-
+        public int Id { get; set; }
     }
 }

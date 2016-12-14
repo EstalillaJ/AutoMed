@@ -11,8 +11,6 @@ namespace AutoMed.Models
 
         public string LastName { get; set; }
 
-        protected int id { get; set; }
-
         public String Address { get; set; }
 
         public String Email { get; set; }
@@ -25,5 +23,6 @@ namespace AutoMed.Models
 
         public Gender Gender { get; set; }
 
+        public int Id { get; set; }
     }
 }
