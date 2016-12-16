@@ -92,7 +92,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DAL\UserRepositoryTest.cs" />
+    <Compile Include="DAL\DocumentRepositoryTests.cs" />
+    <Compile Include="DAL\LocationRepositoryTests.cs" />
+    <Compile Include="DAL\PrincipalRepositoryTests.cs" />
+    <Compile Include="DAL\QuoteRepositoryTests.cs" />
+    <Compile Include="DAL\TestUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
