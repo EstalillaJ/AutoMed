@@ -230,12 +230,10 @@
     <Compile Include="DAL\IPrincipalRepository.cs" />
     <Compile Include="DAL\IQuoteRepository.cs" />
     <Compile Include="DAL\LocationRepository.cs" />
-    <Compile Include="DAL\QuoteRepository.cs" />
     <Compile Include="DAL\PrincipalRepository.cs" />
     <Compile Include="DAL\ICustomerRepository.cs" />
     <Compile Include="DAL\IVehicleRepository.cs" />
     <Compile Include="DAL\QuoteRepository.cs" />
-    <Compile Include="DAL\UserRepository.cs" />
     <Compile Include="DAL\VehicleRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -263,6 +261,7 @@
     <Compile Include="Migrations\201612160513468_QuoteForeignKeys.cs" />
     <Compile Include="Migrations\201612160513468_QuoteForeignKeys.Designer.cs">
       <DependentUpon>201612160513468_QuoteForeignKeys.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201612140623588_CustomersAndVehicles.cs" />
     <Compile Include="Migrations\201612140623588_CustomersAndVehicles.Designer.cs">
       <DependentUpon>201612140623588_CustomersAndVehicles.cs</DependentUpon>
@@ -342,6 +341,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612160513468_QuoteForeignKeys.resx">
       <DependentUpon>201612160513468_QuoteForeignKeys.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612140623588_CustomersAndVehicles.resx">
       <DependentUpon>201612140623588_CustomersAndVehicles.cs</DependentUpon>
     </EmbeddedResource>

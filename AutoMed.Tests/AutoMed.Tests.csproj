@@ -98,7 +98,6 @@
     <Compile Include="DAL\QuoteRepositoryTests.cs" />
     <Compile Include="DAL\TestUtil.cs" />
     <Compile Include="DAL\CustomerRepositoryTest.cs" />
-    <Compile Include="DAL\UserRepositoryTest.cs" />
     <Compile Include="DAL\VehicleRepositoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
