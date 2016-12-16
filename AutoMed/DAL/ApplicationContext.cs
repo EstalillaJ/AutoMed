@@ -14,6 +14,15 @@ namespace AutoMed.DAL
         public DbSet<Document> Documents { get; set; }
         public DbSet<Quote> Quotes { get; set; }
         public DbSet<Vehicle> Vehicle { get; set; }
+
+        public DbSet<Location> Locations { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+                
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 
 }
