@@ -1,45 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using AutoMed.Models;
-using Microsoft.Azure;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
-using System.Drawing;
-using System.IO;
-using System.Drawing.Imaging;
-
+using AutoMed.Models.DataModels;
 
 namespace AutoMed.DAL
 {
     public class QuoteRepository : IQuoteRepository
     {
-        public QuoteRepository(ApplicationContext context)
+        public QuoteRepository()
         {
-            
+            this.documentRepo = new DocumentRepository();
         }
 
+        private DocumentRepository documentRepo;
         public void Create(Quote quote)
         {
             using (ApplicationContext Context = new ApplicationContext())
             {
-                Context.Quotes.Add(quote);
+                Context.QuoteDataModels.Add(new QuoteDataModel(quote));
+                documentRepo.SaveDocumentBlobs(quote.Documents);
                 Context.SaveChanges();
-                foreach (Document document in quote.Documents)
-                {
-                    CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
-                    CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-                    CloudBlobContainer container = blobClient.GetContainerReference("Documents");
-
-                    CloudBlockBlob blockBlob = container.GetBlockBlobReference(document.Id.ToString());
-
-                    using (var ms = new MemoryStream())
-                    {
-                        document.Image.Save(ms, document.Image.RawFormat);
-                        blockBlob.UploadFromStream(ms);
-                    }
-                }
             }
         }
 
@@ -49,25 +28,41 @@ namespace AutoMed.DAL
             {
                 if (quote.ApprovedBy == null)
                     throw new Exception("Approved by cannot be null");
-                Context.Quotes.Attach(quote);
+
+                quote.DateApproved = DateTime.Now;
+                Context.QuoteDataModels.Attach(new QuoteDataModel(quote));
                 Context.Entry(quote).Property(x => x.ApprovedBy).IsModified = true;
+                Context.Entry(quote).Property(x => x.DateApproved).IsModified = true;
                 Context.SaveChanges();
             }
         }
 
         public void Delete(Quote quote)
         {
-
+            using (ApplicationContext Context = new ApplicationContext())
+            {
+                Context.QuoteDataModels.Remove(Context.QuoteDataModels.Find(quote.Id));
+                Context.SaveChanges();
+            }
         }
 
         public void Update(Quote quote)
         {
-
+            using (ApplicationContext Context = new ApplicationContext())
+            {
+                Context.QuoteDataModels.Attach(new QuoteDataModel(quote));
+                Context.SaveChanges();
+            }
         }
 
         public Quote SelectById(int id)
         {
-            return new Quote();
+            using (ApplicationContext Context = new ApplicationContext())
+            {
+                Quote quote = Context.QuoteDataModels.Find(id).ToQuote();
+                documentRepo.LoadDocumentBlobs(quote.Documents);
+                return quote;
+            }
         }
     }
 }

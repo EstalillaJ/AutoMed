@@ -6,7 +6,7 @@ using System.Security.Principal;
 
 namespace AutoMed.Models
 {   
-    public class AutoMedPrincipal : IPrincipal
+    public class AutoMedUser : IPrincipal
     {   
         public enum Roles
         {

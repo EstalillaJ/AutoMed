@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using AutoMed.Models;
 using AutoMed.Models.DataModels;
 using System.Data.Entity;
@@ -15,13 +13,14 @@ namespace AutoMed.DAL
 
         }
 
-        public void Create(AutoMedPrincipal principal, string password)
+        public void Create(AutoMedUser principal, string password)
         {
             using (ApplicationContext Context = new ApplicationContext())
             {
                 if (Context.AutoMedUsers.Any(x => x.Name == principal.Name))
                     throw new Exception("That Username Is Taken");
-                AutoMedUser user = new AutoMedUser
+
+                AutoMedUserDataModel user = new AutoMedUserDataModel
                 {
                     Name = principal.Identity.Name,
                     Role = principal.Role.ToString(),
@@ -34,11 +33,11 @@ namespace AutoMed.DAL
             }
         }
 
-        public AutoMedPrincipal SelectByUsernameAndPassword(string username, string password)
+        public AutoMedUser SelectByUsernameAndPassword(string username, string password)
         {
             using (ApplicationContext Context = new ApplicationContext())
             {
-                AutoMedUser user = 
+                AutoMedUserDataModel user =
                     Context.
                     AutoMedUsers.
                     Where(x => x.Password == password && x.Name == username).
@@ -47,22 +46,15 @@ namespace AutoMed.DAL
                 if (user == null)
                     return null;
 
-                AutoMedPrincipal principal = new AutoMedPrincipal
-                {
-                    Location = user.Location,
-                    Id = user.Id,
-                    Name = user.Name,
-                    Role = (AutoMedPrincipal.Roles)Enum.Parse(typeof(AutoMedPrincipal.Roles), user.Role)
-                };
-                return principal;
+                return user.ToPrincipal();
             }
         }
 
-        public bool TryEditUserPassword(AutoMedPrincipal principal, string oldPassword, string newPassword)
+        public bool TryEditUserPassword(AutoMedUser principal, string oldPassword, string newPassword)
         {
             using (ApplicationContext Context = new ApplicationContext())
             {
-                AutoMedUser user = Context.AutoMedUsers.Where(x => x.Password == oldPassword && x.Name == principal.Name).FirstOrDefault();
+                AutoMedUserDataModel user = Context.AutoMedUsers.Where(x => x.Password == oldPassword && x.Name == principal.Name).FirstOrDefault();
                 if (user == null)
                     return false;
                 user.Password = newPassword;
@@ -72,11 +64,11 @@ namespace AutoMed.DAL
             }
         }
 
-        public void Update(AutoMedPrincipal principal)
+        public void Update(AutoMedUser principal)
         {
             using (ApplicationContext Context = new ApplicationContext())
             {
-                AutoMedUser user = new AutoMedUser()
+                AutoMedUserDataModel user = new AutoMedUserDataModel()
                     {
                         Role = principal.Role.ToString(),
                         Id = principal.Id,
@@ -91,16 +83,14 @@ namespace AutoMed.DAL
             }
         }
 
-        public void Delete(AutoMedPrincipal principal)
+        public void Delete(AutoMedUser principal)
         {
             using (ApplicationContext Context = new ApplicationContext())
             {
-                AutoMedUser user = new AutoMedUser { Id = principal.Id };
+                AutoMedUserDataModel user = new AutoMedUserDataModel { Id = principal.Id };
                 Context.AutoMedUsers.Remove(Context.AutoMedUsers.Find(principal.Id));
                 Context.SaveChanges();
             }
         }
-        
-         
     }
 }

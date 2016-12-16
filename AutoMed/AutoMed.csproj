@@ -226,13 +226,13 @@
     <Compile Include="DAL\ApplicationContext.cs" />
     <Compile Include="DAL\CustomerRepository.cs" />
     <Compile Include="DAL\DocumentRepository.cs" />
-    <Compile Include="DAL\ILocationRepository.cs" />
-    <Compile Include="DAL\IPrincipalRepository.cs" />
-    <Compile Include="DAL\IQuoteRepository.cs" />
+    <Compile Include="DAL\Interfaces\ILocationRepository.cs" />
+    <Compile Include="DAL\Interfaces\IPrincipalRepository.cs" />
+    <Compile Include="DAL\Interfaces\IQuoteRepository.cs" />
     <Compile Include="DAL\LocationRepository.cs" />
     <Compile Include="DAL\PrincipalRepository.cs" />
-    <Compile Include="DAL\ICustomerRepository.cs" />
-    <Compile Include="DAL\IVehicleRepository.cs" />
+    <Compile Include="DAL\Interfaces\ICustomerRepository.cs" />
+    <Compile Include="DAL\Interfaces\IVehicleRepository.cs" />
     <Compile Include="DAL\QuoteRepository.cs" />
     <Compile Include="DAL\VehicleRepository.cs" />
     <Compile Include="Global.asax.cs">
@@ -266,12 +266,16 @@
     <Compile Include="Migrations\201612140623588_CustomersAndVehicles.Designer.cs">
       <DependentUpon>201612140623588_CustomersAndVehicles.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612160651172_CustomersAndVehicles1.cs" />
+    <Compile Include="Migrations\201612160651172_CustomersAndVehicles1.Designer.cs">
+      <DependentUpon>201612160651172_CustomersAndVehicles1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\AutoMedIdentity.cs" />
-    <Compile Include="Models\AutoMedPrincipal.cs" />
+    <Compile Include="Models\AutoMedUser.cs" />
+    <Compile Include="Models\DataModels\QuoteDataModel.cs" />
     <Compile Include="Models\Gender.cs" />
     <Compile Include="Models\Customer.cs" />
-    <Compile Include="Models\DataModels\AutoMedUser.cs" />
+    <Compile Include="Models\DataModels\AutoMedUserDataModel.cs" />
     <Compile Include="Models\Document.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\Quote.cs" />
@@ -344,6 +348,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612140623588_CustomersAndVehicles.resx">
       <DependentUpon>201612140623588_CustomersAndVehicles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612160651172_CustomersAndVehicles1.resx">
+      <DependentUpon>201612160651172_CustomersAndVehicles1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
