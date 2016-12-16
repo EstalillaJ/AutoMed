@@ -224,6 +224,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="DAL\ApplicationContext.cs" />
+    <Compile Include="DAL\CustomerRepository.cs" />
     <Compile Include="DAL\DocumentRepository.cs" />
     <Compile Include="DAL\ILocationRepository.cs" />
     <Compile Include="DAL\IPrincipalRepository.cs" />
@@ -231,6 +232,11 @@
     <Compile Include="DAL\LocationRepository.cs" />
     <Compile Include="DAL\QuoteRepository.cs" />
     <Compile Include="DAL\PrincipalRepository.cs" />
+    <Compile Include="DAL\ICustomerRepository.cs" />
+    <Compile Include="DAL\IVehicleRepository.cs" />
+    <Compile Include="DAL\QuoteRepository.cs" />
+    <Compile Include="DAL\UserRepository.cs" />
+    <Compile Include="DAL\VehicleRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -257,10 +263,14 @@
     <Compile Include="Migrations\201612160513468_QuoteForeignKeys.cs" />
     <Compile Include="Migrations\201612160513468_QuoteForeignKeys.Designer.cs">
       <DependentUpon>201612160513468_QuoteForeignKeys.cs</DependentUpon>
+    <Compile Include="Migrations\201612140623588_CustomersAndVehicles.cs" />
+    <Compile Include="Migrations\201612140623588_CustomersAndVehicles.Designer.cs">
+      <DependentUpon>201612140623588_CustomersAndVehicles.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AutoMedIdentity.cs" />
     <Compile Include="Models\AutoMedPrincipal.cs" />
+    <Compile Include="Models\Gender.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\DataModels\AutoMedUser.cs" />
     <Compile Include="Models\Document.cs" />
@@ -279,9 +289,6 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="ApplicationInsights.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -335,6 +342,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612160513468_QuoteForeignKeys.resx">
       <DependentUpon>201612160513468_QuoteForeignKeys.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201612140623588_CustomersAndVehicles.resx">
+      <DependentUpon>201612140623588_CustomersAndVehicles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
