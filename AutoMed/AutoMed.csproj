@@ -230,7 +230,7 @@
     <Compile Include="DAL\Interfaces\IPrincipalRepository.cs" />
     <Compile Include="DAL\Interfaces\IQuoteRepository.cs" />
     <Compile Include="DAL\LocationRepository.cs" />
-    <Compile Include="DAL\PrincipalRepository.cs" />
+    <Compile Include="DAL\UserRepository.cs" />
     <Compile Include="DAL\Interfaces\ICustomerRepository.cs" />
     <Compile Include="DAL\Interfaces\IVehicleRepository.cs" />
     <Compile Include="DAL\QuoteRepository.cs" />
@@ -269,6 +269,10 @@
     <Compile Include="Migrations\201612160651172_CustomersAndVehicles1.cs" />
     <Compile Include="Migrations\201612160651172_CustomersAndVehicles1.Designer.cs">
       <DependentUpon>201612160651172_CustomersAndVehicles1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612162236446_QuoteDataModels.cs" />
+    <Compile Include="Migrations\201612162236446_QuoteDataModels.Designer.cs">
+      <DependentUpon>201612162236446_QuoteDataModels.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AutoMedUser.cs" />
@@ -351,6 +355,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612160651172_CustomersAndVehicles1.resx">
       <DependentUpon>201612160651172_CustomersAndVehicles1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612162236446_QuoteDataModels.resx">
+      <DependentUpon>201612162236446_QuoteDataModels.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

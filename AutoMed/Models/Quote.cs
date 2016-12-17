@@ -11,6 +11,7 @@ namespace AutoMed.Models
     public class Quote
     {
         public int Id { get; set; }
+        [NotMapped]
         public List<Document> Documents { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateApproved { get; set; }

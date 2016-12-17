@@ -51,7 +51,10 @@ namespace AutoMed.Tests.DAL
         {
             LocationRepository locationRepo = new LocationRepository();
             List<Location> locations = locationRepo.SelectAll();
-            locationRepo.DeleteLocation(locations.Where(x => x.Name == "TestLocation2").First());
+            if (locations.Exists(x => x.Name == "TestLocation"))
+                locationRepo.DeleteLocation(locations.Where(x => x.Name == "TestLocation").First());
+            if (locations.Exists(x => x.Name == "TestLocation2"))
+                locationRepo.DeleteLocation(locations.Where(x => x.Name == "TestLocation2").First());
             locations = locationRepo.SelectAll();
             Assert.IsFalse(locations.Exists(x => x.Name == "TestLocation2"));
         }

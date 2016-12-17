@@ -6,9 +6,9 @@ using System.Data.Entity;
 
 namespace AutoMed.DAL
 {
-    public class PrincipalRepository : IPrincipalRepository
+    public class UserRepository : IPrincipalRepository
     {   
-        public PrincipalRepository()
+        public UserRepository()
         {
 
         }
@@ -34,9 +34,9 @@ namespace AutoMed.DAL
         }
 
         public AutoMedUser SelectByUsernameAndPassword(string username, string password)
-        {
+        {   
             using (ApplicationContext Context = new ApplicationContext())
-            {
+            {   
                 AutoMedUserDataModel user =
                     Context.
                     AutoMedUsers.

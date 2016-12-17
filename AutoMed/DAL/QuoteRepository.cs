@@ -16,6 +16,7 @@ namespace AutoMed.DAL
         {
             using (ApplicationContext Context = new ApplicationContext())
             {
+                quote.DateCreated = DateTime.Now;
                 Context.QuoteDataModels.Add(new QuoteDataModel(quote));
                 documentRepo.SaveDocumentBlobs(quote.Documents);
                 Context.SaveChanges();
