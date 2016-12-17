@@ -12,7 +12,7 @@ namespace AutoMed.Tests.DAL
     {
         private static LocationRepository locationRepo = new LocationRepository();
         private static UserRepository principalRepo = new UserRepository();
-        private static CustomerRepository customerRepo = new CustomerRepository(new ApplicationContext());
+        private static CustomerRepository customerRepo = new CustomerRepository();
         private static VehicleRepository vehicleRepo = new VehicleRepository(new ApplicationContext());
         private static List<Location> locations;
         private static List<AutoMedUser> principals;
@@ -60,7 +60,8 @@ namespace AutoMed.Tests.DAL
         {
             Customer testCustomer = new Customer()
             {
-                Address = "Address",
+                AddressLine1 = "Address",
+                AddressLine2 = "AddressL2",
                 FirstName = "FirstName",
                 LastName = "LastName",
                 Age = 18,
@@ -72,7 +73,8 @@ namespace AutoMed.Tests.DAL
             };
             Customer testCustomer2 = new Customer()
             {
-                Address = "Address",
+                AddressLine1 = "Address",
+                AddressLine2 = "AddressL2",
                 FirstName = "FirstName",
                 LastName = "LastName",
                 Age = 18,
@@ -83,8 +85,8 @@ namespace AutoMed.Tests.DAL
                 Vehicles = new List<Vehicle>(),
             };
 
-            customerRepo.Create(testCustomer.FirstName, testCustomer.LastName, testCustomer.Address, testCustomer.Email, testCustomer.PhoneNumber, testCustomer.Age, testCustomer.Gender);
-            customerRepo.Create(testCustomer2.FirstName, testCustomer2.LastName, testCustomer2.Address, testCustomer2.Email, testCustomer2.PhoneNumber, testCustomer2.Age, testCustomer2.Gender);
+            customerRepo.Create(testCustomer);
+            customerRepo.Create(testCustomer2);
             customers = new List<Customer>() { testCustomer, testCustomer2 };
             return customers;
         }
@@ -99,8 +101,8 @@ namespace AutoMed.Tests.DAL
             Vehicle testVehicle = new Vehicle()
             {
                 Vin = "VIN",
-                LicensePlateNumber = "LIC",
-                Color = "Red",
+                LicensePlate = "LIC",
+                Color = Color.Red,
                 Make = "Ford",
                 Model = "Taurus",
                 Year = 200
@@ -108,14 +110,14 @@ namespace AutoMed.Tests.DAL
             Vehicle testVehicle2 = new Vehicle()
             {
                 Vin = "VIN",
-                LicensePlateNumber = "LIC",
-                Color = "Red",
+                LicensePlate = "LIC",
+                Color = Color.Red,
                 Make = "Ford",
                 Model = "Taurus",
                 Year = 200
             };
-            vehicleRepo.Create(testVehicle.Vin, testVehicle.Make, testVehicle.Model, testVehicle.Year, testVehicle.Color, testVehicle.LicensePlateNumber);
-            vehicleRepo.Create(testVehicle2.Vin, testVehicle2.Make, testVehicle2.Model, testVehicle2.Year, testVehicle2.Color, testVehicle2.LicensePlateNumber);
+            vehicleRepo.Create(testVehicle);
+            vehicleRepo.Create(testVehicle2);
             vehicles = new List<Vehicle>() { testVehicle, testVehicle2 };
             return vehicles;
         }

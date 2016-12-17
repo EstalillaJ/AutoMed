@@ -274,6 +274,10 @@
     <Compile Include="Migrations\201612162236446_QuoteDataModels.Designer.cs">
       <DependentUpon>201612162236446_QuoteDataModels.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612170401133_ChristianMerge.cs" />
+    <Compile Include="Migrations\201612170401133_ChristianMerge.Designer.cs">
+      <DependentUpon>201612170401133_ChristianMerge.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AutoMedUser.cs" />
     <Compile Include="Models\DataModels\QuoteDataModel.cs" />
@@ -359,6 +363,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612162236446_QuoteDataModels.resx">
       <DependentUpon>201612162236446_QuoteDataModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612170401133_ChristianMerge.resx">
+      <DependentUpon>201612170401133_ChristianMerge.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
