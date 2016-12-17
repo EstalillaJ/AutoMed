@@ -7,41 +7,47 @@ namespace AutoMed.DAL
 {
     public class VehicleRepository : IVehicleRepository
     {
-        private ApplicationContext Context;
         public VehicleRepository(ApplicationContext context)
         {
-            this.Context = context;
+
         }
-        public void Create(string Vin, string Make, string Model, int Year, string Color, string LicensePlateNumber)
+        public void Create(Vehicle vehicle)
         {
-            Vehicle vehicle = new Vehicle
+            using (ApplicationContext Context = new ApplicationContext())
             {
-                Vin = Vin,
-                Make = Make,
-                Model = Model,
-                Year = Year,
-                Color = Color,
-                LicensePlateNumber = LicensePlateNumber
-            };
-            Context.Vehicles.Add(vehicle);
-            Context.SaveChanges();
+                Context.Vehicles.Add(vehicle);
+                Context.SaveChanges();
+            }
         }
-        public IEnumerable<Vehicle> GetVehicles()
+        public List<Vehicle> SearchVehicleByLicensePlate(string LicensePlate)
         {
-            return Context.Vehicles.ToList();
+            using (ApplicationContext Context = new ApplicationContext())
+            {
+                return Context.Vehicles.Where(x => x.LicensePlate == LicensePlate).ToList();
+            }
         }
         public void InsertVehicle(Vehicle vehicle)
         {
-            Context.Vehicles.Add(vehicle);
+            using (ApplicationContext Context = new ApplicationContext())
+            { 
+                Context.Vehicles.Add(vehicle);
+                vehicle.OwnerId = vehicle.Owner.Id;
+            }
         }
         public void DeleteVehicle(int vehicleId)
         {
-            Vehicle vehicle = Context.Vehicles.Find(vehicleId);
-            Context.Vehicles.Remove(vehicle);
+            using (ApplicationContext Context = new ApplicationContext())
+            {
+                Vehicle vehicle = Context.Vehicles.Find(vehicleId);
+                Context.Vehicles.Remove(vehicle);
+            }
         }
         public void UpdateVehicle(Vehicle vehicle)
         {
-            Context.Entry(vehicle).State = System.Data.Entity.EntityState.Modified;
+            using (ApplicationContext Context = new ApplicationContext())
+            { 
+                Context.Entry(vehicle).State = System.Data.Entity.EntityState.Modified;
+            }
         }
     }
 }
