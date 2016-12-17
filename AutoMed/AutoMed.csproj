@@ -277,6 +277,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AutoMedUser.cs" />
     <Compile Include="Models\DataModels\QuoteDataModel.cs" />
+    <Compile Include="Models\Color.cs" />
     <Compile Include="Models\Gender.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\DataModels\AutoMedUserDataModel.cs" />

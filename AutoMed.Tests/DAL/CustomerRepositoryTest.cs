@@ -7,9 +7,12 @@ namespace AutoMed.Tests.DAL
     [TestClass]
     public class CustomerRepositoryTest
     {
-        [TestMethod]
-        public void TestMethod1()
+        [ClassInitialize]
+        public static void TestCreate()
         {
+            Customer customer = new Customer();
+            CustomerRepository customerRepo = new CustomerRepository();
+            customerRepo.InsertCustomer(customer);
         }
     }
 }

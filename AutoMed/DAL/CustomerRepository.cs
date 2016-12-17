@@ -6,42 +6,60 @@ namespace AutoMed.DAL
 {
     public class CustomerRepository : ICustomerRepository
     {
-        private ApplicationContext Context;
-        public CustomerRepository(ApplicationContext context)
+        public CustomerRepository()
         {
-            this.Context = context;
+
         }
-        public void Create(string FirstName, string LastName, string Address, string Email, string PhoneNumber, int Age, Gender Gender)
+        public void Create(Customer customer)
         {
-            Customer customer = new Customer
+            using (ApplicationContext Context = new ApplicationContext())
             {
-                FirstName = FirstName,
-                LastName = LastName,
-                Address = Address,  
-                Email = Email,
-                PhoneNumber = PhoneNumber,
-                Age = Age,
-                Gender = Gender
-            };
-            Context.Customers.Add(customer);
-            Context.SaveChanges();
+                Context.Customers.Add(customer);
+                Context.SaveChanges();
+            }
+        }
+        public List<Customer> FindCustomerByName(string nameString)
+        {
+            using (ApplicationContext Context = new ApplicationContext())
+            {
+                return Context.Customers.Where(x => (x.FirstName + x.LastName).Contains(nameString)).ToList(); 
+            }
+        }
+        public Customer FindCustomerById(int customerId)
+        {
+            using (ApplicationContext Context = new ApplicationContext())
+            {
+                return Context.Customers.Find(customerId);
+            }
         }
         public IEnumerable<Customer> GetCustomers()
         {
-            return Context.Customers.ToList();
+            using (ApplicationContext Context = new ApplicationContext())
+            {
+                return Context.Customers.ToList();
+            }
         }
         public void InsertCustomer(Customer customer)
         {
-            Context.Customers.Add(customer);
+            using (ApplicationContext Context = new ApplicationContext())
+            {
+                Context.Customers.Add(customer);
+            }
         }
         public void DeleteCustomer(int customerId)
         {
-            Customer customer = Context.Customers.Find(customerId);
-            Context.Customers.Remove(customer);
+            using (ApplicationContext Context = new ApplicationContext())
+            {
+                Customer customer = Context.Customers.Find(customerId);
+                Context.Customers.Remove(customer);
+            }
         }
         public void UpdateCustomer(Customer customer)
         {
-            Context.Entry(customer).State = System.Data.Entity.EntityState.Modified;
+            using (ApplicationContext Context = new ApplicationContext())
+            {
+                Context.Entry(customer).State = System.Data.Entity.EntityState.Modified;
+            }
         }
     }
 }

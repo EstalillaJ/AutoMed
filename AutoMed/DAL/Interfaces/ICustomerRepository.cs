@@ -8,7 +8,9 @@ namespace AutoMed.DAL
 {
     public interface ICustomerRepository
     {
-        void Create(string FirstName, string LastName, string Address, string Email, string PhoneNumber, int Age, Gender Gender);
+        void Create(Customer customer);
+        List<Customer> FindCustomerByName(string nameString);
+        Customer FindCustomerById(int customerId);
         IEnumerable<Customer> GetCustomers();
         void InsertCustomer(Customer customer);
         void DeleteCustomer(int customerId);
