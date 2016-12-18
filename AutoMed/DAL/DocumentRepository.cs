@@ -5,7 +5,7 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.IO;
 using System.Drawing;
-using System.Data.Entity;
+using System;
 
 namespace AutoMed.DAL
 {
@@ -15,76 +15,35 @@ namespace AutoMed.DAL
         {
 
         }
-        
-        public void UpdateTitleAndDescription(List<Document> documents)
-        {   
-            using (ApplicationContext Context = new ApplicationContext())
-            {
-                foreach (Document document in documents)
-                {
-                    Context.Entry(document).State = EntityState.Modified;
-                    Context.SaveChanges();
-                }
-            }
-        }
-
-        public Document SelectById(int id)
-        {   
-            using (ApplicationContext Context = new ApplicationContext())
-            {
-                Document document = Context.Documents.Find(id);
-                if (document == null)
-                    return null;
-
-                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
-                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-                CloudBlobContainer container = blobClient.GetContainerReference("Documents");
-                CloudBlockBlob blockBlob = blockBlob = container.GetBlockBlobReference(document.Id.ToString());
-
-                using (var ms = new MemoryStream())
-                {
-                    blockBlob.DownloadToStream(ms);
-                    document.Image = Image.FromStream(ms, true);
-                }
-
-                return document;
-            }
-        }
-
-        public void Delete(Document document)
-        {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            CloudBlobContainer container = blobClient.GetContainerReference("Documents");
-            CloudBlockBlob blockBlob = container.GetBlockBlobReference(document.Id.ToString());
-
-            using (ApplicationContext Context = new ApplicationContext())
-            {
-                Context.Documents.Remove(document);
-                blockBlob.DeleteIfExists();
-                Context.SaveChanges();
-            }
-        }
-
         public void LoadDocumentBlobs(List<Document> documents)
         {
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            CloudBlobContainer container = blobClient.GetContainerReference("Documents");
+            CloudBlobContainer container = blobClient.GetContainerReference("documents");
             CloudBlockBlob blockBlob;
 
+
+            SharedAccessBlobPolicy policy = new SharedAccessBlobPolicy();
+            policy.SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-5);
+            policy.SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(10);
+            policy.Permissions = SharedAccessBlobPermissions.Read;
+            
             foreach (Document document in documents)
             {
                 blockBlob = container.GetBlockBlobReference(document.Id.ToString());
-
                 using (var ms = new MemoryStream())
                 {
                     blockBlob.DownloadToStream(ms);
-                    document.Image = Image.FromStream(ms, true);
+                    ms.Position = 0;
+                    document.Image = Image.FromStream(ms);
                 }
             }
         }
 
+        /*
+         * Assumes you have already saved the documents with a proper id.
+         * 
+         */
         public void SaveDocumentBlobs(List<Document> documents)
         {
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
@@ -96,13 +55,33 @@ namespace AutoMed.DAL
             foreach (Document document in documents)
             {
                 blockBlob = container.GetBlockBlobReference(document.Id.ToString());
-                
+
+                if (blockBlob.Exists())
+                    throw new Exception("Cannot overwrite blob");
+
                 using (var ms = new MemoryStream())
                 {
                     document.Image.Save(ms, document.Image.RawFormat);
+                    blockBlob.Properties.ContentType = "image/jpg";
                     blockBlob.UploadFromStream(ms);
                 }
             }
+        }
+
+        public void DeleteDocumentBlobs(List<Document> documents)
+        {
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            CloudBlobContainer container = blobClient.GetContainerReference("documents");
+            CloudBlockBlob blockBlob;
+
+            foreach (Document document in documents)
+            {
+                blockBlob = container.GetBlockBlobReference(document.Id.ToString());
+
+                blockBlob.DeleteIfExists();
+            }
+
         }
     }
 }
