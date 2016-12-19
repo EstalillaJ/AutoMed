@@ -8,6 +8,7 @@ namespace AutoMed
     {
         public void Configuration(IAppBuilder app)
         {
+            ConfigureAuth(app);
         }
     }
 }
