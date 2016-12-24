@@ -1,0 +1,114 @@
+﻿@using AutoMed.Models;
+@model CreateReportViewModel
+@{
+    ViewBag.Title = "Reports";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Create", "Report", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>Generate A Report</h4>
+    <div>
+        @Html.LabelFor(m => m.AllLocations) @Html.CheckBoxFor(m => m.AllLocations, new { @id = "AnyLocation" })
+        @Html.DropDownListFor(m => m.SelectedLocationId, Model.Locations, new { id = "Locations" })
+        
+    </div>
+    <div>
+        @Html.LabelFor(m => m.AnyDate) @Html.CheckBoxFor(m => m.AnyDate, new { @id = "AnyDate" })
+        @Html.LabelFor(m => m.StartMonth) @Html.DropDownListFor(m => m.StartMonth, new SelectList(Enumerable.Range(1, 12)))
+        @Html.LabelFor(m => m.StartDay) @Html.DropDownListFor(m => m.StartDay, new SelectList(Enumerable.Range(1, 31)))
+        @Html.LabelFor(m=> m.StartYear) @Html.DropDownListFor(m => m.StartYear, new SelectList(Enumerable.Range(2016, DateTime.Today.Year - 2016 + 1)))
+    </div>
+    <div>
+        @Html.LabelFor(m => m.EndMonth) @Html.DropDownListFor(m => m.EndMonth, new SelectList(Enumerable.Range(1, 12)))
+        @Html.LabelFor(m => m.EndDay) @Html.DropDownListFor(m => m.EndDay, new SelectList(Enumerable.Range(1, 31)))
+        @Html.LabelFor(m => m.EndYear) @Html.DropDownListFor(m => m.EndYear, new SelectList(Enumerable.Range(2016, DateTime.Today.Year - 2016 + 1)))
+    </div>
+    <div>
+        @Html.LabelFor(m => m.AnyDiscountAmount) @Html.CheckBoxFor(m => m.AnyDiscountAmount, new { id = "AnyDiscount" })
+        @Html.LabelFor(m => m.MinDiscountDollars) @Html.TextBoxFor(m => m.MinDiscountDollars)
+        @Html.LabelFor(m => m.MaxDiscountDollars) @Html.TextBoxFor(m => m.MaxDiscountDollars)
+    </div>
+    <div class="form-group">
+        <div class="col-md-6">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-6">
+
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="Generate" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>        
+        function isLeapYear(year){
+            return year % 4 == 0 ? year %  100 != 0 : year % 400 == 0;
+        }
+        // takes a month & year (as numbers), and a reference to the select list for the days
+        function changeDaysAvailable(selectedMonth, selectedYear, daySelectList) {
+            var thirtyDays = [4, 6, 9, 11]
+            if ($.inArray(selectedMonth, thirtyDays) > -1) {
+                var end = 30;
+            }
+            else if (selectedMonth == 2) {
+                var end = isLeapYear(selectedYear) ? 29 : 28;
+            }
+            else {
+                var end = 31;
+            }
+            if (daySelectList.length != end) {
+                daySelectList.empty();
+                for (var i = 1; i <= end; i++) {
+                    daySelectList.append(new Option(i, i));
+                }
+            }
+        }
+
+        // Disabled selections if any is set.
+        $("#AnyLocation").change(
+            function () {
+                var checked = $(this).is(":checked")
+                $("#Locations").prop('disabled', checked);
+        });
+        $("#AnyDiscount").change(
+            function () {
+                var checked = $(this).is(":checked")
+                $("#MaxDiscountDollars").prop('disabled', checked);
+                $("#MinDiscountDollars").prop('disabled', checked);
+        });
+        $("#AnyDate").change(
+            function () {
+                var checked = $(this).is(":checked")
+                $("#StartDay").prop('disabled', checked);
+                $("#EndDay").prop('disabled', checked);
+                $("#StartMonth").prop('disabled', checked);
+                $("#EndMonth").prop('disabled', checked);
+                $("#StartYear").prop('disabled', checked);
+                $("#EndYear").prop('disabled', checked);
+        });
+
+        // change days you can select based on the month and year
+        $("#StartMonth").change(function() {
+            changeDaysAvailable(this.value, $("#StartYear").value, $("#StartDay"))
+        });
+
+        $("#EndMonth").change(function(){
+            changeDaysAvailable(this.value, $("#EndYear").value, $("#EndDay"))
+        });
+
+            
+    </script>
+}
+
+
+
+
