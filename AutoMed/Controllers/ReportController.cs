@@ -20,12 +20,13 @@ namespace AutoMed.Controllers
         private ApplicationDbContext Context = ApplicationDbContext.Create();
         public ActionResult Create()
         {
-            CreateReportViewModel viewModel = new CreateReportViewModel()
-            {
-                Locations = new SelectList(Context.Locations, "Id", "Name"),
-                MinDiscountDollars = 0,
-                MaxDiscountDollars = 100
-            };
+            CreateReportViewModel viewModel = new CreateReportViewModel();
+            Context.Locations.ToList().ForEach(
+                x => viewModel.Locations.Add(
+                    new Checkbox<Location>()
+                    {
+                        Item = x
+                    }));
             return View(viewModel);
         }
 

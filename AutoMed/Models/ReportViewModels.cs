@@ -8,17 +8,23 @@ namespace AutoMed.Models
 {
     public class CreateReportViewModel
     {   
+        public CreateReportViewModel()
+        {
+            Locations = new List<Checkbox<Location>>();
+        }
         [Display(Name="Include All Locations")]
         public bool AllLocations { get; set; }
         [Display(Name="Include All Discount Amounts")]
         public bool AnyDiscountAmount { get; set; }
         [Display(Name="Include All Dates")]
         public bool AnyDate { get; set; }
-        public SelectList Locations { get; set; }
+        public List<Checkbox<Location>> Locations { get; set; }
         public int SelectedLocationId { get; set; }
-        [Display(Name = "Max Discount ($)")]
+        [UIHint("WaterMarkInt")]
+        [Display(Name = "Max Discount ($)", Prompt="Min ($)")]
         public double MaxDiscountDollars { get; set; }
-        [Display(Name = "Min Discount ($)")]
+        [Display(Name = "Min Discount ($)", Prompt="Max ($)")]
+        [UIHint("WaterMarkInt")]
         public double MinDiscountDollars { get; set; }
         [Display(Name = "Year")]
         public int StartYear { get; set; }
