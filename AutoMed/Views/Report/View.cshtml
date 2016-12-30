@@ -1,0 +1,207 @@
+﻿@model AutoMed.Models.ReportViewModel
+
+@{
+    ViewBag.Title = "View";
+}
+
+<h2>View</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>ReportViewModel</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AnyDiscountDollars, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.AnyDiscountDollars)
+                    @Html.ValidationMessageFor(model => model.AnyDiscountDollars, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MinDiscountDollars, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MinDiscountDollars, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MinDiscountDollars, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MaxDiscountDollars, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MaxDiscountDollars, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MaxDiscountDollars, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AnyDiscountPercentage, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.AnyDiscountPercentage)
+                    @Html.ValidationMessageFor(model => model.AnyDiscountPercentage, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MinDiscountPercentage, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MinDiscountPercentage, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MinDiscountPercentage, "", new { @class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MaxDiscountPercentage, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MaxDiscountPercentage, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MaxDiscountPercentage, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AnyDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.AnyDate)
+                    @Html.ValidationMessageFor(model => model.AnyDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NumberInHousehold, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NumberInHousehold, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NumberInHousehold, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AddressContains, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.AddressContains, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.AddressContains, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h3>Locations</h3>
+                @Html.LabelFor(m => m.AllLocations) @Html.CheckBoxFor(m => m.AllLocations)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Include</th>
+                        </tr>
+                    </thead>
+                    @for (int i = 0; i < Model.Locations.Count(); i++)
+                    {
+                        <tr>
+                            <td>
+                                @Model.Locations[i].Item.Id
+                            </td>
+                            <td>
+                                @Model.Locations[i].Item.Name
+                            </td>
+                            <td>
+                                @Html.CheckBoxFor(m => m.Locations[i].IsChecked, new { id = "location_checkbox_" + i, @class = "location_checkbox" })
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Generate" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var numLocations = @Model.Locations.Count();
+
+        $("#AllLocations").change(
+            function () {
+                var checked = $(this).is(":checked");
+                for (var i = 0; i < numLocations; i++){
+                    $("#location_checkbox_"+i).prop('checked', checked);
+                }
+        });
+
+        $(".location_checkbox").change(
+            function(){
+                var checked = $(this).is(":checked");
+                if (!checked){
+                    $("#AllLocations").prop('checked', false);
+                }
+                else{
+                    var allchecked = true;
+                    for (var i = 0; i < numLocations; i++){
+                        if (!$("#location_checkbox_"+i).is(":checked")){
+                            allchecked = false;
+                            break;
+                        }
+                    }
+                    $("#AllLocations").prop('checked', allchecked);
+                }
+            });
+
+        $("#AnyDiscountDollars").change(
+            function () {
+                var checked = $(this).is(":checked")
+                $("#MaxDiscountDollars").prop('disabled', checked);
+                $("#MinDiscountDollars").prop('disabled', checked);
+
+            });
+        $("#AnyDiscountPercentage").change(
+            function () {
+                var checked = $(this).is(":checked")
+                $("#MaxDiscountPercentage").prop('disabled', checked);
+                $("#MinDiscountPercentage").prop('disabled', checked);
+        });
+        $("#AnyDate").change(
+            function () {
+                var checked = $(this).is(":checked")
+                $("#StartDate").prop('disabled', checked);
+                $("#EndDate").prop('disabled', checked);
+        });
+
+
+
+    </script>
+}

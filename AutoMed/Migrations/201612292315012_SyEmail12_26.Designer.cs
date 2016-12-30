@@ -7,13 +7,13 @@ namespace AutoMed.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class documentFileBase : IMigrationMetadata
+    public sealed partial class SyEmail12_26 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(documentFileBase));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(SyEmail12_26));
         
         string IMigrationMetadata.Id
         {
-            get { return "201612220513470_documentFileBase"; }
+            get { return "201612292315012_SyEmail12_26"; }
         }
         
         string IMigrationMetadata.Source

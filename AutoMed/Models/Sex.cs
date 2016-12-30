@@ -5,8 +5,8 @@ using System.Web;
 
 namespace AutoMed.Models
 {
-    public enum Gender
+    public enum Sex
     {
-        Male, Female, None
+        Male, Female, Other
     }
 }

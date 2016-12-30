@@ -13,8 +13,8 @@ namespace AutoMed.Models
         [MaxLength(450)]
         public string Name { get; set; }
 
-        public List<Quote> Quotes { get; set; }
+        public virtual List<Quote> Quotes { get; set; }
 
-        public List<AutoMedUser> Employees { get; set; }
+        public virtual List<AutoMedUser> Employees { get; set; }
     }
 }
