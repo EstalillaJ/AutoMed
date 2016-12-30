@@ -15,9 +15,9 @@ namespace AutoMed.Models
         [Display(Name="Include All Locations")]
         public bool AllLocations { get; set; }
         public List<Checkbox<Location>> Locations { get; set; }
-        [Display(Prompt="Min ($)")]
-        public double? MaxDiscountDollars { get; set; }
         [Display(Prompt="Max ($)")]
+        public double? MaxDiscountDollars { get; set; }
+        [Display(Prompt="Min ($)")]
         public double? MinDiscountDollars { get; set; }
         [Display(Prompt = "Max (%)")]
         public double? MaxDiscountPercentage { get; set; }
