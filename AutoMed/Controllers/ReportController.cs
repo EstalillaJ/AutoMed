@@ -39,7 +39,7 @@ namespace AutoMed.Controllers
             double maxDiscountDollars = model.MaxDiscountDollars ?? double.MaxValue;
             double minDiscountDollars = model.MinDiscountDollars ?? double.MinValue;
             string city = model.City ?? string.Empty;
-            string address = model.City ?? string.Empty;
+            string address = model.Address ?? string.Empty;
 
             ExpressionStarter<Quote> isMostlyMatched = PredicateBuilder.New<Quote>(q =>
                   (q.Customer.AddressLine1 + q.Customer.AddressLine2).Contains(address) &&
@@ -62,7 +62,7 @@ namespace AutoMed.Controllers
             }
             if (model.NumberInHousehold != null)
             {
-                matchesZip.DefaultExpression = q => q.CurrentNumberInHousehold == model.NumberInHousehold;
+                matchesNumberInHousehold.DefaultExpression = q => q.CurrentNumberInHousehold == model.NumberInHousehold;
             }
         
             return Context.Quotes.Include("Location").Include("Vehicle").Include("Customer").
