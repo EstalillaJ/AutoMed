@@ -1,0 +1,206 @@
+﻿@using AutoMed.Models;
+@model CreateReportViewModel
+@{
+    ViewBag.Title = "Reports";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h2>Generate A Report</h2>
+        </div>
+    </div>
+
+    @using (Html.BeginForm("Create", "Report", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <h3 class="text-center">Quote Info</h3>
+
+        <div class="row">
+            <div class="col-sm-6 col-xs-6 text-center">
+                <h4>Start Date</h4>
+            </div>
+            <div class="col-sm-6 text-center">
+                <h4>End Date</h4>
+             </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2 col-xs-2 text-center">
+                @Html.EnumDropDownListFor(m => m.StartMonth, "Month", new { @class="form-control" })
+            </div>
+            <div class="col-sm-2 col-xs-2 text-center">
+                @Html.DropDownListFor(m => m.StartDay, new SelectList(Enumerable.Range(1, 31)), "Day", new { @class = "form-control" })
+                </div>
+            <div class="col-sm-2 col-xs-2 text-center">
+                @Html.DropDownListFor(m => m.StartYear, new SelectList(Enumerable.Range(2016, DateTime.Today.Year - 2016 + 1)), "Year", new { @class = "form-control" })
+            </div>
+            <div class="col-sm-2 col-xs-2 text-center">
+                @Html.EnumDropDownListFor(m => m.EndMonth, "Month", new { @class = "form-control" })
+            </div>
+            <div class="col-sm-2 col-xs-2 text-center">
+                @Html.DropDownListFor(m => m.EndDay, new SelectList(Enumerable.Range(1, 31)), "Day", new { @class = "form-control" })
+            </div>
+            <div class="col-sm-2 col-xs-2 text-center">
+                @Html.DropDownListFor(m => m.EndYear, new SelectList(Enumerable.Range(2016, DateTime.Today.Year - 2016 + 1)), "Year", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6 col-xs-6 text-center">
+                <h4>Dollar Amount</h4>
+            </div>
+            <div class="col-sm-6 text-center">
+                <h4>Percentage</h4>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-3 col-xs-3 text-center">
+                @Html.EditorFor(m => m.MinDiscountDollars, "WatermarkNumber", new { @type = "number" })
+            </div>
+            <div class="col-sm-3 col-xs-3 text-center">
+                @Html.EditorFor(m => m.MaxDiscountDollars, "WatermarkNumber")
+            </div>
+            <div class="col-sm-3 text-center">
+                @Html.EditorFor(m => m.MinDiscountPercentage, "WatermarkNumber")
+            </div>
+            <div class="col-sm-3 text-center">
+                @Html.EditorFor(m => m.MaxDiscountPercentage, "WatermarkNumber")
+            </div>
+
+        </div>
+
+       <h3 class="text-center">Customer Info</h3>
+
+        <div class="row">
+                <div class="col-sm-3 text-center">
+                    @Html.EditorFor(m => m.Address, "WatermarkString")
+                </div>
+                <div class="col-sm-3 text-center">
+                    @Html.EditorFor(m => m.City, "WatermarkString")
+                </div>
+                <div class="col-sm-2 text-center">
+                    @Html.EnumDropDownListFor(m => m.State, "State", new { @class = "form-control" })
+                </div>
+                <div class="col-sm-2 text-center">
+                    @Html.EditorFor(m => m.ZipCode, "WatermarkNumber")
+                </div>
+                <div class="col-sm-2 text-center">
+                    @Html.EditorFor(m => m.NumberInHousehold, "WatermarkNumber")
+                </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h3>Locations</h3>
+                @Html.LabelFor(m => m.AllLocations) @Html.CheckBoxFor(m => m.AllLocations)
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Include</th>
+                        </tr>
+                    </thead>
+                @for (int i = 0; i < Model.Locations.Count(); i++)
+                {
+                    <tr>
+                        <td>
+                            @Model.Locations[i].Item.Id
+                        </td>
+                        <td>
+                            @Model.Locations[i].Item.Name
+                        </td>
+                        <td>
+                            @Html.CheckBoxFor(m => m.Locations[i].IsChecked, new { id = "location_checkbox_" + i , @class="location_checkbox"})
+                            @Html.HiddenFor(m => m.Locations[i].Item.Id)
+                        </td>
+                    </tr>
+                }
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-10 col-md-2">
+                <input type="submit" class="btn btn-default" value="Generate" />
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/DateSelect.js")
+    <script>
+        var numLocations = @Model.Locations.Count();        
+
+        $("#AllLocations").change(
+            function () {
+                var checked = $(this).is(":checked");
+                for (var i = 0; i < numLocations; i++){
+                    $("#location_checkbox_"+i).prop('checked', checked);
+                }
+        });
+
+        $(".location_checkbox").change(
+            function(){
+                var checked = $(this).is(":checked");
+                if (!checked){
+                    $("#AllLocations").prop('checked', false);
+                }
+                else{
+                    var allchecked = true;
+                    for (var i = 0; i < numLocations; i++){
+                        if (!$("#location_checkbox_"+i).is(":checked")){
+                            allchecked = false;
+                            break;
+                        }
+                    }
+                    $("#AllLocations").prop('checked', allchecked);
+                }
+            });
+
+        $("#AnyDiscountDollars").change(
+            function () {
+                var checked = $(this).is(":checked");
+                $("#MaxDiscountDollars").prop('disabled', checked);
+                $("#MinDiscountDollars").prop('disabled', checked);
+            });
+        
+        $("#AnyDiscountPercentage").change(
+            function () {
+                var checked = $(this).is(":checked");
+                $("#MaxDiscountPercentage").prop('disabled', checked);
+                $("#MinDiscountPercentage").prop('disabled', checked);
+            });
+        $("#AnyDate").change(
+            function () {
+                var checked = $(this).is(":checked");
+                $("#StartDay").prop('disabled', checked);
+                $("#EndDay").prop('disabled', checked);
+                $("#StartMonth").prop('disabled', checked);
+                $("#EndMonth").prop('disabled', checked);
+                $("#StartYear").prop('disabled', checked);
+                $("#EndYear").prop('disabled', checked);
+            });
+        
+        $("#EndMonth").change(function(){
+            changeDaysAvailable(this.value, $("#EndYear").value, $("#EndDay"))
+        })
+        $("#StartMonth").change(function(){
+            changeDaysAvailable(this.value, $("#StartYear").value, $("#StartDay"))
+        })
+    </script>
+}
+
+
+
+
