@@ -7,11 +7,21 @@ using System.ComponentModel.DataAnnotations;
 namespace AutoMed.Models
 {   
     public class CreateReportViewModel
-    {   
+    {
         public CreateReportViewModel()
         {
             Locations = new List<Checkbox<Location>>();
+            ColumnsToInclude = new List<Checkbox<string>>();
+            foreach (string item in Report.Columns.Keys)
+            {
+                ColumnsToInclude.Add(new Checkbox<string>() { Item = item });
+            }
         }
+        public List<Checkbox<string>> ColumnsToInclude { get; set; }
+
+        [Display(Name = "Include All Data")]
+        public bool AllColumns { get; set; }
+
         [Display(Name="Include All Locations")]
         public bool AllLocations { get; set; }
         public List<Checkbox<Location>> Locations { get; set; }
@@ -38,5 +48,11 @@ namespace AutoMed.Models
         public State? State { get; set; }
         [Display(Prompt ="City")]
         public string City { get; set; }
+    }
+
+    public class ReportDetailsViewModel
+    {
+        public List<Quote> Quotes { get; set; }
+        public List<string> Columns { get; set; }
     }
 }
