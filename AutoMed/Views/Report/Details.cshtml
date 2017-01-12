@@ -33,7 +33,7 @@
             <tr>
                 @foreach (string column in Model.Columns)
                 {
-                    <td>@Report.Columns[column](q)</td>
+                    <td>@ReportGenerator.GetColumn(q, column)</td>
                 }
             </tr>
         }

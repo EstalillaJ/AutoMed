@@ -32,7 +32,7 @@ namespace AutoMed.Controllers
         public ActionResult Download(ReportDetailsViewModel model)
         {
            IEnumerable<int> quoteIds = model.Quotes.Select(x => x.Id);
-           List<Quote> quotes = Context.Quotes.Where(q => quoteIds.Contains(q.Id)).ToList();
+           List<Quote> quotes = IncludeAllNavigationProperties(Context.Quotes).Where(q => quoteIds.Contains(q.Id)).ToList();
            return File(Encoding.ASCII.GetBytes(GenerateReportString(quotes, model.Columns)), "text/plain", string.Format("Report_{0}.csv", DateTime.Now));
         }
 
@@ -74,20 +74,27 @@ namespace AutoMed.Controllers
                 matchesNumberInHousehold.DefaultExpression = q => q.CurrentNumberInHousehold == model.NumberInHousehold;
             }
 
+            return IncludeAllNavigationProperties(Context.Quotes)
+                .AsExpandable()
+                .Where(isMostlyMatched.And(matchesZip.And(matchesState).And(matchesNumberInHousehold))).ToList();
+        }
+        
+        //TODO find a generic way, or use multiple db sets
+        private IQueryable<Quote> IncludeAllNavigationProperties (DbSet<Quote> set)
+        {
             // TODO only eager load if the matched columns reference the property?
             // (Enforces naming convention in Report class) Add required property attribute to dictionary!
 
             // TODO is this really more efficient? http://stackoverflow.com/a/13820046 
             // Time it, and consider enabling multiple result sets
-            
-            return Context.Quotes
-                .Include(x => x.Location)    // Yes it looks messy. It is more efficient to eager load
+
+            return set.Include(x => x.Location)    // Yes it looks messy. It is more efficient to eager load
                 .Include(x => x.Vehicle)     // when we know we will need the properties, then to make multiple queries
                 .Include(x => x.Customer)
                 .Include(x => x.ReviewedBy)
                 .Include(x => x.CreatedBy)
-                .AsExpandable()
-                .Where(isMostlyMatched.And(matchesZip.And(matchesState).And(matchesNumberInHousehold))).ToList();
+                .Include(x => x.CreatedBy.Location)
+                .Include(x => x.ReviewedBy.Location);
         }
 
         private string GenerateReportString(List<Quote> quotes, List<string> columns)
@@ -108,7 +115,7 @@ namespace AutoMed.Controllers
                 for (int i = 0; i < columns.Count; i++)
                 {
                     seperator = i == columns.Count - 1 ? '\n' : ',';
-                    report.Append(string.Format("{0}{1}", Report.Columns[columns[i]](q), seperator));
+                    report.Append(string.Format("{0}{1}", ReportGenerator.GetColumn(q, columns[i]), seperator));
                 }
             }
 

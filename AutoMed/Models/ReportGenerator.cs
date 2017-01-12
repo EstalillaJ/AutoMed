@@ -6,18 +6,29 @@ using System.Web;
 namespace AutoMed.Models
 {   
     // TODO obfuscate this more (maybe?)
-    public class Report
-    {
+    public class ReportGenerator
+    {   
+
+        public static string GetColumn<T>(T entity, string columnName)
+        {
+            return Columns[typeof(T)][columnName](entity); // TODO Maybe make this exception more friendly
+        }
+
+        public static IEnumerable<string> GetColumnNames<T>()
+        {
+            return Columns[typeof(T)].Keys;
+        }
+
         /**
-         * To have a column be selectable from the report creation page add it here.
-         */
-        public static readonly Dictionary<string, Func<Quote, string>> Columns =
-            new Dictionary<string, Func<Quote, string>>()
+        * To have a column be selectable from the report creation page add it here.
+        */
+        private static Dictionary<string, Func<dynamic, string>> QuoteColumns =
+            new Dictionary<string, Func<dynamic, string>>()
             {   // Name Displayed To User, What It Returns
                 { "Quote Id" , q => q.Id.ToString() },
                 { "Number In Household", q => q.CurrentNumberInHousehold.ToString() },
-                { "Date Created", q => q.DateCreated.ToString() },
-                { "Date Reviewed", q => q.DateReviewed.ToString() },
+                { "Date Created", q => q.DateCreated.ToShortDateString() },
+                { "Date Reviewed", q => q.DateReviewed == null ? "None" : q.DateReviewed.ToShortDateString()  },
                 { "Reviewer Username", q => q.ReviewedBy == null ? "None" : q.ReviewedBy.UserName },
                 { "Reviewer Location", q => q.ReviewedBy == null ? "None" : q.ReviewedBy.Location.Name  },
                 { "Creater Username", q => q.CreatedBy.UserName },
@@ -43,5 +54,15 @@ namespace AutoMed.Models
                 { "Vehicle VIN", q => q.Vehicle.Vin.ToString() },
                 { "Vehicle License Plate", q => q.Vehicle.LicensePlate },
             };
+
+        private static Dictionary<Type, Dictionary<string, Func<dynamic, string>>> Columns =
+            new Dictionary<Type, Dictionary<string, Func<dynamic, string>>>()
+            {
+                { typeof(Quote), QuoteColumns }
+            };
+        
+
+
+       
     }
 }

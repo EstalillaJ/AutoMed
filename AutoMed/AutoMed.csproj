@@ -259,7 +259,7 @@
     <Compile Include="Models\Color.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Document.cs" />
-    <Compile Include="Models\Report.cs" />
+    <Compile Include="Models\ReportGenerator.cs" />
     <Compile Include="Models\Sex.cs" />
     <Compile Include="Models\AutoMedUser.cs" />
     <Compile Include="Models\Location.cs" />

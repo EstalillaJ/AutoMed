@@ -12,7 +12,7 @@ namespace AutoMed.Models
         {
             Locations = new List<Checkbox<Location>>();
             ColumnsToInclude = new List<Checkbox<string>>();
-            foreach (string item in Report.Columns.Keys)
+            foreach (string item in ReportGenerator.GetColumnNames<Quote>())
             {
                 ColumnsToInclude.Add(new Checkbox<string>() { Item = item });
             }

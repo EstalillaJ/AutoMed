@@ -10,7 +10,7 @@
         </div>
     </div>
 
-    @using (Html.BeginForm("Details", "Report", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    @using (Html.BeginForm("Details", "Report", FormMethod.Post, new { @class = "form-horizontal", role = "form" , id = "form-create" }))
     {
         @Html.AntiForgeryToken()
 
@@ -95,6 +95,7 @@
         <div class="row">
             <div class="col-md-12 text-center">
                 <h3>Locations</h3>
+                <p class="hidden text-danger" id="location-checkbox-error">Please choose at least one location</p>
                 @Html.CheckBoxFor(m => m.AllLocations) @Html.LabelFor(m => m.AllLocations)
             </div>
         </div>
@@ -130,6 +131,7 @@
         <hr />
         <div class="col-md-12 text-center">
             <h3>Data To Include</h3>
+            <p class="hidden text-danger"  id="data-field-error">Please choose at least one data field</p>
             @Html.CheckBoxFor(m => m.AllColumns) @Html.LabelFor(m => m.AllColumns)
         </div>
             <div class="row form-group">
@@ -159,28 +161,45 @@
     <script>
         var numLocations = @Model.Locations.Count();        
 
-        function toggleCheckboxes(idOfMaster, classOfSlaves){
+        function toggleCheckboxes(idOfMaster, classOfSlaves, cb){
             $(idOfMaster).change(
                 function () {
                     var checked = $(this).is(":checked");
                     $(classOfSlaves).prop('checked', checked);
-            });
+                });
 
-            $(classOfSlaves).change(
+        $(classOfSlaves).change(
                 function(){
                     var checked = $(this).is(":checked");
                     if (!checked){
                         $(idOfMaster).prop('checked', false);
                     }
                     else{
-                        var allchecked = $(classOfSlaves).not(":checked").length === 0;
+                        var allchecked = $(classOfSlaves).is(":checked").length === 0;
                         $(idOfMaster).prop('checked', allchecked);
                     }
+                    cb();
                 });
         }
 
-        toggleCheckboxes("#AllLocations", ".location_checkbox");
-        toggleCheckboxes("#AllColumns", ".column_checkbox");
+        $("#form-create").submit(function (event) {
+            if (!$(".location_checkbox").is(":checked")) {
+                $("#location-checkbox-error").removeClass('hidden');
+                event.preventDefault();
+            }
+
+            if (!$(".column_checkbox").is(":checked")) {
+                $('#data-field-error').removeClass('hidden');
+                event.preventDefault();
+            }
+        });
+
+        toggleCheckboxes("#AllLocations", ".location_checkbox", function() {
+            $("#location-checkbox-error").addClass("hidden");
+        });
+        toggleCheckboxes("#AllColumns", ".column_checkbox", function() {
+            $("#data-field-error").addClass("hidden");   
+        });
 
   
         $("#AnyDiscountDollars").change(
