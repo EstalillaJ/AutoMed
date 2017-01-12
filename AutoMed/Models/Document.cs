@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Drawing;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using System.Drawing.Imaging;
 namespace AutoMed.Models
 {
     public class Document
@@ -13,6 +13,6 @@ namespace AutoMed.Models
         public string Comments { get; set; }
         public int Id { get; set; }
         [NotMapped]
-        public Image Image { get; set; } 
+        public HttpPostedFileBase UploadedImage { get; set;}
     }
 }

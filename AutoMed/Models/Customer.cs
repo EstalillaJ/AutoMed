@@ -9,12 +9,15 @@ namespace AutoMed.Models
         public string LastName { get; set; }
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }
+        public State State { get; set; }
+        public int ZipCode { get; set; }
+        public string City { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        public List<Quote> Quotes { get; set; }
-        public List<Vehicle> Vehicles { get; set; }
+        public virtual List<Quote> Quotes { get; set; }
+        public virtual List<Vehicle> Vehicles { get; set; }
         public DateTime BirthDate { get; set; }
-        public Gender Gender { get; set; }
+        public Sex Sex { get; set; }
         public int Id { get; set; }
     }
 }
