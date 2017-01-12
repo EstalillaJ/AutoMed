@@ -80,7 +80,6 @@ namespace AutoMed.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    View(model);
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -95,7 +94,7 @@ namespace AutoMed.Controllers
 
         //
         // GET: /Account/Register
-        [Authorize(Roles = "Administrator")]
+        [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
@@ -104,7 +103,7 @@ namespace AutoMed.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        [Authorize(Roles = "Administrator")]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
