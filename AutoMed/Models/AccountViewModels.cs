@@ -6,7 +6,7 @@ namespace AutoMed.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
+        [Display(Name = "UserName")]
         public string UserName { get; set; }
 
         [Required]
@@ -22,7 +22,7 @@ namespace AutoMed.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "UserName")]
         public string Email { get; set; }
 
         [Required]
@@ -41,7 +41,7 @@ namespace AutoMed.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "UserName")]
         public string Email { get; set; }
 
         [Required]

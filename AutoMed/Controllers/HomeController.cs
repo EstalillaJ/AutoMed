@@ -6,8 +6,10 @@ using System.Web.Mvc;
 
 namespace AutoMed.Controllers
 {
+    [Authorize(Roles = "Employee, Manager, Administrator")]
     public class HomeController : Controller
     {
+        [Authorize]
         public ActionResult Index()
         {
             return View();
