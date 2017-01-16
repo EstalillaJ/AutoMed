@@ -24,7 +24,8 @@ namespace AutoMed.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                users = users.Where(s => s.FirstName.Contains(searchString));
+                users = users.Where(s => s.FirstName.Contains(searchString)
+                                    ||s.LastName.Contains(searchString));
             }
 
             return View(users);

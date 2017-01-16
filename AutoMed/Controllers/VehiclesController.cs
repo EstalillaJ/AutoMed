@@ -11,6 +11,13 @@ using AutoMed.Models;
 
 namespace AutoMed.Controllers
 {
+    public class QuotesController : Controller
+    {
+        public ActionResult Index()
+        {
+            return View("C:/Users/TST_VJones/Documents/GitHub/AutoMed/AutoMed/Views/QuotesIndex.cshtml");
+        }
+    }
     public class VehiclesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -20,7 +27,7 @@ namespace AutoMed.Controllers
         {
             return View(db.Vehicles.ToList());
         }
-
+       
         // GET: Vehicles/Details/5
         public ActionResult Details(int? id)
         {
@@ -125,4 +132,5 @@ namespace AutoMed.Controllers
             base.Dispose(disposing);
         }
     }
+   
 }

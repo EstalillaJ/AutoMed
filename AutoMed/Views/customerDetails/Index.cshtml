@@ -1,154 +1,149 @@
-﻿@model IEnumerable<AutoMed.Models.CustomerDetails>
+﻿
+@model AutoMed.Models.Customer
+
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Details";
 }
 <head>
-    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>jQuery UI Accordion - Default functionality</title>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script>
-  $( function() {
-    $( "#accordion" ).accordion();
-  } );
-    </script>
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
 </head>
 <h2>Index</h2>
-<div id="accordion">
-    <div>
-        <h3>Vehicles</h3>
+<body>
 
-        <p>
-            @Html.ActionLink("Create New", "Create")
-        </p>
-        <table class="table">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Vehicle.Vin)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Vehicle.Make)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Vehicle.Model)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Vehicle.Color)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Vehicle.Year)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Vehicle.LicensePlate)
-                </th>
-                <th></th>
-            </tr>
+    <div data-role="page" id="pageone">
+        <div>
+            data-role="header"
+            <h1>Customer Details</h1>
+        </div>
 
-            @foreach (var item in Model)
+        <div data-role="main" class="ui-content">
+            <div data-role="collapsible">
+                <h1>Vehicles</h1>
+                <p>
+                <p>
+                    @Html.ActionLink("Create New", "Create")
+                </p>
+                <table class="table">
+                    <tr>
+                        <th>
+                            "vin"
+                        </th>
+                        <th>
+                            "make"
+                        </th>
+                        <th>
+                            "model"
+                        </th>
+                        <th>
+                            color
+                        </th>
+                        <th>
+                            year
+                        </th>
+                        <th>
+                            License Plate
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @for (int i = 0; i < Model.Vehicles.Count; i++)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Vehicle.Vin)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Vehicle.Make)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Vehicle.Model)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Vehicle.Color)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Vehicle.Year)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Vehicle.LicensePlate)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Vehicle.Id }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.Vehicle.Id }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Vehicle.Id })
-                    </td>
-                </tr>
-            }
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Vehicles[i].Vin)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Vehicles[i].Make)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Vehicles[i].Model)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Vehicles[i].Color)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Vehicles[i].Year)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Vehicles[i].LicensePlate)
+                            </td>
+                            
+                        </tr>
+                    }
 
-        </table>
+                </table>
 
+            </div>
+        </div>
+
+        <div data-role="main" class="ui-content">
+            <div data-role="collapsible">
+                <h1>Quotes</h1>
+                <p>
+                    @Html.ActionLink("Create New", "Create")
+                </p>
+                <table class="table">
+                    <tr>
+                        <th>
+                            CurrentNumberInHousehold
+                        </th>
+                        <th>
+                            DateCreated
+                        </th>
+                        <th>
+                           DateReview
+                        </th>
+                        <th>
+                            DiscountPercentage
+                        </th>
+                        <th>
+                           TotalCost
+                        </th>
+                        <th>
+                           Quote.Approved
+                        </th>
+                        <th>
+                           WorkDescription
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @for (int j = 0; j < Model.Quotes.Count; j++)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Quotes[j].CurrentNumberInHousehold)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Quotes[j].DateCreated)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Quotes[j].DateReview)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Quotes[j].DiscountPercentage)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Quotes[j].TotalCost)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Quotes[j].Approved)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => Model.Quotes[j].WorkDescription)
+                            </td>
+                            
+                        </tr>
+                    }
+
+                </table>
+
+            </div>
+        </div>
     </div>
-    <div>
-
-
-        <h2>Index</h2>
-
-        <p>
-            @Html.ActionLink("Create New", "Create")
-        </p>
-        <table class="table">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Quote.CurrentNumberInHousehold)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Quote.DateCreated)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Quote.DateReview)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Quote.DiscountPercentage)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Quote.TotalCost)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Quote.Approved)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Quote.WorkDescription)
-                </th>
-                <th></th>
-            </tr>
-
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Quote.CurrentNumberInHousehold)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Quote.DateCreated)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Quote.DateReview)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Quote.DiscountPercentage)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Quote.TotalCost)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Quote.Approved)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Quote.WorkDescription)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Quote.Id }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.Quote.Id }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Quote.Id })
-                    </td>
-                </tr>
-            }
-
-        </table>
-
-
-    </div>
-</div>
-   
+</body>
