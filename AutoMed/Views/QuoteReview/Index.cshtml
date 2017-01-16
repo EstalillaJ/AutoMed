@@ -1,36 +1,30 @@
 ﻿@model IEnumerable<AutoMed.Models.Quote>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Quote Manager";
 }
 
-<h2>Index</h2>
+<h2>Quote Manager</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New Quote", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.CurrentNumberInHousehold)
+            @Html.DisplayNameFor(model => model.Customer)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DateCreated)
+            Date Created
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DateReview)
+            Discount Percentage
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DiscountPercentage)
+            Total Cost
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TotalCost)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Approved)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WorkDescription)
+            Accept/Decline Quote
         </th>
         <th></th>
     </tr>
@@ -38,30 +32,19 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.CurrentNumberInHousehold)
+            @Html.DisplayFor(modelItem => item.Customer)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.DateCreated)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DateReview)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DiscountPercentage)
+            @Html.DisplayFor(modelItem => item.DiscountPercentage) %
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.TotalCost)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Approved)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WorkDescription)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>
     </tr>
 }
