@@ -234,6 +234,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\QuotesController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -331,6 +332,14 @@
     <Content Include="Views\Quotes\Edit.cshtml" />
     <Content Include="Views\Quotes\Index.cshtml" />
     <Content Include="Views\customerDetails\Index.cshtml" />
+    <Content Include="Views\customerDetails\CreateV.cshtml" />
+    <Content Include="Views\customerDetails\DeleteV.cshtml" />
+    <Content Include="Views\customerDetails\DetailsV.cshtml" />
+    <Content Include="Views\customerDetails\EditV.cshtml" />
+    <Content Include="Views\customerDetails\EditQ.cshtml" />
+    <Content Include="Views\customerDetails\CreateQ.cshtml" />
+    <Content Include="Views\customerDetails\DeleteQ.cshtml" />
+    <Content Include="Views\customerDetails\DetailsQ.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

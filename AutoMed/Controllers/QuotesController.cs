@@ -11,108 +11,107 @@ using AutoMed.Models;
 
 namespace AutoMed.Controllers
 {
-   
-    public class VehiclesController : Controller
+    public class QuotesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Vehicles
+        // GET: Quotes
         public ActionResult Index()
         {
-            return View(db.Vehicles.ToList());
+            return View(db.Quotes.ToList());
         }
-       
-        // GET: Vehicles/Details/5
+
+        // GET: Quotes/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Vehicle vehicle = db.Vehicles.Find(id);
-            if (vehicle == null)
+            Quote quote = db.Quotes.Find(id);
+            if (quote == null)
             {
                 return HttpNotFound();
             }
-            return View(vehicle);
+            return View(quote);
         }
 
-        // GET: Vehicles/Create
+        // GET: Quotes/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Vehicles/Create
+        // POST: Quotes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Vin,Make,Model,Color,Year,LicensePlate")] Vehicle vehicle)
+        public ActionResult Create([Bind(Include = "Id,CurrentNumberInHousehold,DateCreated,DateReview,DiscountPercentage,TotalCost,Approved,WorkDescription")] Quote quote)
         {
             if (ModelState.IsValid)
             {
-                db.Vehicles.Add(vehicle);
+                db.Quotes.Add(quote);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(vehicle);
+            return View(quote);
         }
 
-        // GET: Vehicles/Edit/5
+        // GET: Quotes/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Vehicle vehicle = db.Vehicles.Find(id);
-            if (vehicle == null)
+            Quote quote = db.Quotes.Find(id);
+            if (quote == null)
             {
                 return HttpNotFound();
             }
-            return View(vehicle);
+            return View(quote);
         }
 
-        // POST: Vehicles/Edit/5
+        // POST: Quotes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Vin,Make,Model,Color,Year,LicensePlate")] Vehicle vehicle)
+        public ActionResult Edit([Bind(Include = "Id,CurrentNumberInHousehold,DateCreated,DateReview,DiscountPercentage,TotalCost,Approved,WorkDescription")] Quote quote)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(vehicle).State = EntityState.Modified;
+                db.Entry(quote).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(vehicle);
+            return View(quote);
         }
 
-        // GET: Vehicles/Delete/5
+        // GET: Quotes/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Vehicle vehicle = db.Vehicles.Find(id);
-            if (vehicle == null)
+            Quote quote = db.Quotes.Find(id);
+            if (quote == null)
             {
                 return HttpNotFound();
             }
-            return View(vehicle);
+            return View(quote);
         }
 
-        // POST: Vehicles/Delete/5
+        // POST: Quotes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Vehicle vehicle = db.Vehicles.Find(id);
-            db.Vehicles.Remove(vehicle);
+            Quote quote = db.Quotes.Find(id);
+            db.Quotes.Remove(quote);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -126,5 +125,4 @@ namespace AutoMed.Controllers
             base.Dispose(disposing);
         }
     }
-   
 }

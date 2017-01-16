@@ -3,7 +3,7 @@
 
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "CustomerDetails";
 }
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,7 +26,7 @@
                 <h1>Vehicles</h1>
                 <p>
                 <p>
-                    @Html.ActionLink("Create New", "Create")
+                    @Html.ActionLink("Create New", "CreateV")
                 </p>
                 <table class="table">
                     <tr>
@@ -72,7 +72,11 @@
                             <td>
                                 @Html.DisplayFor(modelItem => Model.Vehicles[i].LicensePlate)
                             </td>
-                            
+                            <td>
+                                @Html.ActionLink("Edit", "EditV", new { id = Model.Vehicles[i].Id }) |
+                                @Html.ActionLink("Details", "DetailsV", new { id = Model.Vehicles[i].Id }) |
+                                @Html.ActionLink("Delete", "DeleteV", new { id = Model.Vehicles[i].Id })
+                            </td>
                         </tr>
                     }
 
@@ -85,7 +89,7 @@
             <div data-role="collapsible">
                 <h1>Quotes</h1>
                 <p>
-                    @Html.ActionLink("Create New", "Create")
+                    @Html.ActionLink("Create New", "CreateQ")
                 </p>
                 <table class="table">
                     <tr>
@@ -137,7 +141,11 @@
                             <td>
                                 @Html.DisplayFor(modelItem => Model.Quotes[j].WorkDescription)
                             </td>
-                            
+                            <td>
+                                @Html.ActionLink("Edit", "EditQ", new { id = Model.Quotes[j].Id }) |
+                                @Html.ActionLink("Details", "DetailsQ", new { id = Model.Quotes[j].Id }) |
+                                @Html.ActionLink("Delete", "DeleteQ", new { id = Model.Quotes[j].Id })
+                            </td>
                         </tr>
                     }
 
