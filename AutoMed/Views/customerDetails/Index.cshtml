@@ -14,13 +14,15 @@
 </head>
 <h2>Index</h2>
 <body>
+    
 
-    <div data-role="page" id="pageone">
-        <div>
-            data-role="header"
+    
+            
             <h1>Customer Details</h1>
-        </div>
-
+        
+        <a href="@Url.Action("Index", null, new { area = string.Empty, controller = "Customers" }, Request.Url.Scheme)">
+            <span>Back to Customers</span>
+        </a>
         <div data-role="main" class="ui-content">
             <div data-role="collapsible">
                 <h1>Vehicles</h1>
