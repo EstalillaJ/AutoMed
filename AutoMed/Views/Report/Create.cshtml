@@ -175,7 +175,7 @@
                         $(idOfMaster).prop('checked', false);
                     }
                     else{
-                        var allchecked = $(classOfSlaves).is(":checked").length === 0;
+                        var allchecked = $(classOfSlaves).not(":checked").length === 0;
                         $(idOfMaster).prop('checked', allchecked);
                     }
                     cb();
