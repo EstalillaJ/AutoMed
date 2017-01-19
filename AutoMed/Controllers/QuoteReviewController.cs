@@ -18,12 +18,12 @@ namespace AutoMed.Controllers
         // GET: QuoteReview
         public ActionResult Index()
         {
-            var model =
+            /*var model =
                 from r in _quotes
                 orderby r.Id
-                select r;
+                select r;*/
 
-            return View(model);
+            return View(db.Quotes.ToList());
         }
 
         // GET: QuoteReview/Details/5
@@ -129,7 +129,7 @@ namespace AutoMed.Controllers
             }
             base.Dispose(disposing);
         }
-        static List<Quote> _quotes = new List<Quote>
+        /*static List<Quote> _quotes = new List<Quote>
         {
             new Quote
             {
@@ -137,6 +137,6 @@ namespace AutoMed.Controllers
                 Id = 1
                 
             }
-        };
+        };*/
     }
 }

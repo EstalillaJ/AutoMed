@@ -74,7 +74,7 @@ namespace AutoMed.Migrations
                     {
                         CreatedBy = user,
                         ReviewdBy = user,
-                        Approved = true,
+                        Approval = QuoteStatus.Pending,
                         CurrentNumberInHousehold = 4,
                         DateReview = DateTime.Now,
                         DateCreated = new DateTime(2016, 1, 1),
