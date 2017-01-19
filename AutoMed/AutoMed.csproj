@@ -232,7 +232,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\QuoteReviewController.cs" />
+    <Compile Include="Controllers\QuoteController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -317,11 +317,7 @@
     <Content Include="Views\Locations\Edit.cshtml" />
     <Content Include="Views\Locations\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\WatermarkString.cshtml" />
-    <Content Include="Views\QuoteReview\Create.cshtml" />
-    <Content Include="Views\QuoteReview\Delete.cshtml" />
-    <Content Include="Views\QuoteReview\Details.cshtml" />
-    <Content Include="Views\QuoteReview\Edit.cshtml" />
-    <Content Include="Views\QuoteReview\Index.cshtml" />
+    <Content Include="Views\Quote\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
