@@ -3,41 +3,48 @@
 @{
     ViewBag.Title = "Details";
 }
-@using (Html.BeginForm("Download", "Report", FormMethod.Post, new { }))
-{
-    for (int i = 0; i < Model.Quotes.Count; i++)
-    {
-        @Html.HiddenFor(m => m.Quotes[i].Id);
-    }
-    for (int j = 0; j < Model.Columns.Count ; j++)
-    {
-        @Html.HiddenFor(m => m.Columns[j]);
-    }
-    <div class="col-md-offset-10 col-md-2">
-        <input type="submit" value="Download Report" class="btn btn-default" />
-    </div>
-}
 
-<table class="table-striped table">
-    <thead>
-        <tr>
-            @foreach (string header in Model.Columns)
-            {
-                <th>@header</th>
-            }
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (Quote q in Model.Quotes)
-        {
+<!-- DataTables CDN -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css" />
+<h2 class="text-center">Quotes</h2>
+ <table class="table-striped table" id="ReportTable">
+        <thead>
             <tr>
-                @foreach (string column in Model.Columns)
-                {
-                    <td>@ReportGenerator.GetColumn(q, column)</td>
+                @foreach (string header in Model.Columns)
+            {
+                    <th>@header</th>
                 }
             </tr>
+        </thead>
+        <tbody>
+            @foreach (Quote q in Model.Quotes)
+            {
+                <tr>
+                    @foreach (string column in Model.Columns)
+                {
+                        <td>@ReportGenerator.GetColumn(q, column)</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @using (Html.BeginForm("Download", "Report", FormMethod.Post, new { }))
+    {
+        for (int i = 0; i < Model.Quotes.Count; i++)
+        {
+            @Html.HiddenFor(m => m.Quotes[i].Id);
         }
-    </tbody>
-</table>
-
-
+        for (int j = 0; j < Model.Columns.Count; j++)
+        {
+            @Html.HiddenFor(m => m.Columns[j]);
+        }
+        <div class="col-md-offset-10 col-md-2">
+            <input type="submit" value="Download Report" class="btn btn-default" />
+        </div>
+    }
+@section Scripts { 
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">$("#ReportTable").DataTable();</script>
+}

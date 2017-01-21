@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "Reports";
 }
-<div class="container">
     <div class="row">
         <div class="col-md-12 text-center">
             <h2>Generate A Report</h2>
@@ -139,9 +138,10 @@
                 {
                     <div class="col-md-3 col-sm-4 col-xs-6">
                         <label class="checkbox-inline">
-                            @Model.ColumnsToInclude[i].Item@Html.CheckBoxFor(m => m.ColumnsToInclude[i].IsChecked, new { @class = "column_checkbox" })
+                            @Html.CheckBoxFor(m => m.ColumnsToInclude[i].IsChecked, new { @class = "column_checkbox" })
+                            @Model.ColumnsToInclude[i].Item 
+                            @Html.HiddenFor(m => m.ColumnsToInclude[i].Item)
                         </label>
-                        @Html.HiddenFor(m => m.ColumnsToInclude[i].Item)
                     </div>
                 }
             </div>
@@ -153,7 +153,6 @@
 
 
     }
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
