@@ -96,9 +96,10 @@
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                <a href="@Url.Action("Index", null, new { area = string.Empty, controller = "customerDetails" }, Request.Url.Scheme)">
-                    <span>Details</span>
-                </a> |
+                @Html.ActionLink("Edit", "Index", "customerDetails", new { id = item.Id }, new { })
+    @*<a href="@Url.Action("Index", null, new { area = string.Empty, controller = "customerDetails" }, Request.Url.Scheme)">
+        <span>Details</span>
+    </a> *@|
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id })
             </td>
         </tr>

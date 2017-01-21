@@ -19,13 +19,18 @@ namespace AutoMed.Controllers
         public ActionResult Index(string searchString)
         {
             //string searchString = id;
+            var context = new ApplicationDbContext();
+           
             var users = from m in db.Customers
+                        //let fillName = m.FirstName + " " + m.LastName
+                        //where fillName.ToLower().Trim().Contains(searchString)
                         select m;
-
+            
             if (!String.IsNullOrEmpty(searchString))
             {
+               
                 users = users.Where(s => s.FirstName.Contains(searchString)
-                                    ||s.LastName.Contains(searchString));
+                                    ||s.LastName.Contains(searchString) );
             }
 
             return View(users);

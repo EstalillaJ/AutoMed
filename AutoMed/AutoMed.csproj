@@ -332,14 +332,14 @@
     <Content Include="Views\Quotes\Edit.cshtml" />
     <Content Include="Views\Quotes\Index.cshtml" />
     <Content Include="Views\customerDetails\Index.cshtml" />
-    <Content Include="Views\customerDetails\CreateV.cshtml" />
-    <Content Include="Views\customerDetails\DeleteV.cshtml" />
-    <Content Include="Views\customerDetails\DetailsV.cshtml" />
-    <Content Include="Views\customerDetails\EditV.cshtml" />
-    <Content Include="Views\customerDetails\EditQ.cshtml" />
-    <Content Include="Views\customerDetails\CreateQ.cshtml" />
-    <Content Include="Views\customerDetails\DeleteQ.cshtml" />
-    <Content Include="Views\customerDetails\DetailsQ.cshtml" />
+    <Content Include="Views\customerDetails\Details_V.cshtml" />
+    <Content Include="Views\customerDetails\Create_V.cshtml" />
+    <Content Include="Views\customerDetails\Edit_V.cshtml" />
+    <Content Include="Views\customerDetails\Delete_V.cshtml" />
+    <Content Include="Views\customerDetails\Details_Q.cshtml" />
+    <Content Include="Views\customerDetails\Create_Q.cshtml" />
+    <Content Include="Views\customerDetails\Edit_Q.cshtml" />
+    <Content Include="Views\customerDetails\Delete_Q.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

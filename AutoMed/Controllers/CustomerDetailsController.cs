@@ -19,16 +19,38 @@ namespace AutoMed.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: customerDetails
-        public ActionResult Index()
+        public ActionResult Index(int? id)//db.Customers.Include("Quotes").Include("Vehicles").Where(q => q.id == id).FirstOrDefault(); 
         {
             var viewModel = new Customer();
-            viewModel.Vehicles = db.Vehicles.ToList();
-            viewModel.Quotes = db.Quotes.ToList();
-              
-            return View(viewModel);
+
+            
+            Customer customer = db.Customers.Include("Vehicles").Include("Quotes").Where(q => q.Id == id).FirstOrDefault(); 
+
+
+            /*viewModel.customer = db.Customers.Include(i=>i.Vehicles).Include(i=>i.Quotes);
+            if (id != null)
+            {
+                ViewBag.Id = id.Value;
+                viewModel.Vehicle = viewModel.customer.Where(
+                    i => i.Id == id.Value).Single().Vehicles;
+            }
+
+            if (id != null)
+            {
+                ViewBag.Id = id.Value;
+                viewModel.Quote = viewModel.customer.Where(
+                    x => x.Id == id.Value).Single().Quotes;
+            }*/
+
+            viewModel.Id = (from a in db.Customers.Where(a => a.Id == id) select a.Id).FirstOrDefault();
+            
+           // viewModel.Vehicles = db.Vehicles.Where(v =>v.cToList();
+//viewModel.Quotes = db.Quotes.ToList();
+
+            return View(customer);
         }
         // GET: Vehicles/Details/5
-        public ActionResult DetailsV(int? id)
+        public ActionResult Details_V(int? id)
         {
             if (id == null)
             {
@@ -43,7 +65,7 @@ namespace AutoMed.Controllers
         }
 
         // GET: Vehicles/Create
-        public ActionResult CreateV()
+        public ActionResult Create_V()
         {
             return View();
         }
@@ -53,20 +75,20 @@ namespace AutoMed.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateV([Bind(Include = "Id,Vin,Make,Model,Color,Year,LicensePlate")] Vehicle vehicle)
+        public ActionResult Create_V([Bind(Include = "Id,Vin,Make,Model,Color,Year,LicensePlate")] Vehicle vehicle, Customer customer)
         {
             if (ModelState.IsValid)
             {
                 db.Vehicles.Add(vehicle);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index",new { id = customer.Id });
             }
 
             return View(vehicle);
         }
 
         // GET: Vehicles/Edit/5
-        public ActionResult EditV(int? id)
+        public ActionResult Edit_V(int? id)
         {
             if (id == null)
             {
@@ -85,7 +107,7 @@ namespace AutoMed.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditV([Bind(Include = "Id,Vin,Make,Model,Color,Year,LicensePlate")] Vehicle vehicle)
+        public ActionResult Edit_V([Bind(Include = "Id,Vin,Make,Model,Color,Year,LicensePlate")] Vehicle vehicle)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +119,7 @@ namespace AutoMed.Controllers
         }
 
         // GET: Vehicles/Delete/5
-        public ActionResult DeleteV(int? id)
+        public ActionResult Delete_V(int? id)
         {
             if (id == null)
             {
@@ -112,7 +134,7 @@ namespace AutoMed.Controllers
         }
 
         // POST: Vehicles/Delete/5
-        [HttpPost, ActionName("DeleteV")]
+        [HttpPost, ActionName("Delete_V")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmedV(int id)
         {
@@ -127,7 +149,7 @@ namespace AutoMed.Controllers
         //Quotes
 
         // GET: Quotes/Details/5
-        public ActionResult DetailsQ(int? id)
+        public ActionResult Details_Q(int? id)
         {
             if (id == null)
             {
@@ -142,7 +164,7 @@ namespace AutoMed.Controllers
         }
 
         // GET: Quotes/Create
-        public ActionResult CreateQ()
+        public ActionResult Create_Q()
         {
             return View();
         }
@@ -152,7 +174,7 @@ namespace AutoMed.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateQ([Bind(Include = "Id,CurrentNumberInHousehold,DateCreated,DateReview,DiscountPercentage,TotalCost,Approved,WorkDescription")] Quote quote)
+        public ActionResult Create_Q([Bind(Include = "Id,CurrentNumberInHousehold,DateCreated,DateReview,DiscountPercentage,TotalCost,Approved,WorkDescription")] Quote quote)
         {
             if (ModelState.IsValid)
             {
@@ -165,7 +187,7 @@ namespace AutoMed.Controllers
         }
 
         // GET: Quotes/Edit/5
-        public ActionResult EditQ(int? id)
+        public ActionResult Edit_Q(int? id)
         {
             if (id == null)
             {
@@ -184,7 +206,7 @@ namespace AutoMed.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditQ([Bind(Include = "Id,CurrentNumberInHousehold,DateCreated,DateReview,DiscountPercentage,TotalCost,Approved,WorkDescription")] Quote quote)
+        public ActionResult Edit_Q([Bind(Include = "Id,CurrentNumberInHousehold,DateCreated,DateReview,DiscountPercentage,TotalCost,Approved,WorkDescription")] Quote quote)
         {
             if (ModelState.IsValid)
             {
@@ -196,7 +218,7 @@ namespace AutoMed.Controllers
         }
 
         // GET: Quotes/Delete/5
-        public ActionResult DeleteQ(int? id)
+        public ActionResult Delete_Q(int? id)
         {
             if (id == null)
             {
@@ -211,7 +233,7 @@ namespace AutoMed.Controllers
         }
 
         // POST: Quotes/Delete/5
-        [HttpPost, ActionName("DeleteQ")]
+        [HttpPost, ActionName("Delete_Q")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmedQ(int id)
         {
