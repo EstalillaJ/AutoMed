@@ -1,5 +1,5 @@
 ﻿@using AutoMed.Models
-@model IEnumerable<AutoMed.Models.Quote>
+@model List<AutoMed.Models.Quote>
 
 
 @{
@@ -11,10 +11,12 @@
 <p>
     @Html.ActionLink("Create New Quote", "Create")
 </p>
+@using (Html.BeginForm("UpdateCustomerStatus", "Quote"))
+{
 <table class="table table-striped">
     <tr>
         <th>
-            ID : @Html.DisplayNameFor(model => model.Customer)
+            ID : Customer
         </th>
         <th>
             Date Created
@@ -28,39 +30,36 @@
         <th>
             Accept/Decline Quote
         </th>
-        <th></th>
     </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Customer.Id):
-                @Html.DisplayFor(modelItem => item.Customer.FirstName) @Html.DisplayFor(modelItem => item.Customer.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateCreated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DiscountPercentage) %
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalCost)
-            </td>
-            <td>
-                @Html.EnumDropDownListFor(modelItem => item.Approval)
-            </td>
-            <td>
-                @* Need to fix the details, had a problem with viewing quote. *@
-                @Html.ActionLink("Quote Details", "Details", new { id = item.Id })
-            </td>
-        </tr>
-    }
+        @for (var i = 0; i < Model.Count; i++)
+        {
+            @Html.HiddenFor(m => m[i].Id)
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => m[i].Customer.Id):
+                    @Html.DisplayFor(m => m[i].Customer.FirstName) @Html.DisplayFor(m => m[i].Customer.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => m[i].DateCreated)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => m[i].DiscountPercentage) %
+                </td>
+                <td>
+                    @Html.DisplayFor(m => m[i].TotalCost)
+                </td>
 
-</table>
-
-<div class="form-group">
-    <div class="col-md-offset-10 col-md-2">
-        <input type="submit" class="btn btn-default" value="Submit" />
+                @Html.AntiForgeryToken()
+                <td>
+                    @Html.EnumDropDownListFor(m => m[i].Approval)
+                </td>
+            </tr>
+        }
+    </table>
+    <div class="form-group">
+        <div class="col-md-offset-10 col-md-2">
+            <input type="submit" class="btn btn-default" value="Submit" />
+        </div>
     </div>
-</div>
+}

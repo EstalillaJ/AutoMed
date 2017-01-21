@@ -18,7 +18,8 @@ namespace AutoMed.Controllers
         // GET: Quote
         public ActionResult Index()
         {
-            return View(db.Quotes.ToList().Where(x => x.Approval.Equals(QuoteStatus.Pending)));
+            List<Quote> quotes = db.Quotes.Where(x => x.Approval == QuoteStatus.Pending).ToList();
+            return View(quotes);
         }
 
         // GET: Quote/Details/5
@@ -47,6 +48,17 @@ namespace AutoMed.Controllers
             {
                 return View();
             }
+        }
+
+        public ActionResult UpdateCustomerStatus(List<Quote> quotes)
+        {
+            foreach(Quote quote in quotes)
+            {
+                db.Quotes.Attach(quote); // State = Unchanged
+                db.Entry(quote).Property(x => x.Approval).IsModified = true;
+            }
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: Quote/Edit/5
