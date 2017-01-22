@@ -273,6 +273,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Connected Services\automed2123341232020AzureStorage\ConnectedService.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\DateSelect.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -339,6 +340,9 @@
     <EmbeddedResource Include="Migrations\201701202049493_Initial1.resx">
       <DependentUpon>201701202049493_Initial1.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
