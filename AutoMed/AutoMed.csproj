@@ -229,28 +229,22 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DocumentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\QuotesController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201612190454321_ChangeToIdentityUser.cs" />
-    <Compile Include="Migrations\201612190454321_ChangeToIdentityUser.Designer.cs">
-      <DependentUpon>201612190454321_ChangeToIdentityUser.cs</DependentUpon>
+    <Compile Include="Migrations\201701190504233_Initial.cs" />
+    <Compile Include="Migrations\201701190504233_Initial.Designer.cs">
+      <DependentUpon>201701190504233_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201612292315012_SyEmail12_26.cs" />
-    <Compile Include="Migrations\201612292315012_SyEmail12_26.Designer.cs">
-      <DependentUpon>201612292315012_SyEmail12_26.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701080545235_NoIdea.cs" />
-    <Compile Include="Migrations\201701080545235_NoIdea.Designer.cs">
-      <DependentUpon>201701080545235_NoIdea.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701090155506_fixspelling.cs" />
-    <Compile Include="Migrations\201701090155506_fixspelling.Designer.cs">
-      <DependentUpon>201701090155506_fixspelling.cs</DependentUpon>
+    <Compile Include="Migrations\201701202049493_Initial1.cs" />
+    <Compile Include="Migrations\201701202049493_Initial1.Designer.cs">
+      <DependentUpon>201701202049493_Initial1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -321,10 +315,17 @@
     <Content Include="Views\Locations\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\WatermarkString.cshtml" />
     <Content Include="Views\Report\Details.cshtml" />
+    <Content Include="Views\Quotes\Create.cshtml" />
+    <Content Include="Views\Quotes\Delete.cshtml" />
+    <Content Include="Views\Quotes\Details.cshtml" />
+    <Content Include="Views\Quotes\Edit.cshtml" />
+    <Content Include="Views\Quotes\Index.cshtml" />
+    <Content Include="Views\Quotes\_DocumentUploader.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="fonts\" />
+    <Folder Include="Views\Document\" />
     <Folder Include="Views\Picture\" />
   </ItemGroup>
   <ItemGroup>
@@ -332,17 +333,11 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201612190454321_ChangeToIdentityUser.resx">
-      <DependentUpon>201612190454321_ChangeToIdentityUser.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201701190504233_Initial.resx">
+      <DependentUpon>201701190504233_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612292315012_SyEmail12_26.resx">
-      <DependentUpon>201612292315012_SyEmail12_26.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701080545235_NoIdea.resx">
-      <DependentUpon>201701080545235_NoIdea.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701090155506_fixspelling.resx">
-      <DependentUpon>201701090155506_fixspelling.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201701202049493_Initial1.resx">
+      <DependentUpon>201701202049493_Initial1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

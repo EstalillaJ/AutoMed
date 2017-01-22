@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoMed.Models
 {
@@ -11,6 +12,7 @@ namespace AutoMed.Models
         public int Year { get; set; }
         public string LicensePlate { get; set; }
         public Customer Owner { get; set; }
+        [ScaffoldColumn(false)]
         public int Id { get; set; }
     }
 }

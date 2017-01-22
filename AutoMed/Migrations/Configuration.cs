@@ -81,7 +81,8 @@ namespace AutoMed.Migrations
                         TotalCost = 1000,
                         DiscountPercentage = 20,
                         Location = new Location() {Name = "ExampleLocation" },
-                        WorkDescription = "Description"
+                        WorkDescription = "Description",
+                        AnnualIncome = 20000
                     }
                 }
             };

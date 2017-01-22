@@ -7,13 +7,13 @@ namespace AutoMed.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class NoIdea : IMigrationMetadata
+    public sealed partial class Initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(NoIdea));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201701080545235_NoIdea"; }
+            get { return "201701190504233_Initial"; }
         }
         
         string IMigrationMetadata.Source

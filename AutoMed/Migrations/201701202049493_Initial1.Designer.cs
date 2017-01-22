@@ -7,13 +7,13 @@ namespace AutoMed.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class fixspelling : IMigrationMetadata
+    public sealed partial class Initial1 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(fixspelling));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial1));
         
         string IMigrationMetadata.Id
         {
-            get { return "201701090155506_fixspelling"; }
+            get { return "201701202049493_Initial1"; }
         }
         
         string IMigrationMetadata.Source
