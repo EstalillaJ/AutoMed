@@ -37,24 +37,44 @@ namespace AutoMed.Controllers
         }
 
         // GET: Quotes/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
-            return View();
+            List<SelectListItem> vehicleSelect = new List<SelectListItem>();
+            // Get a list of all the vehicles they own. Create a List<SelectListItem> using those vehicles (this will be used in the view)
+            db.Customers.Find(id).Vehicles.ForEach(
+                v => vehicleSelect.Add(new SelectListItem { Text = string.Format("{0} {1} {2}", v.Year, v.Make, v.Model), Value = v.Id.ToString() })
+            );
+
+            ViewBag.VehicleSelect = (IEnumerable<SelectListItem>)vehicleSelect;
+            return View(new Quote() { CustomerId = id });
         }
 
         // POST: Quotes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CurrentNumberInHousehold,AnnualIncome,Vehicle,TotalCost,WorkDescription")] Quote quote)
+        [Authorize(Roles = "Employee,Manager,Administrator")]
+        public ActionResult Create([Bind(Include = "CustomerId,VehicleId,CurrentNumberInHousehold,TotalCost,Approved,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
         {
             if (ModelState.IsValid)
             {
-                
+                // Grab the location of the logged in user. TODO do with cookies ? NOT A PRIORITY though
+                AutoMedUser loggedIn = db.Users.Where(x => x.UserName.Equals(User.Identity.Name)).Include("Location").First();
+                quote.Documents = new List<Document>();
+                // We want to create some document objects in the quote. This way, when we add the qoute and call save changes, it will
+                // insert the documents too. The image wont be saved because of the not mapped attribute but the document ids will be set.
+                // We'll save the images right after db.SaveChanges
+                files.ForEach(x => quote.Documents.Add(new Document() { UploadedImage = x }));
+                quote.DateCreated = DateTime.Now;
+                quote.DateReviewed = null;
+                quote.LocationId = loggedIn.Location.Id;
+                quote.CreatedById = loggedIn.Id;
                 db.Quotes.Add(quote);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                //UploadDocuments(quote.Documents);
+                // SET THE DISCOUNT PERCENTAGE SOMEWHERE BEFORE THIS RETURN
+                return RedirectToAction("Details", new { id = quote.Id });
             }
 
             return View(quote);

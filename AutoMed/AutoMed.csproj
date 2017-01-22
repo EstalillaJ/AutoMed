@@ -246,6 +246,10 @@
     <Compile Include="Migrations\201701202049493_Initial1.Designer.cs">
       <DependentUpon>201701202049493_Initial1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701221916037_Sy Danton.cs" />
+    <Compile Include="Migrations\201701221916037_Sy Danton.Designer.cs">
+      <DependentUpon>201701221916037_Sy Danton.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="DAL\ApplicationDbContext.cs" />
@@ -339,6 +343,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701202049493_Initial1.resx">
       <DependentUpon>201701202049493_Initial1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701221916037_Sy Danton.resx">
+      <DependentUpon>201701221916037_Sy Danton.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
