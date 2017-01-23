@@ -14,7 +14,7 @@ namespace AutoMed.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(ApplicationDbContext context)
@@ -26,11 +26,13 @@ namespace AutoMed.Migrations
                  new Location() { Id = 3, Name = "Seattle" },
                  new Location() { Id = 4, Name = "Corporate" }
                 );
+
             context.SaveChanges();
 
             IdentityRole[] roles = { new IdentityRole { Name = "Administrator" }, new IdentityRole { Name = "Manager" }, new IdentityRole { Name = "Employee" } };
             RoleStore<IdentityRole> roleStore = new RoleStore<IdentityRole>(context);
             RoleManager<IdentityRole> roleManager = new RoleManager<IdentityRole>(roleStore);
+
             foreach (IdentityRole role in roles)
             {
                 if (!context.Roles.Any(r => r.Name == role.Name))
@@ -48,11 +50,11 @@ namespace AutoMed.Migrations
                 new AutoMedUser() { UserName = "Manager_2", LocationId = 2 }
             };
             UserStore<AutoMedUser> userStore = new UserStore<AutoMedUser>(context);
-
             UserManager<AutoMedUser> userManager = new UserManager<AutoMedUser>(userStore);
+
             foreach (AutoMedUser user in users)
             {
-                if (!context.Users.Any(u => u.UserName == "founder"))
+                if (!context.Users.Any(u => u.UserName == user.UserName))
                 {
 
                     userManager.Create(user, "AUTOMED");
@@ -179,8 +181,8 @@ namespace AutoMed.Migrations
                     Sex = Sex.Female,
                 }
             );
-            context.SaveChanges();
 
+            context.SaveChanges();
         }
     }
 }
