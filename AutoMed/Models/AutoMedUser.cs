@@ -10,6 +10,7 @@ namespace AutoMed.Models
     public class AutoMedUser : IdentityUser
     {
         public Location Location { get; set; }
+        public int LocationId { get; set; }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<AutoMedUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType

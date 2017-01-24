@@ -30,7 +30,7 @@ namespace AutoMed
             manager.UserValidator = new UserValidator<AutoMedUser>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
-                RequireUniqueEmail = true
+                RequireUniqueEmail = false
             };
 
             // Configure validation logic for passwords

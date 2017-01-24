@@ -1,0 +1,62 @@
+﻿@using AutoMed.DAL;
+@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.EntityFramework;
+@model List<AutoMed.Models.AutoMedUser>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>All Employees</h2>
+
+<p>
+    @Html.ActionLink("Register New Employee", "Register")
+</p>
+<table class="table table-striped">
+    <tr>
+        <th>
+            UserName
+        </th>
+        @*<th>
+                Password
+            </th>*@
+        <th>
+            Role
+        </th>
+        <th>
+            Location
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.Password)
+                </td>*@
+
+            <td>
+                @{
+                    ApplicationDbContext db = new ApplicationDbContext();
+
+                    RoleManager<IdentityRole> roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+                    string roleName = roleManager.FindById(item.Roles.First().RoleId).Name;
+                    string locationName = item.Location.Name;
+                }
+                @*roleManager.FindById("id").Name*@
+                @roleName
+            </td>
+            <td>
+                @locationName
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+                    }
+</table>

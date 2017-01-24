@@ -1,14 +1,18 @@
 ﻿using System;
-using System.Globalization;
+using System.Data.Entity;
 using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+using System.Net;
 using System.Web;
+using System.Web.Security;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
+using AutoMed.DAL;
 using AutoMed.Models;
+using Microsoft.AspNet.Identity.Owin;
+using System.Threading.Tasks;
+using Microsoft.Owin.Security;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
 
 namespace AutoMed.Controllers
 {
@@ -17,12 +21,12 @@ namespace AutoMed.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public AccountController()
         {
 
         }
-
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
@@ -35,9 +39,9 @@ namespace AutoMed.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -91,6 +95,54 @@ namespace AutoMed.Controllers
                     return View(model);
             }
         }
+        //The list page. Lists the employees and their 
+        public ActionResult Index()
+        {
+            List<AutoMedUser> lists = db.Users.Include("Location").ToList();
+
+            return View(lists);
+        }
+
+        public ActionResult Edit(string id)
+        {
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            UserManager.Update(UserManager.FindById(id));
+
+            return View();
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(model);
+        }
+
+        public ActionResult Delete(string id)
+        {
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            return View();
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(string id)
+        {
+            UserManager.Delete(UserManager.FindById(id));
+            return RedirectToAction("Index");
+        }
 
         //
         // GET: /Account/Register
@@ -109,25 +161,51 @@ namespace AutoMed.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new AutoMedUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                Location location = db.Locations.Where(x => x.Name.Equals(model.Location)).FirstOrDefault();
+                var user = new AutoMedUser { UserName = model.UserName, LocationId = location.Id };
+
+                IdentityResult result = UserManager.Create(user, model.Password);
+                if (model.Role == "Administrator")
+                {
+                    UserManager.AddToRole(user.Id, "Administrator");
+                }
+                else if (model.Role == "Manager")
+                {
+                    UserManager.AddToRole(user.Id, "Manager");
+                }
+                else if (model.Role == "Employee")
+                {
+                    UserManager.AddToRole(user.Id, "Employee");
+                }
+                for (int i = 0; i < db.Locations.Count(); i++)
+                {
+                    if (db.Locations.Find(i).Name == model.Location)
+                    {
+                        model.locationID = db.Locations.Find(i).Id;
+                    }
+
+                }
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-                    return RedirectToAction("Index", "Home");
+                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");                    
+                    return RedirectToAction("Index");
                 }
                 AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        private void AddErrors(IdentityResult result)
+        {
+            throw new NotImplementedException();
         }
 
         //
@@ -155,6 +233,7 @@ namespace AutoMed.Controllers
                     _signInManager.Dispose();
                     _signInManager = null;
                 }
+                db.Dispose();
             }
 
             base.Dispose(disposing);
@@ -169,14 +248,6 @@ namespace AutoMed.Controllers
             get
             {
                 return HttpContext.GetOwinContext().Authentication;
-            }
-        }
-
-        private void AddErrors(IdentityResult result)
-        {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError("", error);
             }
         }
 
