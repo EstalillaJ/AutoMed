@@ -36,7 +36,7 @@ namespace AutoMed.Models
                 { "Discount (%)", q => q.DiscountPercentage.ToString() },
                 { "Total Cost", q => q.TotalCost.ToString() },
                 { "Discount ($)", q => q.DiscountDollars.ToString() },
-                { "Approved", q => q.Approved.ToString() },
+                { "Approval Status", q => q.Approval.ToString() },
                 { "Work Description", q => q.WorkDescription },
                 { "Quote Location", q => q.Location.Name },
                 { "Customer First Name",  q => q.Customer.FirstName},
@@ -60,9 +60,5 @@ namespace AutoMed.Models
             {
                 { typeof(Quote), QuoteColumns }
             };
-        
-
-
-       
     }
 }

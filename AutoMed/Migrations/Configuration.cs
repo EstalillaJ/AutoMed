@@ -14,79 +14,174 @@ namespace AutoMed.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(ApplicationDbContext context)
         {
-            RoleManager<IdentityRole> roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-            string[] roles = { "Administrator", "Manager", "Employee" };
-            foreach (string role in roles)
+
+            context.Locations.AddOrUpdate(x => x.Id,
+                 new Location() { Id = 1, Name = "Ellensburg" },
+                 new Location() { Id = 2, Name = "Yakima" },
+                 new Location() { Id = 3, Name = "Seattle" },
+                 new Location() { Id = 4, Name = "Corporate" }
+                );
+
+            context.SaveChanges();
+
+            IdentityRole[] roles = { new IdentityRole { Name = "Administrator" }, new IdentityRole { Name = "Manager" }, new IdentityRole { Name = "Employee" } };
+            RoleStore<IdentityRole> roleStore = new RoleStore<IdentityRole>(context);
+            RoleManager<IdentityRole> roleManager = new RoleManager<IdentityRole>(roleStore);
+
+            foreach (IdentityRole role in roles)
             {
-                if (!roleManager.RoleExists(role))
+                if (!context.Roles.Any(r => r.Name == role.Name))
                 {
-                    roleManager.Create(new IdentityRole() { Name = role });
+                    roleManager.Create(role);
                 }
             }
 
-            UserManager<AutoMedUser> userManager = new UserManager<AutoMedUser>(new UserStore<AutoMedUser>(context));
-
-            AutoMedUser user = context.Users.Where(x => x.UserName == "Sy_Danton").FirstOrDefault();
-            if (user == null)
+            AutoMedUser[] users =
             {
-                user = new AutoMedUser();
-                user.UserName = "Sy_Danton";
-                userManager.Create(user, "AUTOMED");
-                userManager.AddToRole(user.Id, "Administrator");
-            }
-            Location exampleLocation = new Location() { Name = "Example", Employees = new List<AutoMedUser>() { user } };
-            user.Location = exampleLocation;
-            context.Locations.AddOrUpdate(q => q.Name, exampleLocation);
-            context.Users.AddOrUpdate(q => q.UserName, user);
-            Customer exampleCustomer = new Customer()
-            {
-                FirstName = "John",
-                LastName = "Smith",
-                AddressLine1 = "100 Drury Lane",
-                AddressLine2 = "Apt 2",
-                BirthDate = new DateTime(1993, 8, 29),
-                City = "Ellensburg",
-                State = State.WA,
-                ZipCode = 98926,
-                Email = "John.Smith@Gmail.Com",
-                PhoneNumber = "555-555-5555",
-                Sex = Sex.Male,
-                Vehicles = new List<Vehicle>()
-                {
-                    new Vehicle()
-                    {
-                        Make = "Honda",
-                        Model = "Cr-x",
-                        Year = 1987,
-                        Vin = "123",
-                        LicensePlate = "1234567",
-                        Color = Color.Red
-                    }
-                },
-                Quotes = new List<Quote>()
-                {
-                    new Quote()
-                    {
-                        CreatedBy = user,
-                        ReviewedBy = user,
-                        Approved = true,
-                        CurrentNumberInHousehold = 4,
-                        DateReviewed = DateTime.Now,
-                        DateCreated = new DateTime(2016, 1, 1),
-                        TotalCost = 1000,
-                        DiscountPercentage = 20,
-                        Location = new Location() {Name = "ExampleLocation" },
-                        WorkDescription = "Description"
-                    }
-                }
+                new AutoMedUser() { UserName = "Sy_Danton", LocationId = 4, },
+                new AutoMedUser() { UserName = "Employee_1", LocationId = 1 },
+                new AutoMedUser() { UserName = "Employee_2", LocationId = 2 },
+                new AutoMedUser() { UserName = "Manager_1", LocationId = 1 },
+                new AutoMedUser() { UserName = "Manager_2", LocationId = 2 }
             };
-            exampleCustomer.Quotes[0].Vehicle = exampleCustomer.Vehicles[0];
-            context.Customers.AddOrUpdate(q => q.Email, exampleCustomer);
+            UserStore<AutoMedUser> userStore = new UserStore<AutoMedUser>(context);
+            UserManager<AutoMedUser> userManager = new UserManager<AutoMedUser>(userStore);
+
+            foreach (AutoMedUser user in users)
+            {
+                if (!context.Users.Any(u => u.UserName == user.UserName))
+                {
+
+                    userManager.Create(user, "AUTOMED");
+                    switch (user.UserName[0])
+                    {
+                        case 'S':
+                            userManager.AddToRole(user.Id, "Administrator");
+                            break;
+                        case 'M':
+                            userManager.AddToRole(user.Id, "Manager");
+                            break;
+                        case 'E':
+                            userManager.AddToRole(user.Id, "Employee");
+                            break;
+                    }
+                }
+            }
+
+            context.Quotes.AddOrUpdate(x => x.Id,
+                 new Quote()
+                 {
+                     Id = 1,
+                     CreatedById = userManager.FindByName("Employee_2").Id,
+                     ReviewedById = userManager.FindByName("Manager_2").Id,
+                     Approval = QuoteStatus.Accepted,
+                     CurrentNumberInHousehold = 4,
+                     DateReviewed = DateTime.Now,
+                     DateCreated = new DateTime(2016, 1, 1),
+                     TotalCost = 1000,
+                     DiscountPercentage = 20,
+                     LocationId = 2,
+                     WorkDescription = "Description",
+                     CustomerId = 1,
+                     VehicleId = 1,
+                 },
+                 new Quote()
+                 {
+                     Id = 2,
+                     CreatedById = userManager.FindByName("Employee_1").Id,
+                     ReviewedById = userManager.FindByName("Manager_1").Id,
+                     Approval = QuoteStatus.Pending,
+                     CurrentNumberInHousehold = 2,
+                     DateReviewed = DateTime.Now,
+                     DateCreated = new DateTime(2016, 5, 3),
+                     TotalCost = 400,
+                     DiscountPercentage = 25,
+                     LocationId = 1,
+                     WorkDescription = "Description",
+                     CustomerId = 2,
+                     VehicleId = 2,
+                 },
+                 new Quote()
+                 {
+                     Id = 3,
+                     CreatedById = userManager.FindByName("Manager_1").Id,
+                     ReviewedById = userManager.FindByName("Manager_1").Id,
+                     Approval = QuoteStatus.Declined,
+                     CurrentNumberInHousehold = 3,
+                     DateReviewed = DateTime.Now,
+                     DateCreated = new DateTime(2016, 4, 2),
+                     TotalCost = 100,
+                     DiscountPercentage = 10,
+                     LocationId = 1,
+                     WorkDescription = "Description",
+                     CustomerId = 1,
+                     VehicleId = 1
+                 }
+            );
+
+            context.Vehicles.AddOrUpdate(x => x.Id,
+                new Vehicle()
+                {   
+                    Id = 1,
+                    Make = "Honda",
+                    Model = "Cr-x",
+                    Year = 1987,
+                    Vin = "123",
+                    LicensePlate = "1234567",
+                    Color = Color.Red,
+                    OwnerId = 1,
+                },
+                 new Vehicle()
+                 {
+                     Id = 2,
+                     Make = "Honda",
+                     Model = "Cr-x",
+                     Year = 1987,
+                     Vin = "123",
+                     LicensePlate = "1234567",
+                     Color = Color.Red,
+                     OwnerId = 2
+                 }
+            );
+
+            context.Customers.AddOrUpdate(x => x.Id,
+                new Customer()
+                {   
+                    Id = 1,
+                    FirstName = "John",
+                    LastName = "Smith",
+                    AddressLine1 = "100 Drury Lane",
+                    AddressLine2 = "Apt 2",
+                    BirthDate = new DateTime(1993, 8, 29),
+                    City = "Ellensburg",
+                    State = State.WA,
+                    ZipCode = 98926,
+                    Email = "John.Smith@gmail.com",
+                    PhoneNumber = "555-555-5555",
+                    Sex = Sex.Male,
+                },
+                new Customer()
+                {   
+                    Id = 2,
+                    FirstName = "Jane",
+                    LastName = "Doe",
+                    AddressLine1 = "151 1st street",
+                    AddressLine2 = string.Empty,
+                    BirthDate = new DateTime(1990, 4, 23),
+                    City = "Richland",
+                    State = State.WA,
+                    ZipCode = 99352,
+                    Email = "Jane.Doe@yahoo.com",
+                    PhoneNumber = "123-456-7890",
+                    Sex = Sex.Female,
+                }
+            );
+
             context.SaveChanges();
         }
     }
