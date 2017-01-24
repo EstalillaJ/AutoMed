@@ -248,7 +248,7 @@
     <Compile Include="Migrations\201701190618076_test.cs" />
     <Compile Include="Migrations\201701190618076_test.Designer.cs">
       <DependentUpon>201701190618076_test.cs</DependentUpon>
-	</Compile>
+    </Compile>
     <Compile Include="Migrations\201701080545235_NoIdea.cs" />
     <Compile Include="Migrations\201701080545235_NoIdea.Designer.cs">
       <DependentUpon>201701080545235_NoIdea.cs</DependentUpon>
@@ -256,6 +256,10 @@
     <Compile Include="Migrations\201701090155506_fixspelling.cs" />
     <Compile Include="Migrations\201701090155506_fixspelling.Designer.cs">
       <DependentUpon>201701090155506_fixspelling.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701240348590_merge.cs" />
+    <Compile Include="Migrations\201701240348590_merge.Designer.cs">
+      <DependentUpon>201701240348590_merge.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -348,12 +352,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701190618076_test.resx">
       <DependentUpon>201701190618076_test.cs</DependentUpon>
-	</EmbeddedResource>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701080545235_NoIdea.resx">
       <DependentUpon>201701080545235_NoIdea.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701090155506_fixspelling.resx">
       <DependentUpon>201701090155506_fixspelling.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701240348590_merge.resx">
+      <DependentUpon>201701240348590_merge.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
