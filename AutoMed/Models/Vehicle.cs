@@ -10,6 +10,7 @@ namespace AutoMed.Models
         public Color Color { get; set; }
         public int Year { get; set; }
         public string LicensePlate { get; set; }
+        public int OwnerId { get; set; }
         public Customer Owner { get; set; }
         public int Id { get; set; }
     }
