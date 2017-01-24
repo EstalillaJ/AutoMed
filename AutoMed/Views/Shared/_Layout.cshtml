@@ -28,9 +28,10 @@
                     {   
                         <ul class="nav navbar-nav">
                             <li>@Html.ActionLink("Customers", "Create", "Customers")</li>
-                            @if (User.IsInRole("Manager")) 
+                            @if (User.IsInRole("Manager") || User.IsInRole("Administrator")) 
                             {
                                 <li>@Html.ActionLink("Quotes", "Index", "Quotes")</li>
+                                <li>@Html.ActionLink("QuoteReview", "Index", "Quote")</li>
                             }
                             @if (User.IsInRole("Administrator"))
                             {

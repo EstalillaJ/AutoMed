@@ -232,6 +232,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\QuoteController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -244,6 +245,10 @@
     <Compile Include="Migrations\201612292315012_SyEmail12_26.Designer.cs">
       <DependentUpon>201612292315012_SyEmail12_26.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701190618076_test.cs" />
+    <Compile Include="Migrations\201701190618076_test.Designer.cs">
+      <DependentUpon>201701190618076_test.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201701080545235_NoIdea.cs" />
     <Compile Include="Migrations\201701080545235_NoIdea.Designer.cs">
       <DependentUpon>201701080545235_NoIdea.cs</DependentUpon>
@@ -252,6 +257,10 @@
     <Compile Include="Migrations\201701090155506_fixspelling.Designer.cs">
       <DependentUpon>201701090155506_fixspelling.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701240348590_merge.cs" />
+    <Compile Include="Migrations\201701240348590_merge.Designer.cs">
+      <DependentUpon>201701240348590_merge.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="DAL\ApplicationDbContext.cs" />
@@ -259,6 +268,7 @@
     <Compile Include="Models\Color.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Document.cs" />
+    <Compile Include="Models\QuoteStatus.cs" />
     <Compile Include="Models\ReportGenerator.cs" />
     <Compile Include="Models\Sex.cs" />
     <Compile Include="Models\AutoMedUser.cs" />
@@ -320,11 +330,13 @@
     <Content Include="Views\Locations\Edit.cshtml" />
     <Content Include="Views\Locations\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\WatermarkString.cshtml" />
+    <Content Include="Views\Quote\Index.cshtml" />
     <Content Include="Views\Report\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="fonts\" />
+    <Folder Include="Views\Default\" />
     <Folder Include="Views\Picture\" />
   </ItemGroup>
   <ItemGroup>
@@ -338,11 +350,17 @@
     <EmbeddedResource Include="Migrations\201612292315012_SyEmail12_26.resx">
       <DependentUpon>201612292315012_SyEmail12_26.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701190618076_test.resx">
+      <DependentUpon>201701190618076_test.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701080545235_NoIdea.resx">
       <DependentUpon>201701080545235_NoIdea.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701090155506_fixspelling.resx">
       <DependentUpon>201701090155506_fixspelling.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701240348590_merge.resx">
+      <DependentUpon>201701240348590_merge.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

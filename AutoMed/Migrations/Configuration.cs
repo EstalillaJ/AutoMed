@@ -73,8 +73,8 @@ namespace AutoMed.Migrations
                     new Quote()
                     {
                         CreatedBy = user,
+                        Approval = QuoteStatus.Pending,
                         ReviewedBy = user,
-                        Approved = true,
                         CurrentNumberInHousehold = 4,
                         DateReviewed = DateTime.Now,
                         DateCreated = new DateTime(2016, 1, 1),

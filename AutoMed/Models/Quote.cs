@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
-
 namespace AutoMed.Models
 {
     public class Quote
@@ -20,7 +19,7 @@ namespace AutoMed.Models
         public double TotalCost { get; set; }
         [NotMapped]
         public double DiscountDollars { get { return TotalCost * DiscountPercentage; } }
-        public bool Approved { get; set; }
+        public QuoteStatus Approval { get; set; }
         public string WorkDescription { get; set; }
         public virtual Location Location { get; set; }
         public virtual Customer Customer { get; set; }

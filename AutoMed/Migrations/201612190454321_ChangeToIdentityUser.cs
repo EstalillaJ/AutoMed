@@ -31,7 +31,7 @@ namespace AutoMed.Migrations
                         DateCreated = c.DateTime(nullable: false),
                         DateReview = c.DateTime(),
                         Discount = c.Double(nullable: false),
-                        Approved = c.Boolean(nullable: false),
+                        Approved = c.Int(nullable: false),
                         WorkDescription = c.String(),
                         Location_Id = c.Int(),
                         CreatedBy_Id = c.String(maxLength: 128),
