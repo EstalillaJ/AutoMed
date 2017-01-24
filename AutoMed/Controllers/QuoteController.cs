@@ -18,7 +18,8 @@ namespace AutoMed.Controllers
         // GET: Quote
         public ActionResult Index()
         {
-            List<Quote> quotes = db.Quotes.Where(x => x.Approval == QuoteStatus.Pending).ToList();
+            int locationId = db.Users.Include("Location").Where(x => x.UserName == User.Identity.Name).First().Location.Id;
+            List<Quote> quotes = db.Quotes.Where(x => x.Approval == QuoteStatus.Pending && locationId == x.Location.Id).ToList();
             return View(quotes);
         }
 
