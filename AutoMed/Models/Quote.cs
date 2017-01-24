@@ -12,8 +12,8 @@ namespace AutoMed.Models
         public int CurrentNumberInHousehold { get; set; }
         public virtual List<Document> Documents { get; set; }
         public DateTime DateCreated { get; set; }
-        public DateTime? DateReview { get; set; }
-        public AutoMedUser ReviewdBy { get; set; }
+        public DateTime? DateReviewed { get; set; }
+        public AutoMedUser ReviewedBy { get; set; }
         public AutoMedUser CreatedBy { get; set; }
         public double DiscountPercentage { get; set; }
         public double TotalCost { get; set; }
