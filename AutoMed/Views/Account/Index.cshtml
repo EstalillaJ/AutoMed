@@ -42,7 +42,6 @@
             <td>
                 @{
                     ApplicationDbContext db = new ApplicationDbContext();
-
                     RoleManager<IdentityRole> roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
                     string roleName = roleManager.FindById(item.Roles.First().RoleId).Name;
                     string locationName = item.Location.Name;

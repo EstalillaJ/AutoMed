@@ -177,14 +177,6 @@ namespace AutoMed.Controllers
                 {
                     UserManager.AddToRole(user.Id, "Employee");
                 }
-                for (int i = 0; i < db.Locations.Count(); i++)
-                {
-                    if (db.Locations.Find(i).Name == model.Location)
-                    {
-                        model.locationID = db.Locations.Find(i).Id;
-                    }
-
-                }
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);

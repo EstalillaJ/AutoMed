@@ -35,7 +35,7 @@
                             @if (User.IsInRole("Administrator"))
                             {
                                 <li>@Html.ActionLink("Locations", "Index", "Locations")</li>
-                                <li>@Html.ActionLink("Employees", "Account", "Register")</li>
+                                <li>@Html.ActionLink("Employees", "Index", "Account")</li>
                                 <li>@Html.ActionLink("Reports", "Create", "Report")</li>
                                 <li>@Html.ActionLink("QuoteReview", "Index", "Quote")</li>
                             }

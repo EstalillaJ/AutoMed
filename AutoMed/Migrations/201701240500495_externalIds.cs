@@ -7,16 +7,10 @@ namespace AutoMed.Migrations
     {
         public override void Up()
         {
-            DropForeignKey("dbo.AspNetUsers", "Location_Id", "dbo.Locations");
             DropIndex("dbo.Quotes", new[] { "ReviewedBy_Id" });
-            DropIndex("dbo.AspNetUsers", new[] { "Location_Id" });
             RenameColumn(table: "dbo.Quotes", name: "ReviewedBy_Id", newName: "ReviewedById");
-            RenameColumn(table: "dbo.AspNetUsers", name: "Location_Id", newName: "LocationId");
             AlterColumn("dbo.Quotes", "ReviewedById", c => c.String(maxLength: 128));
-            AlterColumn("dbo.AspNetUsers", "LocationId", c => c.Int(nullable: false));
             CreateIndex("dbo.Quotes", "ReviewedById");
-            CreateIndex("dbo.AspNetUsers", "LocationId");
-            AddForeignKey("dbo.AspNetUsers", "LocationId", "dbo.Locations", "Id", cascadeDelete: true);
         }
         
         public override void Down()
