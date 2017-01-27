@@ -49,9 +49,11 @@ namespace AutoMed.Controllers
             double minDiscountDollars = model.MinDiscountDollars ?? double.MinValue;
             string city = model.City ?? string.Empty;
             string address = model.Address ?? string.Empty;
+            address = address.ToLower(); /* seems EF does something odd when we next this ToLower()
+                                            call below (empty string never matches anything when it should match all) */
 
             ExpressionStarter<Quote> isMostlyMatched = PredicateBuilder.New<Quote>(q =>
-                  (q.Customer.AddressLine1 + q.Customer.AddressLine2).Contains(address) &&
+                  (q.Customer.AddressLine1 + q.Customer.AddressLine2).ToLower().Contains(address) &&
                   selectedLocations.Contains(q.Location.Id) &&
                   startDate <= q.DateCreated && q.DateCreated <= endDate &&
                   minDiscountPercentage <= q.DiscountPercentage && q.DiscountPercentage <= maxDiscountPercentage &&

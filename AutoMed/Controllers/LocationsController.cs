@@ -10,7 +10,7 @@ using AutoMed.DAL;
 using AutoMed.Models;
 
 namespace AutoMed.Controllers
-{
+{   [Authorize(Roles = "Administrator")]
     public class LocationsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
