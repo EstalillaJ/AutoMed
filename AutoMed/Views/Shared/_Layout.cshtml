@@ -17,7 +17,7 @@
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
+        <div class="container ">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
@@ -25,15 +25,19 @@
                     <span class="icon-bar"></span>
                 </button>
             </div>
-            <div class="navbar-collapse collapse">
-                    @if (User.Identity.IsAuthenticated)
-                    {   
+            <div class="navbar-collapse collapse" id="nav">
+
+                @if (User.Identity.IsAuthenticated)
+                {   <div class="navbar-left">
+                    <ul class="navbar-nav nav navbar-left">
+                        <li><img src="~/nike-logo.png" width="90" height="50" /></li>
+                    </ul>
+                </div>
                         <ul class="nav navbar-nav">
                             <li>@Html.ActionLink("Customers", "Create", "Customers")</li>
-                            @if (User.IsInRole("Manager") || User.IsInRole("Administrator")) 
+                            @if (User.IsInRole("Manager") || User.IsInRole("Administrator"))
                             {
                                 <li>@Html.ActionLink("Quotes", "Index", "Quotes")</li>
-                                <li>@Html.ActionLink("QuoteReview", "Index", "Quote")</li>
                             }
                             @if (User.IsInRole("Administrator"))
                             {
@@ -43,10 +47,19 @@
                             }
                             <li>@Html.ActionLink("Settings", "ChangePassword", "Manage")</li>
                         </ul>
+                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <ul class="nav navbar-nav">
+                            <li><a href="javascript:document.getElementById('logoutForm').submit()">Logout</a></li>
+                        </ul>
                     }
+                }
             </div>
         </div>
     </div>
+
     <div class="container body-content">
         @RenderBody()
         <hr />
