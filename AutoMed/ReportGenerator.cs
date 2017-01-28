@@ -60,9 +60,5 @@ namespace AutoMed.Models
             {
                 { typeof(Quote), QuoteColumns }
             };
-        
-
-
-       
     }
 }
