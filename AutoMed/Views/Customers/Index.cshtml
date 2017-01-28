@@ -19,45 +19,44 @@
     }
  @Html.ActionLink("Create New", "Create")   
 </p>
-<table class="table">
+<table class="table table-striped">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.FirstName)
+            "First Name"
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastName)
+            "Last Name"
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AddressLine1)
+            "Address 1"
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AddressLine2)
+            "Address 2"
         </th>
         <th>
             @Html.DisplayNameFor(model => model.State)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ZipCode)
-        </th>
+       @* <th>
+        @Html.DisplayNameFor(model => model.ZipCode)
+    </th>*@
         <th>
             @Html.DisplayNameFor(model => model.City)
         </th>
-        <th>
+       @*<th>
             @Html.DisplayNameFor(model => model.Email)
-        </th>
+        </th>*@
         <th>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
+            Phone Number
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BirthDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Sex)
-        </th>
+       @* <th>
+        @Html.DisplayNameFor(model => model.BirthDate)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.Sex)
+    </th>*@
         <th></th>
     </tr>
-</table>
-<table class="table">
+
     @foreach (var item in Model)
     {
         <tr>
@@ -76,24 +75,24 @@
             <td>
                 @Html.DisplayFor(modelItem => item.State)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ZipCode)
-            </td>
+           @* <td>
+        @Html.DisplayFor(modelItem => item.ZipCode)
+    </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.City)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
+         @*   <td>
+        @Html.DisplayFor(modelItem => item.Email)
+    </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.PhoneNumber)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BirthDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sex)
-            </td>
+         @*   <td>
+        @Html.DisplayFor(modelItem => item.BirthDate)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Sex)
+    </td>*@
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                 @Html.ActionLink("Details", "Index", "customerDetails", new { id = item.Id }, new { })

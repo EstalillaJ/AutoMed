@@ -15,9 +15,9 @@
            
             <h1>Customer Details</h1>
         
-        <a href="@Url.Action("Index", null, new { area = string.Empty, controller = "Customers" }, Request.Url.Scheme)">
-            <span>Back to Customers</span>
-        </a>
+         @Html.ActionLink("Back to Customers", "Index", "Customers", new {  }, new { })
+           
+        
     
   <h1> @Html.DisplayFor(modelItem => Model.FirstName)  @Html.DisplayFor(modelItem => Model.LastName)</h1> 
    
@@ -30,7 +30,7 @@
                     @Html.ActionLink("Create New", "Create_V")
                 </p>
                
-                 <table class="table">
+                 <table class="table table-striped">
                     <tr>
                         <th>
                             "vin"
@@ -95,7 +95,7 @@
                 <p>
                     @Html.ActionLink("Create New", "Create_Q")
                 </p>
-                <table class="table">
+                <table class="table table-striped">
                     <tr>
                        @* <th>
         Persons in Houshold

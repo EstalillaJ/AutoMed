@@ -12,5 +12,6 @@ namespace AutoMed.Models
         public string LicensePlate { get; set; }
         public Customer Owner { get; set; }
         public int Id { get; set; }
+        public int OwnerId { get; set; }
     }
 }
