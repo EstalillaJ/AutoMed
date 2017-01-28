@@ -9,7 +9,7 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    
     @using (Html.BeginForm())
     {
     <p>
@@ -17,7 +17,7 @@
         <input type="submit" value="Filter" />
     </p>
     }
-    
+ @Html.ActionLink("Create New", "Create")   
 </p>
 <table class="table">
     <tr>
@@ -96,7 +96,7 @@
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Edit", "Index", "customerDetails", new { id = item.Id }, new { })
+                @Html.ActionLink("Details", "Index", "customerDetails", new { id = item.Id }, new { })
     @*<a href="@Url.Action("Index", null, new { area = string.Empty, controller = "customerDetails" }, Request.Url.Scheme)">
         <span>Details</span>
     </a> *@|

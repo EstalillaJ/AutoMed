@@ -1,6 +1,9 @@
 ﻿@model AutoMed.Models.Vehicle
 
 
+   @Html.TextBox("test", null, new { style = "width:50px" })
+
+
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
@@ -66,7 +69,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    <a href="javascript:void(0);" onclick="history.go(-1);">Back to Details</a>
 </div>
 
 @section Scripts {
