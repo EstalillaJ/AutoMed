@@ -3,70 +3,69 @@
 @{
     ViewBag.Title = "Reports";
 }
-<div class="container">
     <div class="row">
         <div class="col-md-12 text-center">
             <h2>Generate A Report</h2>
         </div>
     </div>
 
-    @using (Html.BeginForm("Create", "Report", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    @using (Html.BeginForm("Details", "Report", FormMethod.Post, new { @class = "form-horizontal", role = "form" , id = "form-create" }))
     {
         @Html.AntiForgeryToken()
 
         <h3 class="text-center">Quote Info</h3>
 
         <div class="row">
-            <div class="col-sm-6 col-xs-6 text-center">
+            <div class="col-sm-6 col-xs-12 text-center">
                 <h4>Start Date</h4>
             </div>
-            <div class="col-sm-6 text-center">
+            <div class="col-sm-6 col-xs-12 text-center">
                 <h4>End Date</h4>
              </div>
         </div>
 
         <div class="row">
-            <div class="col-sm-2 col-xs-2 text-center">
+            <div class="col-sm-2 col-xs-4 text-center">
                 @Html.EnumDropDownListFor(m => m.StartMonth, "Month", new { @class="form-control" })
             </div>
-            <div class="col-sm-2 col-xs-2 text-center">
+            <div class="col-sm-2 col-xs-4 text-center">
                 @Html.DropDownListFor(m => m.StartDay, new SelectList(Enumerable.Range(1, 31)), "Day", new { @class = "form-control" })
                 </div>
-            <div class="col-sm-2 col-xs-2 text-center">
+            <div class="col-sm-2 col-xs-4 text-center">
                 @Html.DropDownListFor(m => m.StartYear, new SelectList(Enumerable.Range(2016, DateTime.Today.Year - 2016 + 1)), "Year", new { @class = "form-control" })
             </div>
-            <div class="col-sm-2 col-xs-2 text-center">
+            <div class="col-sm-2 col-xs-4 text-center">
                 @Html.EnumDropDownListFor(m => m.EndMonth, "Month", new { @class = "form-control" })
             </div>
-            <div class="col-sm-2 col-xs-2 text-center">
+            <div class="col-sm-2 col-xs-4 text-center">
                 @Html.DropDownListFor(m => m.EndDay, new SelectList(Enumerable.Range(1, 31)), "Day", new { @class = "form-control" })
             </div>
-            <div class="col-sm-2 col-xs-2 text-center">
+            <div class="col-sm-2 col-xs-4 text-center">
                 @Html.DropDownListFor(m => m.EndYear, new SelectList(Enumerable.Range(2016, DateTime.Today.Year - 2016 + 1)), "Year", new { @class = "form-control" })
             </div>
         </div>
 
         <div class="row">
-            <div class="col-sm-6 col-xs-6 text-center">
+            <div class="col-sm-6 col-xs-12 text-center">
                 <h4>Dollar Amount</h4>
             </div>
-            <div class="col-sm-6 text-center">
+            <div class="col-sm-6 col-xs-12 text-center">
                 <h4>Percentage</h4>
             </div>
         </div>
 
 
         <div class="row">
-            <div class="col-sm-3 col-xs-3 text-center">
-                @Html.EditorFor(m => m.MinDiscountDollars, "WatermarkNumber", new { @type = "number" })
+            <div class="col-sm-3 col-xs-12 text-center">
+                @Html.EditorFor(m => m.MinDiscountDollars, "WatermarkNumber")
             </div>
-            <div class="col-sm-3 col-xs-3 text-center">
+            <div class="col-sm-3 col-xs-12 text-center">
                 @Html.EditorFor(m => m.MaxDiscountDollars, "WatermarkNumber")
             </div>
-            <div class="col-sm-3 text-center">
+            <div class="col-sm-3 col-xs-12 text-center">
                 @Html.EditorFor(m => m.MinDiscountPercentage, "WatermarkNumber")
             </div>
-            <div class="col-sm-3 text-center">
+            <div class="col-sm-3 col-xs-12 text-center">
                 @Html.EditorFor(m => m.MaxDiscountPercentage, "WatermarkNumber")
             </div>
 
@@ -95,7 +94,8 @@
         <div class="row">
             <div class="col-md-12 text-center">
                 <h3>Locations</h3>
-                @Html.LabelFor(m => m.AllLocations) @Html.CheckBoxFor(m => m.AllLocations)
+                <p class="hidden text-danger" id="location-checkbox-error">Please choose at least one location</p>
+                @Html.CheckBoxFor(m => m.AllLocations) @Html.LabelFor(m => m.AllLocations)
             </div>
         </div>
 
@@ -119,7 +119,7 @@
                             @Model.Locations[i].Item.Name
                         </td>
                         <td>
-                            @Html.CheckBoxFor(m => m.Locations[i].IsChecked, new { id = "location_checkbox_" + i , @class="location_checkbox"})
+                            @Html.CheckBoxFor(m => m.Locations[i].IsChecked, new { @class = "location_checkbox" })
                             @Html.HiddenFor(m => m.Locations[i].Item.Id)
                         </td>
                     </tr>
@@ -127,14 +127,32 @@
                 </table>
             </div>
         </div>
-
+        <hr />
+        <div class="col-md-12 text-center">
+            <h3>Data To Include</h3>
+            <p class="hidden text-danger"  id="data-field-error">Please choose at least one data field</p>
+            @Html.CheckBoxFor(m => m.AllColumns) @Html.LabelFor(m => m.AllColumns)
+        </div>
+            <div class="row form-group">
+                @for (int i = 0; i < Model.ColumnsToInclude.Count; i++)
+                {
+                    <div class="col-md-3 col-sm-4 col-xs-6">
+                        <label class="checkbox-inline">
+                            @Html.CheckBoxFor(m => m.ColumnsToInclude[i].IsChecked, new { @class = "column_checkbox" })
+                            @Model.ColumnsToInclude[i].Item 
+                            @Html.HiddenFor(m => m.ColumnsToInclude[i].Item)
+                        </label>
+                    </div>
+                }
+            </div>
         <div class="form-group">
             <div class="col-md-offset-10 col-md-2">
                 <input type="submit" class="btn btn-default" value="Generate" />
             </div>
         </div>
+
+
     }
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -142,32 +160,47 @@
     <script>
         var numLocations = @Model.Locations.Count();        
 
-        $("#AllLocations").change(
-            function () {
-                var checked = $(this).is(":checked");
-                for (var i = 0; i < numLocations; i++){
-                    $("#location_checkbox_"+i).prop('checked', checked);
-                }
+        function toggleCheckboxes(idOfMaster, classOfSlaves, cb){
+            $(idOfMaster).change(
+                function () {
+                    var checked = $(this).is(":checked");
+                    $(classOfSlaves).prop('checked', checked);
+                });
+
+        $(classOfSlaves).change(
+                function(){
+                    var checked = $(this).is(":checked");
+                    if (!checked){
+                        $(idOfMaster).prop('checked', false);
+                    }
+                    else{
+                        var allchecked = $(classOfSlaves).not(":checked").length === 0;
+                        $(idOfMaster).prop('checked', allchecked);
+                    }
+                    cb();
+                });
+        }
+
+        $("#form-create").submit(function (event) {
+            if (!$(".location_checkbox").is(":checked")) {
+                $("#location-checkbox-error").removeClass('hidden');
+                event.preventDefault();
+            }
+
+            if (!$(".column_checkbox").is(":checked")) {
+                $('#data-field-error').removeClass('hidden');
+                event.preventDefault();
+            }
         });
 
-        $(".location_checkbox").change(
-            function(){
-                var checked = $(this).is(":checked");
-                if (!checked){
-                    $("#AllLocations").prop('checked', false);
-                }
-                else{
-                    var allchecked = true;
-                    for (var i = 0; i < numLocations; i++){
-                        if (!$("#location_checkbox_"+i).is(":checked")){
-                            allchecked = false;
-                            break;
-                        }
-                    }
-                    $("#AllLocations").prop('checked', allchecked);
-                }
-            });
+        toggleCheckboxes("#AllLocations", ".location_checkbox", function() {
+            $("#location-checkbox-error").addClass("hidden");
+        });
+        toggleCheckboxes("#AllColumns", ".column_checkbox", function() {
+            $("#data-field-error").addClass("hidden");   
+        });
 
+  
         $("#AnyDiscountDollars").change(
             function () {
                 var checked = $(this).is(":checked");
@@ -200,7 +233,3 @@
         })
     </script>
 }
-
-
-
-
