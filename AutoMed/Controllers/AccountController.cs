@@ -56,7 +56,6 @@ namespace AutoMed.Controllers
                 _userManager = value;
             }
         }
-
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -105,22 +104,20 @@ namespace AutoMed.Controllers
 
         public ActionResult Edit(string id)
         {
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            UserManager.Update(UserManager.FindById(id));
-
-            return View();
+            }            
+            return View(UserManager.FindById(id));
 
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(RegisterViewModel model)
+        public ActionResult Edit(AutoMedUser model)
         {
             if (ModelState.IsValid)
             {
+                UserManager.Update(model);
                 return RedirectToAction("Index");
             }
             return View(model);
@@ -133,13 +130,16 @@ namespace AutoMed.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            return View();
+            return View(UserManager.FindById(id));
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
+            AutoMedUser deletion = UserManager.FindById(id);
+            deletion.isDeleted = true;
+            UserManager.Update(deletion);
             UserManager.Delete(UserManager.FindById(id));
             return RedirectToAction("Index");
         }
@@ -162,7 +162,7 @@ namespace AutoMed.Controllers
             if (ModelState.IsValid)
             {
                 Location location = db.Locations.Where(x => x.Name.Equals(model.Location)).FirstOrDefault();
-                var user = new AutoMedUser { UserName = model.UserName, LocationId = location.Id };
+                var user = new AutoMedUser { UserName = model.UserName, LocationId = location.Id, isDeleted = false };
 
                 IdentityResult result = UserManager.Create(user, model.Password);
                 if (model.Role == "Administrator")

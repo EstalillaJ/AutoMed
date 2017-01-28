@@ -277,6 +277,10 @@
     <Compile Include="Migrations\201701240645455_quoteenum.Designer.cs">
       <DependentUpon>201701240645455_quoteenum.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701250415415_isDeleted.cs" />
+    <Compile Include="Migrations\201701250415415_isDeleted.Designer.cs">
+      <DependentUpon>201701250415415_isDeleted.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="DAL\ApplicationDbContext.cs" />
@@ -392,6 +396,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701240645455_quoteenum.resx">
       <DependentUpon>201701240645455_quoteenum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701250415415_isDeleted.resx">
+      <DependentUpon>201701250415415_isDeleted.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

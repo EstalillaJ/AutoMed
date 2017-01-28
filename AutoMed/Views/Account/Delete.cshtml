@@ -1,4 +1,7 @@
-﻿@model AutoMed.Models.RegisterViewModel
+﻿@using AutoMed.DAL;
+@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.EntityFramework;
+@model AutoMed.Models.AutoMedUser
 
 @{
     ViewBag.Title = "Delete";
@@ -12,7 +15,7 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.UserName)
+            Username
         </dt>
 
         <dd>
@@ -20,27 +23,26 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Password)
+            Role
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Password)
+            @{ 
+
+                ApplicationDbContext db = new ApplicationDbContext();
+                RoleManager<IdentityRole>
+                roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+                string roleName = roleManager.FindById(Model.Roles.First().RoleId).Name;
+            }
+                @roleName
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Role)
+            Location
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Role)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Location)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Location)
+            @Html.DisplayFor(model => model.Location.Name)
         </dd>
 
     </dl>

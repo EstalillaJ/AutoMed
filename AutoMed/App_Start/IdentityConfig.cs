@@ -75,5 +75,16 @@ namespace AutoMed
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
+        public override Task<SignInStatus> PasswordSignInAsync(string userName, string password, bool rememberMe, bool shouldLockout)
+        {
+            var user = UserManager.FindByNameAsync(userName).Result;
+
+            if (user.isDeleted == true)
+            {
+                return Task.FromResult<SignInStatus>(SignInStatus.LockedOut);
+            }
+
+            return base.PasswordSignInAsync(userName, password, rememberMe, shouldLockout);
+        }
     }
 }
