@@ -17,9 +17,6 @@
         <th>
             Username
         </th>
-        @*<th>
-                Password
-            </th>*@
         <th>
             Role
         </th>
@@ -37,9 +34,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.UserName)
             </td>
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.Password)
-                </td>*@
 
             <td>
                 @{
@@ -48,7 +42,6 @@
                     string roleName = roleManager.FindById(item.Roles.First().RoleId).Name;
                     string locationName = item.Location.Name;
                 }
-                @*roleManager.FindById("id").Name*@
                 @roleName
             </td>
             <td>

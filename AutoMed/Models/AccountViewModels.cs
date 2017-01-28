@@ -54,7 +54,16 @@ namespace AutoMed.Models
         public List<RegisterViewModel> Name { get; set; }
 
     }
-
+    /// <summary>
+    /// This model is used for editing making the edit page only have the necissary elements
+    /// </summary>
+    public class EditViewModel
+    {
+        public string UserName { get; set; }
+        public string Id { get; set; }
+        public string Role { get; set; }
+        public int LocationId { get; set; }
+    }
 
 
     public class ResetPasswordViewModel

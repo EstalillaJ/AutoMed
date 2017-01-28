@@ -75,6 +75,14 @@ namespace AutoMed
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
+        /// <summary>
+        /// This function uses the isDeleted to lockout the users whom the admin deletes
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <param name="rememberMe"></param>
+        /// <param name="shouldLockout"></param>
+        /// <returns></returns>
         public override Task<SignInStatus> PasswordSignInAsync(string userName, string password, bool rememberMe, bool shouldLockout)
         {
             var user = UserManager.FindByNameAsync(userName).Result;

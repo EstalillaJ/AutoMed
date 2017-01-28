@@ -85,7 +85,7 @@ namespace AutoMed.Controllers
                 case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
-                    return View("Lockout");
+                    return RedirectToAction("Login");
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
@@ -101,28 +101,60 @@ namespace AutoMed.Controllers
 
             return View(lists);
         }
-
+        /// <summary>
+        /// edits the users takes on their user id as a string. uses that id to create a list of all possible locations
+        /// list of all prossible roles 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }            
-            return View(UserManager.FindById(id));
+            }
+            List<SelectListItem> locationList = new List<SelectListItem>();
+            db.Locations.ToList().ForEach(
+                v => locationList.Add(new SelectListItem { Text = v.Name, Value = v.Id.ToString()})
+                );
+            ViewBag.locationList = (IEnumerable<SelectListItem>)locationList;
+            List<SelectListItem> rolesList = new List<SelectListItem>();
+            db.Roles.ToList().ForEach(
+                v => rolesList.Add(new SelectListItem { Text = v.Name, Value = v.Id.ToString() })
+                );
+            ViewBag.rolesList = (IEnumerable<SelectListItem>)rolesList;
+            AutoMedUser user = UserManager.FindById(id);
+            var viewModel = new EditViewModel { UserName = user.UserName, LocationId = user.LocationId, Id = user.Id, Role = user.Roles.First().RoleId };   
+            return View(viewModel);
 
         }
+        /// <summary>
+        /// confirms the changes it removes the current role then adds the new one added
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(AutoMedUser model)
+        public ActionResult Edit(EditViewModel model)
         {
             if (ModelState.IsValid)
             {
-                UserManager.Update(model);
+                var editId = UserManager.FindById(model.Id);
+                editId.UserName = model.UserName;
+                editId.LocationId = model.LocationId;
+                RoleManager<IdentityRole> roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+                UserManager.RemoveFromRole(model.Id, roleManager.FindById(editId.Roles.First().RoleId).Name);
+                UserManager.AddToRole(model.Id, roleManager.FindById(model.Role).Name);
+                UserManager.Update(editId);
                 return RedirectToAction("Index");
             }
             return View(model);
         }
-
+        /// <summary>
+        /// takes the users id and displays who they are with their location and roles
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult Delete(string id)
         {
 
@@ -132,7 +164,11 @@ namespace AutoMed.Controllers
             }
             return View(UserManager.FindById(id));
         }
-
+        /// <summary>
+        /// confirms the deletion by updating the database it uses the isDeleted function to lockout the user not actually delete from database.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
@@ -140,7 +176,7 @@ namespace AutoMed.Controllers
             AutoMedUser deletion = UserManager.FindById(id);
             deletion.isDeleted = true;
             UserManager.Update(deletion);
-            UserManager.Delete(UserManager.FindById(id));
+            //UserManager.Delete(UserManager.FindById(id));
             return RedirectToAction("Index");
         }
 

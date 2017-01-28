@@ -1,7 +1,7 @@
 ﻿@using AutoMed.DAL;
 @using Microsoft.AspNet.Identity;
 @using Microsoft.AspNet.Identity.EntityFramework;
-@model AutoMed.Models.AutoMedUser
+@model AutoMed.Models.EditViewModel
 
 @{
     ViewBag.Title = "Edit";
@@ -27,24 +27,19 @@
                 @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
             </div>
         </div>
-        @{ 
-           // ApplicationDbContext db = new ApplicationDbContext();
-           // RoleManager<IdentityRole> roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
-           // string roleName = roleManager.FindById(Model.Roles.First().RoleId).Name;
-        }
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Roles, htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.Roles.First().RoleId, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Roles.First().RoleId, "", new { @class = "text-danger" })
+                            @Html.DropDownListFor(model => model.Role, (IEnumerable<SelectListItem>)ViewBag.rolesList, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
                         </div>
                     </div>
-
+              
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })
+                      <label class="control-label col-md-2" > Location </label>
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.Location.Name, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+                            @Html.DropDownListFor(model => model.LocationId, (IEnumerable<SelectListItem>) ViewBag.locationList, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
