@@ -5,13 +5,10 @@ using System.Web;
 
 namespace AutoMed.Models
 {
-    
-    
-        public enum QuoteStatus
-        {
-            Accepted, 
-            Declined,
-            Pending
-        }
-    
+    public enum QuoteStatus
+    {
+        Accepted,
+        Declined,
+        Pending
+    }
 }

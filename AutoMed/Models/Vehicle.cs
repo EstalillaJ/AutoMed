@@ -11,6 +11,7 @@ namespace AutoMed.Models
         public Color Color { get; set; }
         public int Year { get; set; }
         public string LicensePlate { get; set; }
+        public int OwnerId { get; set; }
         public Customer Owner { get; set; }
         [ScaffoldColumn(false)]
         public int Id { get; set; }

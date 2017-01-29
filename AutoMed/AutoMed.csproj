@@ -233,15 +233,12 @@
     <Compile Include="Controllers\LocationsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\QuotesController.cs" />
+    <Compile Include="Controllers\QuoteController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="DBInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201701270503486_Sy_Danton.cs" />
-    <Compile Include="Migrations\201701270503486_Sy_Danton.Designer.cs">
-      <DependentUpon>201701270503486_Sy_Danton.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="DAL\ApplicationDbContext.cs" />
     <Compile Include="Models\Checkbox.cs" />
@@ -249,7 +246,8 @@
     <Compile Include="Models\Color.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Document.cs" />
-    <Compile Include="Models\ReportGenerator.cs" />
+    <Compile Include="ReportGenerator.cs" />
+    <Compile Include="Models\QuoteStatus.cs" />
     <Compile Include="Models\Sex.cs" />
     <Compile Include="Models\AutoMedUser.cs" />
     <Compile Include="Models\Location.cs" />
@@ -318,24 +316,18 @@
     <Content Include="Views\Quotes\Details.cshtml" />
     <Content Include="Views\Quotes\Edit.cshtml" />
     <Content Include="Views\Quotes\Index.cshtml" />
+    <Content Include="Views\Quote\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="fonts\" />
     <Folder Include="Views\Document\" />
+    <Folder Include="Views\Default\" />
     <Folder Include="Views\Picture\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201701270503486_Sy_Danton.resx">
-      <DependentUpon>201701270503486_Sy_Danton.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
