@@ -247,7 +247,6 @@
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Document.cs" />
     <Compile Include="ReportGenerator.cs" />
-    <Compile Include="Models\QuoteStatus.cs" />
     <Compile Include="Models\Sex.cs" />
     <Compile Include="Models\AutoMedUser.cs" />
     <Compile Include="Models\Location.cs" />
