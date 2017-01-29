@@ -1,4 +1,5 @@
-﻿@model AutoMed.Models.Quote
+﻿@using AutoMed.Models;
+@model Quote
 
 @{
     ViewBag.Title = "Edit";
@@ -6,11 +7,10 @@
 
 <h2>Edit</h2>
 
-
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Quotes", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Quote</h4>
         <hr />
@@ -18,18 +18,18 @@
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
+            @Html.LabelFor(model => model.DiscountPercentage, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.DiscountPercentage, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DiscountPercentage, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.CurrentNumberInHousehold, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.CurrentNumberInHousehold, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.CurrentNumberInHousehold, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        
-        <div class="form-group">
-            @Html.LabelFor(model => model.Vehicle, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Vehicle, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Vehicle, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -42,10 +42,11 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Approved, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Approval, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
-                    @Html.DisplayFor(model => model.Approved)
+                    @Html.EnumDropDownListFor(model => model.Approval)
+                    @Html.ValidationMessageFor(model => model.Approval, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
@@ -58,18 +59,61 @@
             </div>
         </div>
 
+
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Images</label>
+            <div class="col-md-10">
+                @foreach (Document document in Model.Documents)
+                {
+                    <img onclick="LoadModal(this.src)" width="200" height="200" src="/Quotes/Docs/@document.Id" />
+                }
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="fileDiv form-group" id="div-files-0-">
+            <div class="col-md-3 col-md-offset-2">
+                <label class="btn btn-default btn-file fileInputs" id="label-files-0-">
+                    Upload Picture <input class="fileUploads form-control col-md-12" id="files-0-" type="file" accept="image/*;capture=camera" name="files[0]" style="display: none;" capture>
+                    <input type="hidden" name="files.Index" value="0" />
+                </label>
+                <img id="img-files-0-" src="#" onclick="LoadModal(this.src)" class="hidden col-md-11" width="200" height="200" />
+                <span id="span-files-0-" class="hidden disabled glyphicon glyphicon-remove-circle"></span>
+            </div>
+        </div>
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+        <!-- modal xl is defined in Content/Site.css not bootstrap -->
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <img id="modal-img" width="100%" height="100%" src="#" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 }
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript" src="~/Scripts/uploadDocument.js">
+
+    </script>
 }

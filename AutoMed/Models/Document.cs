@@ -9,10 +9,8 @@ namespace AutoMed.Models
 {
     public class Document
     {
-        public string Title { get; set; }
-        public string Comments { get; set; }
         public int Id { get; set; }
         [NotMapped]
-        public HttpPostedFileBase UploadedImage { get; set;}
+        public HttpPostedFileBase UploadedImage { get; set; }
     }
 }
