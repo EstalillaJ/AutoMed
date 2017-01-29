@@ -21,6 +21,14 @@
                 document.getElementById("list").insertBefore(span, null);
             };
         })(f);
+        var oldInput = $("#files");
+        var newInput = oldInput.clone();
+        newInput.change(function (evt) {
+            handleFileSelect(evt);
+        });
+        oldInput.attr("id", "files-old");
+        oldInput.addClass("hidden");
+        oldInput.after(newInput);
 
         // Read in the image file as a data URL.
         reader.readAsDataURL(f);

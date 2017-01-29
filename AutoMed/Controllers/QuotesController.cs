@@ -20,12 +20,21 @@ namespace AutoMed.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Quotes
+        /// <summary>
+        /// gets a list of quotes from the database
+        /// </summary>
+        /// <returns>list of quotes</returns>
         public ActionResult Index()
         {
             return View(db.Quotes.ToList());
         }
 
         // GET: Quotes/Details/5
+        /// <summary>
+        /// gets quote details for a specific customer from the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>view of quote</returns>
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -41,6 +50,12 @@ namespace AutoMed.Controllers
         }
 
         // GET: Quotes/Create/1
+        /// <summary>
+        /// gets quote creation form for a specific customer, and populates it with vehicles that 
+        /// are already associated to that customer ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Quote creation form for existing customer</returns>
         [Authorize(Roles = "Employee,Manager,Administrator")]
         public ActionResult Create(int id)
         {
@@ -55,8 +70,12 @@ namespace AutoMed.Controllers
         }
 
         // POST: Quotes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// posts to database a new quote for a customer along with document images that have been uploaded.
+        /// </summary>
+        /// <param name="quote"></param>
+        /// <param name="files"></param>
+        /// <returns>quote view</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Employee,Manager,Administrator")]
@@ -85,6 +104,11 @@ namespace AutoMed.Controllers
         }
 
         // GET: Quotes/Edit/5
+        /// <summary>
+        /// gets an existing quote from database that can be edited. 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>quote view</returns>
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -100,9 +124,12 @@ namespace AutoMed.Controllers
         }
 
         // POST: Quotes/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
- 
+        /// <summary>
+        /// posts edited quote to database
+        /// </summary>
+        /// <param name="quote"></param>
+        /// <param name="files"></param>
+        /// <returns>redirects to index view or quote view</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,CurrentNumberInHousehold,DiscountPercentage,TotalCost,Approval,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
@@ -133,6 +160,11 @@ namespace AutoMed.Controllers
 
 
         // GET: Quotes/Delete/5
+        /// <summary>
+        /// gets information of quote that is being deleted
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>view of quote</returns>
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -148,6 +180,11 @@ namespace AutoMed.Controllers
         }
 
         // POST: Quotes/Delete/5
+        /// <summary>
+        /// removes quote from database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>redirects to quote index view</returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -168,10 +205,13 @@ namespace AutoMed.Controllers
             base.Dispose(disposing);
         }
 
-
+        /// <summary>
+        /// retrieves image from blob storage
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <returns>returns file image</returns>
         [Authorize(Roles = "Manager,Administrator")]
         [Route("Document/Image/{documentId}")]
-        // I had the return type as FileContentResult but changed to return 404. Let me know if doesnt work.
         // <img src="Document/Image/{documentId}" />
         public ActionResult GetImage(int documentId)
         {
@@ -189,7 +229,10 @@ namespace AutoMed.Controllers
             return base.File(ms.ToArray(), blockBlob.Properties.ContentType ?? "image/png");
         }
 
-        // Obviously this wont work unless the quote already exists. Feel free to move this code wherever
+        /// <summary>
+        /// posts document images to blob storage
+        /// </summary>
+        /// <param name="documents"></param>
         private void PostDocument(List<Document> documents)
         {
 

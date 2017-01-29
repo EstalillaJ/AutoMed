@@ -66,22 +66,14 @@
             <div class="col-md-10">
                 @foreach (Document document in Model.Documents)
                 {
-                    <img onclick="LoadModal(this.src)" width="200" height="200" src="/Quotes/Docs/@document.Id" />
+                    <img onclick="LoadModal(this.src)" width="200" height="200" src="/Document/Image/@document.Id" />
                 }
             </div>
         </div>
         @Html.HiddenFor(m => m.Id)
 
-        <div class="fileDiv form-group" id="div-files-0-">
-            <div class="col-md-3 col-md-offset-2">
-                <label class="btn btn-default btn-file fileInputs" id="label-files-0-">
-                    Upload Picture <input class="fileUploads form-control col-md-12" id="files-0-" type="file" accept="image/*;capture=camera" name="files[0]" style="display: none;" capture>
-                    <input type="hidden" name="files.Index" value="0" />
-                </label>
-                <img id="img-files-0-" src="#" onclick="LoadModal(this.src)" class="hidden col-md-11" width="200" height="200" />
-                <span id="span-files-0-" class="hidden disabled glyphicon glyphicon-remove-circle"></span>
-            </div>
-        </div>
+        <input type="file" id="files" name="files" multiple />
+        <output id="list"></output>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

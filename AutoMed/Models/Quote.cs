@@ -15,9 +15,11 @@ namespace AutoMed.Models
         public virtual List<Document> Documents { get; set; }
         [Display(Name = "Date Created")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DateCreated { get; set; }
         [Display(Name = "Date Reviewed")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? DateReviewed { get; set; }
         public string ReviewedById { get; set; }
         public AutoMedUser ReviewedBy { get; set; }
