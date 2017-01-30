@@ -28,3 +28,18 @@ textarea {
     border: 1px solid #000;
     margin: 10px 5px 0 0;
 }
+
+.navbar .navbar-nav {
+  display: inline-block;
+  float: none;
+  vertical-align: top;
+}
+
+.navbar .navbar-collapse {
+  text-align: center;
+}
+
+#nav ul {
+    display: inline-block;
+    list-style-type: none;
+}
