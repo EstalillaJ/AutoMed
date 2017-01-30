@@ -56,7 +56,7 @@
                     Value = "Manager"
                 });
             }
-            @Html.DropDownListFor(model => model.Role, listRoles, "-- Select Role --")
+            @Html.DropDownListFor(model => model.Role, listRoles, "-- Select Role --", new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
@@ -80,7 +80,7 @@
                     }
                 }
             }
-            @Html.DropDownListFor(model => model.Location, listLocactions, "-- Select Location --")
+            @Html.DropDownListFor(model => model.Location, listLocactions, "-- Select Location --", new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">

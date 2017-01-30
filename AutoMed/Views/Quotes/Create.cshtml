@@ -45,9 +45,11 @@
                 @Html.ValidationMessageFor(model => model.WorkDescription, "", new { @class = "text-danger" })
             </div>
         </div>
-        @Html.HiddenFor(m => m.CustomerId) 
-      
-        <input type="file" id="files" name="files" multiple />
+        @Html.HiddenFor(m => m.CustomerId)
+         
+        <label class="btn btn-default btn-file">
+           Upload Picture <input type="file" id="files" name="files" multiple />
+        </label>
         <output id="list"></output>
        
         <div class="form-group">
