@@ -83,7 +83,14 @@ namespace AutoMed.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    AutoMedUser user = db.Users.Where(u => u.UserName == model.UserName).First();
+                    IdentityRole role = db.Roles.Find(user.Roles.First().RoleId);
+                    if (role.Name == "Administrator")
+                        return RedirectToAction("Create", "Report", routeValues: null);
+                    else if (role.Name == "Manager")
+                        return RedirectToAction("Index", "Quotes", routeValues: null);
+                    else
+                        return RedirectToAction("Index", "Customers");
                 case SignInStatus.LockedOut:
                     return RedirectToAction("Login");
                 case SignInStatus.Failure:
@@ -238,7 +245,7 @@ namespace AutoMed.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         protected override void Dispose(bool disposing)

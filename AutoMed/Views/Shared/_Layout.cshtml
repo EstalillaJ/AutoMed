@@ -45,16 +45,8 @@
                                 <li>@Html.ActionLink("Employees", "Index", "Account")</li>
                                 <li>@Html.ActionLink("Reports", "Create", "Report")</li>
                             }
-                            <li>@Html.ActionLink("Settings", "ChangePassword", "Manage")</li>
                         </ul>
-                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                    {
-                        @Html.AntiForgeryToken()
-
-                        <ul class="nav navbar-nav">
-                            <li><a href="javascript:document.getElementById('logoutForm').submit()">Logout</a></li>
-                        </ul>
-                    }
+                    @Html.Partial("_LoginPartial")
                 }
             </div>
         </div>

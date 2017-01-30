@@ -3,15 +3,12 @@
 
 
 @{
-    ViewBag.Title = "Quote Manager";
+    ViewBag.Title = "Pending Quotes";
 }
 
-<h2>Quote Manager</h2>
+<h2>Pending Quotes</h2>
 
-<p>
-    @Html.ActionLink("Create New Quote", "Create")
-</p>
-@using (Html.BeginForm("UpdateCustomerStatus", "Quote"))
+@using (Html.BeginForm("UpdateQuoteStatuses", "Quotes"))
 {
 <table class="table table-striped">
     <tr>

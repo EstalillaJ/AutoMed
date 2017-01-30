@@ -28,8 +28,16 @@ namespace AutoMed.Controllers
         [Authorize(Roles = "Manager,Administrator")]
         public ActionResult Index()
         {
-            int locationId = db.Users.Include("Location").Where(x => x.UserName == User.Identity.Name).First().Location.Id;
-            List<Quote> quotes = db.Quotes.Where(x => x.Approval == QuoteStatus.Pending && locationId == x.Location.Id).ToList();
+            List<Quote> quotes;
+
+            if (User.IsInRole("Administrator"))
+                quotes = db.Quotes.Where(x => x.Approval == QuoteStatus.Pending).ToList();
+            else
+            {
+                int locationId = db.Users.Where(x => x.UserName == User.Identity.Name).First().Location.Id;
+                quotes = db.Quotes.Where(x => x.Approval == QuoteStatus.Pending && locationId == x.Location.Id).ToList();
+            }
+
             return View(quotes);
         }
 

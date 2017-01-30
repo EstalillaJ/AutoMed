@@ -229,33 +229,31 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\QuotesController.cs" />
-    <Compile Include="Controllers\QuoteController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="DBInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="DAL\ApplicationDbContext.cs" />
+    <Compile Include="Models\ViewModels\AccountViewModels.cs" />
+    <Compile Include="ApplicationDbContext.cs" />
     <Compile Include="Models\Checkbox.cs" />
     <Compile Include="Models\QuoteStatus.cs" />
     <Compile Include="Models\Color.cs" />
-    <Compile Include="Models\Customer.cs" />
-    <Compile Include="Models\Document.cs" />
+    <Compile Include="Models\DataModels\Customer.cs" />
+    <Compile Include="Models\DataModels\Document.cs" />
     <Compile Include="ReportGenerator.cs" />
     <Compile Include="Models\Sex.cs" />
-    <Compile Include="Models\AutoMedUser.cs" />
-    <Compile Include="Models\Location.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\DataModels\AutoMedUser.cs" />
+    <Compile Include="Models\DataModels\Location.cs" />
+    <Compile Include="Models\ViewModels\ManageViewModels.cs" />
     <Compile Include="Models\Month.cs" />
-    <Compile Include="Models\Quote.cs" />
-    <Compile Include="Models\CreateReportViewModel.cs" />
+    <Compile Include="Models\DataModels\Quote.cs" />
+    <Compile Include="Models\ViewModels\CreateReportViewModel.cs" />
     <Compile Include="Models\State.cs" />
-    <Compile Include="Models\Vehicle.cs" />
+    <Compile Include="Models\DataModels\Vehicle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -280,7 +278,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\uploadDocument.js" />
+    <Content Include="Scripts\UploadImages.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -299,7 +297,6 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Report\Create.cshtml" />
@@ -315,18 +312,13 @@
     <Content Include="Views\Quotes\Delete.cshtml" />
     <Content Include="Views\Quotes\Details.cshtml" />
     <Content Include="Views\Quotes\Edit.cshtml" />
-    <Content Include="Views\Quotes\Index.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\Delete.cshtml" />
-    <Content Include="Views\Quote\Index.cshtml" />
+    <Content Include="Views\Quotes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="fonts\" />
-    <Folder Include="Views\Document\" />
-    <Folder Include="Views\Default\" />
-    <Folder Include="Views\Picture\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
