@@ -13,6 +13,6 @@ namespace AutoMed.Models
         public int OwnerId { get; set; }
         public Customer Owner { get; set; }
         public int Id { get; set; }
-        public int OwnerId { get; set; }
+        
     }
 }

@@ -5,6 +5,7 @@
     <h4>Vehicle</h4>
     <hr />
     <dl class="dl-horizontal">
+        
         <dt>
             @Html.DisplayNameFor(model => model.Vin)
         </dt>
@@ -57,10 +58,12 @@
 
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.OwnerId)
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            <a href="javascript:void(0);" onclick="history.go(-1);">Back to Details</a>
+            <input type="submit" value="Delete" class="btn btn-default" /> |@Html.ActionLink("Back to Details", "Index", new { id = Model.OwnerId })
         </div>
+         
+
     }
 </div>

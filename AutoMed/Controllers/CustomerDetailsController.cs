@@ -50,7 +50,7 @@ namespace AutoMed.Controllers
             return View(customer);
         }
         // GET: Vehicles/Details/5
-        public ActionResult Details_V(int? id)
+        public ActionResult Details_V(int? id, Customer customer)
         {
             if (id == null)
             {
@@ -65,9 +65,9 @@ namespace AutoMed.Controllers
         }
 
         // GET: Vehicles/Create
-        public ActionResult Create_V()
+        public ActionResult Create_V(int id)
         {
-            return View();
+            return View(new Vehicle() { OwnerId = id });
         }
 
         // POST: Vehicles/Create
@@ -75,7 +75,7 @@ namespace AutoMed.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create_V([Bind(Include = "Id,Vin,Make,Model,Color,Year,LicensePlate")] Vehicle vehicle, Customer customer)
+        public ActionResult Create_V([Bind(Include = "Id,Vin,Make,Model,Color,Year,LicensePlate,OwnerId")] Vehicle vehicle, Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -107,13 +107,13 @@ namespace AutoMed.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit_V([Bind(Include = "Id,Vin,Make,Model,Color,Year,LicensePlate")] Vehicle vehicle)
+        public ActionResult Edit_V([Bind(Include = "Id,Vin,Make,Model,Color,Year,LicensePlate,OwnerId")] Vehicle vehicle, Customer customer)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(vehicle).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = customer.Id });
             }
             return View(vehicle);
         }
@@ -136,12 +136,12 @@ namespace AutoMed.Controllers
         // POST: Vehicles/Delete/5
         [HttpPost, ActionName("Delete_V")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmedV(int id)
+        public ActionResult DeleteConfirmedV(int id, Customer customer)
         {
             Vehicle vehicle = db.Vehicles.Find(id);
             db.Vehicles.Remove(vehicle);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { id = customer.Id });
         }
 
         

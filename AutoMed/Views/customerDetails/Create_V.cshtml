@@ -1,12 +1,13 @@
 ﻿@model AutoMed.Models.Vehicle
 
 
-   @Html.TextBox("test", null, new { style = "width:50px" })
-
+  
+    
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.OwnerId)
     
     <div class="form-horizontal">
         <h4>Vehicle</h4>
@@ -68,10 +69,10 @@
     </div>
 }
 
-<div>
-    <a href="javascript:void(0);" onclick="history.go(-1);">Back to Details</a>
-</div>
-
+@*<div>
+        <a href="javascript:void(0);" onclick="history.go(-1);">Back to Details</a>
+    </div>*@
+@Html.ActionLink("Back to Details", "Index", new { id = Model.OwnerId})
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

@@ -29,7 +29,6 @@ textarea {
   float: none;
   vertical-align: top;
 }
-
 .navbar .navbar-collapse {
   text-align: center;
 }
@@ -37,4 +36,24 @@ textarea {
 #nav ul {
     display: inline-block;
     list-style-type: none;
+}
+
+/*collapse*/
+.hr{margin:5px 0;}
+.accordion-group{margin-bottom:10px;border-radius:0;}
+.accordion-toggle{
+    background:rgb(248, 251, 252);		
+}
+.accordion-toggle:hover{
+	text-decoration: none;	
+}
+.accordion-heading .accordion-toggle {
+    display: block;
+    padding: 8px 15px;
+}
+.selectStyle{
+	width:46%; float: left; margin-right: 8%;
+}
+.accordion-group{
+	margin-bottom:20px;
 }
