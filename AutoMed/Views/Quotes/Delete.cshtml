@@ -1,0 +1,80 @@
+﻿@model AutoMed.Models.Quote
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Quote</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrentNumberInHousehold)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrentNumberInHousehold)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateCreated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateReviewed)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateReviewed)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiscountPercentage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiscountPercentage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalCost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalCost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Approval)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Approval)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WorkDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WorkDescription)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

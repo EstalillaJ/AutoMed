@@ -13,6 +13,7 @@ namespace AutoMed.DAL
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Vehicle>().HasRequired(v => v.Owner).WithMany(c => c.Vehicles).WillCascadeOnDelete(false);
+            modelBuilder.Entity<Quote>().HasMany(x => x.Documents).WithRequired(x => x.Quote).WillCascadeOnDelete(true);
             base.OnModelCreating(modelBuilder);
         }
         public static ApplicationDbContext Create()
