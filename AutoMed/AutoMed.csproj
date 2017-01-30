@@ -234,61 +234,17 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\QuoteController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="DBInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201612190454321_ChangeToIdentityUser.cs" />
-    <Compile Include="Migrations\201612190454321_ChangeToIdentityUser.Designer.cs">
-      <DependentUpon>201612190454321_ChangeToIdentityUser.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612292315012_SyEmail12_26.cs" />
-    <Compile Include="Migrations\201612292315012_SyEmail12_26.Designer.cs">
-      <DependentUpon>201612292315012_SyEmail12_26.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701080545235_NoIdea.cs" />
-    <Compile Include="Migrations\201701080545235_NoIdea.Designer.cs">
-      <DependentUpon>201701080545235_NoIdea.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701090155506_fixspelling.cs" />
-    <Compile Include="Migrations\201701090155506_fixspelling.Designer.cs">
-      <DependentUpon>201701090155506_fixspelling.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701240003569_employee crud.cs" />
-    <Compile Include="Migrations\201701240003569_employee crud.Designer.cs">
-      <DependentUpon>201701240003569_employee crud.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701240500495_externalIds.cs" />
-    <Compile Include="Migrations\201701240500495_externalIds.Designer.cs">
-      <DependentUpon>201701240500495_externalIds.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701240534181_ownerId.cs" />
-    <Compile Include="Migrations\201701240534181_ownerId.Designer.cs">
-      <DependentUpon>201701240534181_ownerId.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701240609076_externalIdsToQuotes.cs" />
-    <Compile Include="Migrations\201701240609076_externalIdsToQuotes.Designer.cs">
-      <DependentUpon>201701240609076_externalIdsToQuotes.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701190618076_test.cs" />
-    <Compile Include="Migrations\201701190618076_test.Designer.cs">
-      <DependentUpon>201701190618076_test.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701240645455_quoteenum.cs" />
-    <Compile Include="Migrations\201701240645455_quoteenum.Designer.cs">
-      <DependentUpon>201701240645455_quoteenum.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701250415415_isDeleted.cs" />
-    <Compile Include="Migrations\201701250415415_isDeleted.Designer.cs">
-      <DependentUpon>201701250415415_isDeleted.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="DAL\ApplicationDbContext.cs" />
     <Compile Include="Models\Checkbox.cs" />
     <Compile Include="Models\Color.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Document.cs" />
-    <Compile Include="Models\ReportGenerator.cs" />
+    <Compile Include="ReportGenerator.cs" />
     <Compile Include="Models\QuoteStatus.cs" />
     <Compile Include="Models\Sex.cs" />
     <Compile Include="Models\AutoMedUser.cs" />
@@ -307,6 +263,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="nike-logo.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -365,41 +322,6 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201612190454321_ChangeToIdentityUser.resx">
-      <DependentUpon>201612190454321_ChangeToIdentityUser.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612292315012_SyEmail12_26.resx">
-      <DependentUpon>201612292315012_SyEmail12_26.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701080545235_NoIdea.resx">
-      <DependentUpon>201701080545235_NoIdea.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701090155506_fixspelling.resx">
-      <DependentUpon>201701090155506_fixspelling.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701240003569_employee crud.resx">
-      <DependentUpon>201701240003569_employee crud.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701240500495_externalIds.resx">
-      <DependentUpon>201701240500495_externalIds.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701240534181_ownerId.resx">
-      <DependentUpon>201701240534181_ownerId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701240609076_externalIdsToQuotes.resx">
-      <DependentUpon>201701240609076_externalIdsToQuotes.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701190618076_test.resx">
-      <DependentUpon>201701190618076_test.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701240645455_quoteenum.resx">
-      <DependentUpon>201701240645455_quoteenum.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701250415415_isDeleted.resx">
-      <DependentUpon>201701250415415_isDeleted.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
