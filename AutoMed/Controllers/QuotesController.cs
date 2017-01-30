@@ -206,7 +206,7 @@ namespace AutoMed.Controllers
         }
 
         /// <summary>
-        /// retrieves image from blob storage
+        /// retrieves images associated with a customer from blob storage
         /// </summary>
         /// <param name="documentId"></param>
         /// <returns>returns file image</returns>
@@ -230,7 +230,7 @@ namespace AutoMed.Controllers
         }
 
         /// <summary>
-        /// posts document images to blob storage
+        /// posts document images to blob storage for a customer
         /// </summary>
         /// <param name="documents"></param>
         private void PostDocument(List<Document> documents)
