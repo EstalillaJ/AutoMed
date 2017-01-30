@@ -308,6 +308,9 @@
     <Content Include="Views\Locations\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\WatermarkString.cshtml" />
     <Content Include="Views\Report\Details.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Account\Delete.cshtml" />
     <Content Include="Views\Quote\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

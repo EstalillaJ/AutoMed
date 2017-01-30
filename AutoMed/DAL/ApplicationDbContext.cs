@@ -25,5 +25,6 @@ namespace AutoMed.DAL
         public DbSet<Quote> Quotes { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Location> Locations { get; set; }
+
     }
 }
