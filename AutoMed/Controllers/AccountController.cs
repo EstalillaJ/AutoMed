@@ -1,14 +1,18 @@
 ﻿using System;
-using System.Globalization;
+using System.Data.Entity;
 using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+using System.Net;
 using System.Web;
+using System.Web.Security;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
+using AutoMed.DAL;
 using AutoMed.Models;
+using Microsoft.AspNet.Identity.Owin;
+using System.Threading.Tasks;
+using Microsoft.Owin.Security;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
 
 namespace AutoMed.Controllers
 {
@@ -17,12 +21,12 @@ namespace AutoMed.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public AccountController()
         {
 
         }
-
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
@@ -35,9 +39,9 @@ namespace AutoMed.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -52,7 +56,6 @@ namespace AutoMed.Controllers
                 _userManager = value;
             }
         }
-
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -82,7 +85,7 @@ namespace AutoMed.Controllers
                 case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
-                    return View("Lockout");
+                    return RedirectToAction("Login");
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
@@ -90,6 +93,91 @@ namespace AutoMed.Controllers
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
             }
+        }
+        //The list page. Lists the employees and their 
+        public ActionResult Index()
+        {
+            List<AutoMedUser> lists = db.Users.Include("Location").ToList();
+
+            return View(lists);
+        }
+        /// <summary>
+        /// edits the users takes on their user id as a string. uses that id to create a list of all possible locations
+        /// list of all prossible roles 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult Edit(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            List<SelectListItem> locationList = new List<SelectListItem>();
+            db.Locations.ToList().ForEach(
+                v => locationList.Add(new SelectListItem { Text = v.Name, Value = v.Id.ToString()})
+                );
+            ViewBag.locationList = (IEnumerable<SelectListItem>)locationList;
+            List<SelectListItem> rolesList = new List<SelectListItem>();
+            db.Roles.ToList().ForEach(
+                v => rolesList.Add(new SelectListItem { Text = v.Name, Value = v.Id.ToString() })
+                );
+            ViewBag.rolesList = (IEnumerable<SelectListItem>)rolesList;
+            AutoMedUser user = UserManager.FindById(id);
+            var viewModel = new EditViewModel { UserName = user.UserName, LocationId = user.LocationId, Id = user.Id, Role = user.Roles.First().RoleId };   
+            return View(viewModel);
+
+        }
+        /// <summary>
+        /// confirms the changes it removes the current role then adds the new one added
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(EditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var editId = UserManager.FindById(model.Id);
+                editId.UserName = model.UserName;
+                editId.LocationId = model.LocationId;
+                RoleManager<IdentityRole> roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+                UserManager.RemoveFromRole(model.Id, roleManager.FindById(editId.Roles.First().RoleId).Name);
+                UserManager.AddToRole(model.Id, roleManager.FindById(model.Role).Name);
+                UserManager.Update(editId);
+                return RedirectToAction("Index");
+            }
+            return View(model);
+        }
+        /// <summary>
+        /// takes the users id and displays who they are with their location and roles
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult Delete(string id)
+        {
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            return View(UserManager.FindById(id));
+        }
+        /// <summary>
+        /// confirms the deletion by updating the database it uses the isDeleted function to lockout the user not actually delete from database.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(string id)
+        {
+            AutoMedUser deletion = UserManager.FindById(id);
+            deletion.isDeleted = true;
+            UserManager.Update(deletion);
+            //UserManager.Delete(UserManager.FindById(id));
+            return RedirectToAction("Index");
         }
 
         //
@@ -109,25 +197,41 @@ namespace AutoMed.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new AutoMedUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                Location location = db.Locations.Where(x => x.Name.Equals(model.Location)).FirstOrDefault();
+                var user = new AutoMedUser { UserName = model.UserName, LocationId = location.Id, isDeleted = false };
+
+                IdentityResult result = UserManager.Create(user, model.Password);
+                if (model.Role == "Administrator")
+                {
+                    UserManager.AddToRole(user.Id, "Administrator");
+                }
+                else if (model.Role == "Manager")
+                {
+                    UserManager.AddToRole(user.Id, "Manager");
+                }
+                else if (model.Role == "Employee")
+                {
+                    UserManager.AddToRole(user.Id, "Employee");
+                }
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-                    return RedirectToAction("Index", "Home");
+                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");                    
+                    return RedirectToAction("Index");
                 }
                 AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        private void AddErrors(IdentityResult result)
+        {
+            throw new NotImplementedException();
         }
 
         //
@@ -155,6 +259,7 @@ namespace AutoMed.Controllers
                     _signInManager.Dispose();
                     _signInManager = null;
                 }
+                db.Dispose();
             }
 
             base.Dispose(disposing);
@@ -169,14 +274,6 @@ namespace AutoMed.Controllers
             get
             {
                 return HttpContext.GetOwinContext().Authentication;
-            }
-        }
-
-        private void AddErrors(IdentityResult result)
-        {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError("", error);
             }
         }
 

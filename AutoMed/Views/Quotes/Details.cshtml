@@ -9,62 +9,56 @@
 <div>
     <h4>Quote</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.CurrentNumberInHousehold)
-        </dt>
+    <dl class="form-horizontal">
 
-        <dd>
-            @Html.DisplayFor(model => model.CurrentNumberInHousehold)
-        </dd>
+        <div class="form-group">
+            @Html.LabelFor(model => model.CurrentNumberInHousehold, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.CurrentNumberInHousehold, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DateCreated)
-        </dt>
+        <div class="form-group">
+            @Html.LabelFor(model => model.DateCreated, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.DateCreated, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.DateCreated)
-        </dd>
+        <div class="form-group">
+            @Html.LabelFor(model => model.DateReviewed, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.DateReviewed, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DateReview)
-        </dt>
+        <div class="form-group">
+            @Html.LabelFor(model => model.DiscountPercentage, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.DiscountPercentage, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.DateReview)
-        </dd>
+        <div class="form-group">
+            @Html.LabelFor(model => model.TotalCost, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.TotalCost, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DiscountPercentage)
-        </dt>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Approval, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.Approval, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.DiscountPercentage)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TotalCost)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TotalCost)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Approved)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Approved)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.WorkDescription)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.WorkDescription)
-        </dd>
+        <div class="form-group">
+            @Html.LabelFor(model => model.WorkDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.WorkDescription, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+        </div>
 
     </dl>
 </div>
