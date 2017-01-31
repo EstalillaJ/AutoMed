@@ -13,7 +13,7 @@
     {
         @Html.AntiForgeryToken()
 
-        <h3 class="text-center">Quote Info</h3>
+        <h3 class="text-center">Quote</h3>
 
         <div class="row">
             <div class="col-sm-6 col-xs-12 text-center">
@@ -71,7 +71,7 @@
 
         </div>
 
-       <h3 class="text-center">Customer Info</h3>
+       <h3 class="text-center">Customer</h3>
 
         <div class="row">
                 <div class="col-sm-3 text-center">
@@ -129,7 +129,7 @@
         </div>
         <hr />
         <div class="col-md-12 text-center">
-            <h3>Data To Include</h3>
+            <h3>Data</h3>
             <p class="hidden text-danger"  id="data-field-error">Please choose at least one data field</p>
             @Html.CheckBoxFor(m => m.AllColumns) @Html.LabelFor(m => m.AllColumns)
         </div>

@@ -78,7 +78,7 @@ namespace AutoMed.Controllers
             );
 
             ViewBag.VehicleSelect = (IEnumerable<SelectListItem>)vehicleSelect;
-            return View(new Quote() { CustomerId = id });
+            return View(new Quote() { CustomerId = id, Customer = db.Customers.Find(id) });
         }
 
         // POST: Quotes/Create

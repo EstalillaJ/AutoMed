@@ -8,7 +8,7 @@
 
 <h2>Pending Quotes</h2>
 
-@using (Html.BeginForm("UpdateQuoteStatuses", "Quotes"))
+@using (Html.BeginForm("UpdateQuoteStatuses", "Quotes" ))
 {
 <table class="table table-striped">
     <tr>
@@ -49,7 +49,7 @@
 
                 @Html.AntiForgeryToken()
                 <td>
-                    @Html.EnumDropDownListFor(m => m[i].Approval)
+                    @Html.EnumDropDownListFor(m => m[i].Approval, new { @class = "btn btn-default" })
                 </td>
             </tr>
         }
