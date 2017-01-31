@@ -1,16 +1,16 @@
 ﻿@model AutoMed.Models.Vehicle
 
+
 @{
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
 
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+    @Html.HiddenFor(m => m.OwnerId)
+
     <div class="form-horizontal">
         <h4>Vehicle</h4>
         <hr />
@@ -71,10 +71,10 @@
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-
+@*<div>
+        <a href="javascript:void(0);" onclick="history.go(-1);">Back to Details</a>
+    </div>*@
+@Html.ActionLink("Back to Details", "Details", "Customers", new { id = Model.OwnerId }, new { })
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

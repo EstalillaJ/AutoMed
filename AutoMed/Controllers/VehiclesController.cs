@@ -11,7 +11,6 @@ using AutoMed.Models;
 
 namespace AutoMed.Controllers
 {
-   
     public class VehiclesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -19,11 +18,12 @@ namespace AutoMed.Controllers
         // GET: Vehicles
         public ActionResult Index()
         {
-            return View(db.Vehicles.ToList());
+            var vehicles = db.Vehicles.Include(v => v.Owner);
+            return View(vehicles.ToList());
         }
-       
+
         // GET: Vehicles/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, Customer customer)
         {
             if (id == null)
             {
@@ -38,9 +38,9 @@ namespace AutoMed.Controllers
         }
 
         // GET: Vehicles/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
-            return View();
+            return View(new Vehicle() { OwnerId = id });
         }
 
         // POST: Vehicles/Create
@@ -48,15 +48,16 @@ namespace AutoMed.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Vin,Make,Model,Color,Year,LicensePlate")] Vehicle vehicle)
+        public ActionResult Create([Bind(Include = "Id,Vin,Make,Model,Color,Year,LicensePlate,OwnerId")] Vehicle vehicle, Customer customer)
         {
             if (ModelState.IsValid)
             {
                 db.Vehicles.Add(vehicle);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Customers",  new { id = customer.Id });
             }
 
+            ViewBag.OwnerId = new SelectList(db.Customers, "Id", "FirstName", vehicle.OwnerId);
             return View(vehicle);
         }
 
@@ -72,6 +73,7 @@ namespace AutoMed.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.OwnerId = new SelectList(db.Customers, "Id", "FirstName", vehicle.OwnerId);
             return View(vehicle);
         }
 
@@ -80,14 +82,15 @@ namespace AutoMed.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Vin,Make,Model,Color,Year,LicensePlate")] Vehicle vehicle)
+        public ActionResult Edit([Bind(Include = "Id,Vin,Make,Model,Color,Year,LicensePlate,OwnerId")] Vehicle vehicle, Customer customer)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(vehicle).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Customers", new { id = customer.Id });
             }
+            ViewBag.OwnerId = new SelectList(db.Customers, "Id", "FirstName", vehicle.OwnerId);
             return View(vehicle);
         }
 
@@ -109,12 +112,12 @@ namespace AutoMed.Controllers
         // POST: Vehicles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id, Customer customer)
         {
             Vehicle vehicle = db.Vehicles.Find(id);
             db.Vehicles.Remove(vehicle);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Customers", new { id = customer.Id });
         }
 
         protected override void Dispose(bool disposing)
@@ -126,5 +129,4 @@ namespace AutoMed.Controllers
             base.Dispose(disposing);
         }
     }
-   
 }
