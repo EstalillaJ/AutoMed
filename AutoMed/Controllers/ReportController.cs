@@ -40,22 +40,23 @@ namespace AutoMed.Controllers
         private List<Quote> GetMatchingQuotes(CreateReportViewModel model)
         {
             List<Quote> matchedQuotes = new List<Quote>();
-            DateTime startDate = new DateTime(model.StartYear ?? 2015, (int?) model.StartMonth ?? 1, model.StartDay ?? 1);
-            DateTime endDate = new DateTime(model.EndYear ?? 3000, (int?) model.EndMonth ?? 1, model.EndDay ?? 1);
-            List<int> selectedLocations = model.Locations.Where(x => x.IsChecked).Select(x => x.Item.Id).ToList();
+            List<int> selectedLocations = model.Locations.Where(checkbox => checkbox.IsChecked).Select(checkbox => checkbox.Item.Id).ToList();
             double maxDiscountPercentage = model.MaxDiscountPercentage ?? double.MaxValue;
             double minDiscountPercentage = model.MinDiscountPercentage ?? double.MinValue;
             double maxDiscountDollars = model.MaxDiscountDollars ?? double.MaxValue;
             double minDiscountDollars = model.MinDiscountDollars ?? double.MinValue;
             string city = model.City ?? string.Empty;
             string address = model.Address ?? string.Empty;
+            model.StartDate = model.StartDate ?? DateTime.MinValue;
+            model.EndDate = model.EndDate ?? DateTime.MaxValue;
+
             address = address.ToLower(); /* seems EF does something odd when we next this ToLower()
                                             call below (empty string never matches anything when it should match all) */
 
             ExpressionStarter<Quote> isMostlyMatched = PredicateBuilder.New<Quote>(q =>
                   (q.Customer.AddressLine1 + q.Customer.AddressLine2).ToLower().Contains(address) &&
                   selectedLocations.Contains(q.Location.Id) &&
-                  startDate <= q.DateCreated && q.DateCreated <= endDate &&
+                  model.StartDate <= q.DateCreated && q.DateCreated <= model.EndDate &&
                   minDiscountPercentage <= q.DiscountPercentage && q.DiscountPercentage <= maxDiscountPercentage &&
                   minDiscountDollars <= q.TotalCost && q.TotalCost <= maxDiscountDollars &&
                   q.Customer.City.Contains(city));
