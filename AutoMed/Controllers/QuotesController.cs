@@ -12,6 +12,7 @@ using AutoMed.Models;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using System.Web.Configuration;
 
 namespace AutoMed.Controllers
 {
@@ -21,12 +22,23 @@ namespace AutoMed.Controllers
 
         // GET: Quotes
         /// <summary>
-        /// gets a list of quotes from the database
+        /// gets a list of quotes unapproved quotes at the current users location returns a view of them
         /// </summary>
-        /// <returns>list of quotes</returns>
+        /// <returns>view of quotes</returns>
+        [Authorize(Roles = "Manager,Administrator")]
         public ActionResult Index()
         {
-            return View(db.Quotes.ToList());
+            List<Quote> quotes;
+
+            if (User.IsInRole("Administrator"))
+                quotes = db.Quotes.Where(x => x.Approval == QuoteStatus.Pending).ToList();
+            else
+            {
+                int locationId = db.Users.Where(x => x.UserName == User.Identity.Name).First().Location.Id;
+                quotes = db.Quotes.Where(x => x.Approval == QuoteStatus.Pending && locationId == x.Location.Id).ToList();
+            }
+
+            return View(quotes);
         }
 
         // GET: Quotes/Details/5
@@ -66,7 +78,7 @@ namespace AutoMed.Controllers
             );
 
             ViewBag.VehicleSelect = (IEnumerable<SelectListItem>)vehicleSelect;
-            return View(new Quote() { CustomerId = id });
+            return View(new Quote() { CustomerId = id, Customer = db.Customers.Find(id) });
         }
 
         // POST: Quotes/Create
@@ -86,18 +98,31 @@ namespace AutoMed.Controllers
                 AutoMedUser loggedIn = db.Users.Where(x => x.UserName.Equals(User.Identity.Name)).Include("Location").First();
 
                 quote.Documents = new List<Document>();
-                quote.Approval = User.IsInRole("Administrator") || User.IsInRole("Manager") ? QuoteStatus.Accepted : QuoteStatus.Pending;
-                files.ForEach(x => { if (x != null) quote.Documents.Add(new Document() { UploadedImage = x }); });
+                files.ForEach(file => { if (file != null) quote.Documents.Add(new Document() { UploadedImage = file }); });
                 quote.DateCreated = DateTime.Now;
-                quote.DateReviewed = null;
                 quote.LocationId = loggedIn.Location.Id;
                 quote.CreatedById = loggedIn.Id;
                 quote.SetDiscountPercentage();
+
+                string redir;
+                if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
+                {
+                    quote.Approval = QuoteStatus.Accepted;
+                    quote.DateReviewed = quote.DateCreated;
+                    redir = "Edit";
+                }
+                else
+                {
+                    quote.Approval = QuoteStatus.Pending;
+                    quote.DateReviewed = null;
+                    redir = "Details";
+                }
+
                 db.Quotes.Add(quote);
                 db.SaveChanges();
+                UploadDocumentBlobs(quote.Documents);
 
-                PostDocument(quote.Documents);
-                return RedirectToAction("Details", new { id = quote.Id });
+                return RedirectToAction(redir, new { id = quote.Id });
             }
 
             return View(quote);
@@ -109,6 +134,7 @@ namespace AutoMed.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns>quote view</returns>
+        [Authorize(Roles = "Manager,Administrator")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -132,6 +158,7 @@ namespace AutoMed.Controllers
         /// <returns>redirects to index view or quote view</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager,Administrator")]
         public ActionResult Edit([Bind(Include = "Id,CurrentNumberInHousehold,DiscountPercentage,TotalCost,Approval,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
         {
             if (ModelState.IsValid)
@@ -147,17 +174,31 @@ namespace AutoMed.Controllers
                 db.Entry(quote).Property(x => x.WorkDescription).IsModified = true;
                 quote.SetDiscountPercentage();
                 db.SaveChanges();
-                PostDocument(quote.Documents);
+                UploadDocumentBlobs(quote.Documents);
 
                 return RedirectToAction("Index");
-
             }
 
             return View(quote);
-
         }
 
-
+        /// <summary>
+        ///  Recieves a list of quotes from a view and udpates their status in the database
+        /// </summary>
+        /// <param name="quotes">List of quotes to have their statuses changed</param>
+        /// <returns>The Quotes Index View</returns>
+        [HttpPost]
+        [Authorize(Roles = "Manager,Administrator")]
+        public ActionResult UpdateQuoteStatuses(List<Quote> quotes)
+        {
+            foreach (Quote quote in quotes)
+            {
+                db.Quotes.Attach(quote); // State = Unchanged
+                db.Entry(quote).Property(x => x.Approval).IsModified = true;
+            }
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
 
         // GET: Quotes/Delete/5
         /// <summary>
@@ -165,6 +206,7 @@ namespace AutoMed.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns>view of quote</returns>
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -187,6 +229,7 @@ namespace AutoMed.Controllers
         /// <returns>redirects to quote index view</returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public ActionResult DeleteConfirmed(int id)
         {
             
@@ -215,10 +258,10 @@ namespace AutoMed.Controllers
         // <img src="Document/Image/{documentId}" />
         public ActionResult GetImage(int documentId)
         {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("BlobStorageConnection"));
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(WebConfigurationManager.AppSettings["BlobStorageConnection"]);
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
             // container name must be lowercase
-            CloudBlobContainer container = blobClient.GetContainerReference("images");
+            CloudBlobContainer container = blobClient.GetContainerReference(WebConfigurationManager.AppSettings["BlobContainer"]);
             CloudBlockBlob blockBlob = container.GetBlockBlobReference(documentId.ToString());
 
             if (!blockBlob.Exists()) // Maybe you could do this with a call to the context instead.
@@ -233,12 +276,12 @@ namespace AutoMed.Controllers
         /// posts document images to blob storage for a customer
         /// </summary>
         /// <param name="documents"></param>
-        private void PostDocument(List<Document> documents)
+        private void UploadDocumentBlobs(List<Document> documents)
         {
 
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("BlobStorageConnection"));
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(WebConfigurationManager.AppSettings["BlobStorageConnection"]);
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            CloudBlobContainer container = blobClient.GetContainerReference("images");
+            CloudBlobContainer container = blobClient.GetContainerReference(WebConfigurationManager.AppSettings["BlobContainer"]);
             container.CreateIfNotExists();
 
             foreach (Document document in documents)
@@ -248,7 +291,6 @@ namespace AutoMed.Controllers
                 blockBlob.Properties.ContentType = document.UploadedImage.ContentType;
                 blockBlob.UploadFromStream(document.UploadedImage.InputStream);
             }
-
         }
     }
 }

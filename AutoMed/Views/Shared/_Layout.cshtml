@@ -9,7 +9,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - AutoMed Customer Intake</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -34,7 +34,7 @@
                     </ul>
                 </div>
                         <ul class="nav navbar-nav">
-                            <li>@Html.ActionLink("Customers", "Create", "Customers")</li>
+                            <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
                             @if (User.IsInRole("Manager") || User.IsInRole("Administrator"))
                             {
                                 <li>@Html.ActionLink("Quotes", "Index", "Quotes")</li>
@@ -44,18 +44,9 @@
                                 <li>@Html.ActionLink("Locations", "Index", "Locations")</li>
                                 <li>@Html.ActionLink("Employees", "Index", "Account")</li>
                                 <li>@Html.ActionLink("Reports", "Create", "Report")</li>
-                                <li>@Html.ActionLink("Quotes", "Index", "Quotes")</li>
                             }
-                            <li>@Html.ActionLink("Settings", "ChangePassword", "Manage")</li>
                         </ul>
-                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                    {
-                        @Html.AntiForgeryToken()
-
-                        <ul class="nav navbar-nav">
-                            <li><a href="javascript:document.getElementById('logoutForm').submit()">Logout</a></li>
-                        </ul>
-                    }
+                    @Html.Partial("_LoginPartial")
                 }
             </div>
         </div>

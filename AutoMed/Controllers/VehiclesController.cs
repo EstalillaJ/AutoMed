@@ -94,6 +94,7 @@ namespace AutoMed.Controllers
             return View(vehicle);
         }
 
+        [Authorize(Roles = "Manager,Administrator")]
         // GET: Vehicles/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -112,6 +113,7 @@ namespace AutoMed.Controllers
         // POST: Vehicles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager,Administrator")]
         public ActionResult DeleteConfirmed(int id, Customer customer)
         {
             Vehicle vehicle = db.Vehicles.Find(id);

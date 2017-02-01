@@ -19,10 +19,10 @@ namespace AutoMed.Models
         }
         public List<Checkbox<string>> ColumnsToInclude { get; set; }
 
-        [Display(Name = "Include All Data")]
+        [Display(Name = "All")]
         public bool AllColumns { get; set; }
 
-        [Display(Name="Include All Locations")]
+        [Display(Name="All")]
         public bool AllLocations { get; set; }
         public List<Checkbox<Location>> Locations { get; set; }
         [Display(Prompt="Max ($)")]

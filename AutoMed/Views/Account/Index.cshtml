@@ -6,52 +6,62 @@
 @{
     ViewBag.Title = "Index";
 }
-
+<!-- DataTables CDN -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css" />
 <h2>All Employees</h2>
 
 <p>
     @Html.ActionLink("Register New Employee", "Register")
 </p>
-<table class="table table-striped">
-    <tr>
-        <th>
-            Username
-        </th>
-        <th>
-            Role
-        </th>
-        <th>
-            Location
-        </th>
-        <th></th>
-    </tr>
-
+<table class="table table-striped" id="accounts-table">
+    <thead>
+        <tr>
+            <th>
+                Username
+            </th>
+            <th>
+                Role
+            </th>
+            <th>
+                Location
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
     @foreach (var item in Model)
     {
         if (item.isDeleted == false || item.isDeleted == null)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
-            </td>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
 
-            <td>
-                @{
-                    ApplicationDbContext db = new ApplicationDbContext();
-                    RoleManager<IdentityRole> roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
-                    string roleName = roleManager.FindById(item.Roles.First().RoleId).Name;
-                    string locationName = item.Location.Name;
-                }
-                @roleName
-            </td>
-            <td>
-                @locationName
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-        }
+                <td>
+                    @{
+                        ApplicationDbContext db = new ApplicationDbContext();
+                        RoleManager<IdentityRole> roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+                        string roleName = roleManager.FindById(item.Roles.First().RoleId).Name;
+                        string locationName = item.Location.Name;
+                     }
+                    @roleName
+                </td>
+                <td>
+                    @locationName
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+       }
     }
+    </tbody>
+
 </table>
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">$("#accounts-table").DataTable();</script>
+}
