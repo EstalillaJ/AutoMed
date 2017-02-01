@@ -92,7 +92,10 @@
         <div class="form-group">
             @Html.LabelFor(model => model.BirthDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
+                <!-- Need to set value to a specific format or chrome wouldn't display the date already in the model -->
+                <input class="form-control text-box single-line" data-val="true" data-val-date="The field Birth Date must be a date."
+                        data-val-required="The Birth Date field is required." id="BirthDate" name="BirthDate"
+                        type="date" value="@Model.BirthDate.Year-@Model.BirthDate.Month.ToString().PadLeft(2, '0')-@Model.BirthDate.Day">
                 @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
             </div>
         </div>

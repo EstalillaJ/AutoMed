@@ -26,7 +26,7 @@
 
         <div class="row">
             <div class="col-sm-2 col-xs-4 text-center">
-                @Html.EnumDropDownListFor(m => m.StartMonth, "Month", new { @class="form-control" })
+                @Html.EnumDropDownListFor(m => m.StartMonth, "Month", new { @class= "form-control" })
             </div>
             <div class="col-sm-2 col-xs-4 text-center">
                 @Html.DropDownListFor(m => m.StartDay, new SelectList(Enumerable.Range(1, 31)), "Day", new { @class = "form-control" })
