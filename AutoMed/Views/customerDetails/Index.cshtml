@@ -1,0 +1,189 @@
+﻿
+@model AutoMed.Models.Customer
+
+
+
+<head>
+    
+   
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    @Scripts.Render("~/Scripts/collapse.js")
+</head>
+
+
+<h2>Index</h2>
+<body>
+    
+    <h1>Customer Details</h1>
+
+    @Html.ActionLink("Back to Customers", "Index", "Customers")
+
+
+
+    <h1> @Html.DisplayFor(modelItem => Model.FirstName)  @Html.DisplayFor(modelItem => Model.LastName)</h1>
+
+
+    <div class="container">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="toggle" href="#collapseOne">
+                                <i class="fa fa-plus"></i>     Vehicles
+                            </a>
+                        </div>
+                        <div id="collapseOne" class="accordion-body collapse out">
+                            <div class="accordion-inner">
+                                <br>
+                                <p>
+                                
+                                    @Html.ActionLink("Create New", "Create_V", new { id = Model.Id })
+                                
+
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th>
+                                            "vin"
+                                        </th>
+                                        <th>
+                                            "make"
+                                        </th>
+                                        <th>
+                                            "model"
+                                        </th>
+                                        <th>
+                                            color
+                                        </th>
+                                        <th>
+                                            year
+                                        </th>
+                                        <th>
+                                            License Plate
+                                        </th>
+                                        <th></th>
+                                    </tr>
+
+
+
+                                    @for (int i = 0; i < Model.Vehicles.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => Model.Vehicles[i].Vin)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => Model.Vehicles[i].Make)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => Model.Vehicles[i].Model)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => Model.Vehicles[i].Color)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => Model.Vehicles[i].Year)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => Model.Vehicles[i].LicensePlate)
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink("Edit", "Edit_V", new { id = Model.Vehicles[i].Id }) |
+                                                @Html.ActionLink("Details", "Details_V", new { id = Model.Vehicles[i].Id }) |
+                                                @Html.ActionLink("Delete", "Delete_V", new { id = Model.Vehicles[i].Id })
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="toggle" href="#collapseTwo">
+                                <i class="fa fa-plus"></i>  Quotes
+                            </a>
+                        </div>
+
+                        <div id="collapseTwo" class="accordion-body collapse out">
+                            <div class="accordion-inner">
+                                <br> 
+                                <p>
+                                    @Html.ActionLink("Create New", "Create_Q")
+                                </p>
+                                <table class="table table-striped">
+                                    <tr>
+                                        @* <th>
+                                                Persons in Houshold
+                                            </th>*@
+                                        <th>
+                                            Date Created
+                                        </th>
+                                        <th>
+                                            Date Review
+                                        </th>
+                                        <th>
+                                            Discount %
+                                        </th>
+                                        <th>
+                                            Total Cost
+                                        </th>
+                                        <th>
+                                            Approval
+                                        </th>
+                                        @* <th>
+                                               Description
+                                            </th>*@
+                                        <th></th>
+                                    </tr>
+
+                                    @for (int j = 0; j < Model.Quotes.Count; j++)
+                                    {
+                                        <tr>
+                                            @* <td>
+                                                    @Html.DisplayFor(modelItem => Model.Quotes[j].CurrentNumberInHousehold)
+                                                </td>*@
+                                            <td>
+                                                @Html.DisplayFor(modelItem => Model.Quotes[j].DateCreated)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => Model.Quotes[j].DateReviewed)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => Model.Quotes[j].DiscountPercentage)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => Model.Quotes[j].TotalCost)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => Model.Quotes[j].Approval)
+                                            </td>
+                                            @*<td>
+                                                    @Html.DisplayFor(modelItem => Model.Quotes[j].WorkDescription)
+                                                </td>*@
+                                            <td>
+                                                @Html.ActionLink("Edit", "Edit_Q", new { id = Model.Quotes[j].Id }) |
+                                                @Html.ActionLink("Details", "Details_Q", new { id = Model.Quotes[j].Id }) |
+                                                @Html.ActionLink("Delete", "Delete_Q", new { id = Model.Quotes[j].Id })
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+

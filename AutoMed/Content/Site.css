@@ -23,18 +23,12 @@ textarea {
     max-width: 280px;
 }
 
-.thumb {
-    height: 75px;
-    border: 1px solid #000;
-    margin: 10px 5px 0 0;
-}
 
 .navbar .navbar-nav {
   display: inline-block;
   float: none;
   vertical-align: top;
 }
-
 .navbar .navbar-collapse {
   text-align: center;
 }
@@ -43,6 +37,7 @@ textarea {
     display: inline-block;
     list-style-type: none;
 }
+
 
 .btn-file {
     position: relative;
@@ -63,3 +58,24 @@ textarea {
     cursor: inherit;
     display: block;
 }
+
+/*collapse*/
+.hr{margin:5px 0;}
+.accordion-group{margin-bottom:10px;border-radius:0;}
+.accordion-toggle{
+    background:rgb(248, 251, 252);		
+}
+.accordion-toggle:hover{
+	text-decoration: none;	
+}
+.accordion-heading .accordion-toggle {
+    display: block;
+    padding: 8px 15px;
+}
+.selectStyle{
+	width:46%; float: left; margin-right: 8%;
+}
+.accordion-group{
+	margin-bottom:20px;
+}
+

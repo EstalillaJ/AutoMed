@@ -15,5 +15,6 @@ namespace AutoMed.Models
         public Customer Owner { get; set; }
         [ScaffoldColumn(false)]
         public int Id { get; set; }
+        
     }
 }

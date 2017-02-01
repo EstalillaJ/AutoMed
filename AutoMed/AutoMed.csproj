@@ -233,6 +233,9 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\QuotesController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\customerDetailsController.cs" />
+    <Compile Include="Controllers\CustomersController.cs" />
+    <Compile Include="Controllers\VehiclesController.cs" />
     <Compile Include="DBInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -268,6 +271,7 @@
     <Content Include="Connected Services\automed2123341232020AzureStorage\ConnectedService.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\DateSelect.js" />
+    <Content Include="Scripts\collapse.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -316,9 +320,32 @@
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\Delete.cshtml" />
     <Content Include="Views\Quotes\Index.cshtml" />
+    <Content Include="Views\Quote\Index.cshtml" />
+    <Content Include="Views\customerDetails\Index.cshtml" />
+    <Content Include="Views\customerDetails\Details_V.cshtml" />
+    <Content Include="Views\customerDetails\Create_V.cshtml" />
+    <Content Include="Views\customerDetails\Edit_V.cshtml" />
+    <Content Include="Views\customerDetails\Delete_V.cshtml" />
+    <Content Include="Views\customerDetails\Details_Q.cshtml" />
+    <Content Include="Views\customerDetails\Create_Q.cshtml" />
+    <Content Include="Views\customerDetails\Edit_Q.cshtml" />
+    <Content Include="Views\customerDetails\Delete_Q.cshtml" />
+    <Content Include="Views\Customers\Create.cshtml" />
+    <Content Include="Views\Customers\Delete.cshtml" />
+    <Content Include="Views\Customers\Details.cshtml" />
+    <Content Include="Views\Customers\Edit.cshtml" />
+    <Content Include="Views\Customers\Index.cshtml" />
+    <Content Include="Views\Vehicles\Create.cshtml" />
+    <Content Include="Views\Vehicles\Delete.cshtml" />
+    <Content Include="Views\Vehicles\Details.cshtml" />
+    <Content Include="Views\Vehicles\Edit.cshtml" />
+    <Content Include="Views\Vehicles\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="fonts\" />
+    <Folder Include="Views\Default\" />
+    <Folder Include="Views\Document\" />
+    <Folder Include="Views\Picture\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
