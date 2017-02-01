@@ -10,7 +10,7 @@ using AutoMed.DAL;
 using AutoMed.Models;
 
 namespace AutoMed.Controllers
-{
+{   [Authorize]
     public class CustomersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -106,6 +106,7 @@ namespace AutoMed.Controllers
             return View(customer);
         }
 
+        [Authorize(Roles ="Manager,Administrator")]
         // GET: Customers/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -124,6 +125,7 @@ namespace AutoMed.Controllers
         // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager,Administrator")]
         public ActionResult DeleteConfirmed(int id)
         {
             Customer customer = db.Customers.Find(id);

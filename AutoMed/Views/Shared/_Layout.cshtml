@@ -34,7 +34,7 @@
                     </ul>
                 </div>
                         <ul class="nav navbar-nav">
-                            <li>@Html.ActionLink("Customers", "Create", "Customers")</li>
+                            <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
                             @if (User.IsInRole("Manager") || User.IsInRole("Administrator"))
                             {
                                 <li>@Html.ActionLink("Quotes", "Index", "Quotes")</li>
