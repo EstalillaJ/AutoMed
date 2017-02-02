@@ -44,16 +44,19 @@
                             <a id="changepassword-link" href="/Manage/ChangePassword" class="btn btn-sm">Change Password</a>
                         </li>
                         <li><a class="btn btn-sm" href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-</ul>
+            </ul>
             }
         </div>
         <div class="col-md-10">
             @RenderBody()
         </div>
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - AutoMed</p>
-        </footer>
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr />
+                <p>&copy; @DateTime.Now.Year - AutoMed</p>
+            </div>
+        </div>
     </div>
 
     @Scripts.Render("~/bundles/jquery")

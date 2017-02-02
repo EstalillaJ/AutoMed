@@ -1,7 +1,5 @@
 .container {
     background-color: #ffffff;
-    display: flex;
-    flex-wrap: wrap;
     box-shadow: 1px 1px 1px grey;
 }
 
@@ -116,7 +114,6 @@ textarea {
 .navbar-fixed-left .navbar-nav > li {
   float: none;  /* Cancel default li float: left */
   margin: 0 0 5px 0;
-
 }
 
 .navbar-fixed-left .navbar-nav > li > a{
