@@ -46,11 +46,12 @@
                 </div>
             </div>
             @Html.HiddenFor(m => m.CustomerId)
+            <label class="btn btn-default btn-file">
+                Upload Picture <input type="file" id="files" name="files" multiple />
+            </label>
+            <output id="list"></output>
         </div>
-        <label class="btn btn-default btn-file">
-           Upload Picture <input type="file" id="files" name="files" multiple />
-        </label>
-        <output id="list"></output>
+
        
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
