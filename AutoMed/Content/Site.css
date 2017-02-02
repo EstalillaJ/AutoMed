@@ -8,7 +8,7 @@
 body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-color: #CAB8A2;
+    background-color: #D7cec7;
 }
 
 
@@ -116,6 +116,12 @@ textarea {
 .navbar-fixed-left .navbar-nav > li {
   float: none;  /* Cancel default li float: left */
   margin: 0 0 5px 0;
+
+}
+
+.navbar-fixed-left .navbar-nav > li > a{
+  color: #565656
+
 }
 
 .navbar-fixed-left .navbar-nav > li:hover {
@@ -132,4 +138,8 @@ textarea {
     height: 75px;
     border: 1px solid #000;
     margin: 10px 5px 0 0;
+}
+
+hr {
+  border-color: #76323F;
 }
