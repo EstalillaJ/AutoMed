@@ -3,11 +3,9 @@
 @{
     ViewBag.Title = "Reports";
 }
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <h2>Generate A Report</h2>
-        </div>
-    </div>
+
+    <h2>Generate A Report</h2>
+    <br />
 
     @using (Html.BeginForm("Details", "Report", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "form-create" }))
     {
@@ -208,6 +206,9 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/Scripts/DateSelect.js")
     <script>
+
+        $("#reports-link").addClass("active");
+
         var numLocations = @Model.Locations.Count();        
 
         function toggleCheckboxes(idOfMaster, classOfSlaves, cb){

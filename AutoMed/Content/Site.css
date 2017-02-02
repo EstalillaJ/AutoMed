@@ -1,11 +1,14 @@
-﻿.container {
+.container {
     background-color: #ffffff;
+    display: flex;
+    flex-wrap: wrap;
+    box-shadow: 1px 1px 1px grey;
 }
 
 body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-color: #808080;
+    background-color: #CAB8A2;
 }
 
 
@@ -50,6 +53,7 @@ textarea {
     position: relative;
     overflow: hidden;
 }
+
 .btn-file input[type=file] {
     position: absolute;
     top: 0;
@@ -92,4 +96,34 @@ textarea {
    max-width:1200px;
    min-width: 900px;
   }
+}
+
+.active {
+  background-color: #eee;
+  font-weight: bolder; 
+}
+
+.navbar-nav > li> .active:hover {
+  background-color: #eee;
+}
+
+.navbar-fixed-left {
+  padding-top:10%;
+  width: 140px;
+  border-radius: 0;
+}
+
+.navbar-fixed-left .navbar-nav > li {
+  float: none;  /* Cancel default li float: left */
+  margin: 0 0 5px 0;
+}
+
+.navbar-fixed-left .navbar-nav > li:hover {
+  float: none;  /* Cancel default li float: left */
+}
+
+/* On using dropdown menu (To right shift popuped) */
+.navbar-fixed-left .navbar-nav > li > .dropdown-menu {
+  margin-top: -50px;
+  margin-left: 140px;
 }
