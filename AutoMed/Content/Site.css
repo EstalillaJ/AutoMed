@@ -1,7 +1,17 @@
-﻿body {
+.container {
+    background-color: #ffffff;
+    display: flex;
+    flex-wrap: wrap;
+    box-shadow: 1px 1px 1px grey;
+}
+
+body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background-color: #D7cec7;
 }
+
+
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
@@ -43,6 +53,7 @@ textarea {
     position: relative;
     overflow: hidden;
 }
+
 .btn-file input[type=file] {
     position: absolute;
     top: 0;
@@ -79,3 +90,56 @@ textarea {
 	margin-bottom:20px;
 }
 
+@media (min-width: 768px) {
+  .modal-xl {
+    width: 110%;
+   max-width:1200px;
+   min-width: 900px;
+  }
+}
+
+.active {
+  background-color: #eee;
+  font-weight: bolder; 
+}
+
+.navbar-nav > li> .active:hover {
+  background-color: #eee;
+}
+
+.navbar-fixed-left {
+  padding-top:10%;
+  width: 140px;
+  border-radius: 0;
+}
+
+.navbar-fixed-left .navbar-nav > li {
+  float: none;  /* Cancel default li float: left */
+  margin: 0 0 5px 0;
+
+}
+
+.navbar-fixed-left .navbar-nav > li > a{
+  color: #565656
+
+}
+
+.navbar-fixed-left .navbar-nav > li:hover {
+  float: none;  /* Cancel default li float: left */
+}
+
+/* On using dropdown menu (To right shift popuped) */
+.navbar-fixed-left .navbar-nav > li > .dropdown-menu {
+  margin-top: -50px;
+  margin-left: 140px;
+}
+
+.thumb {
+    height: 75px;
+    border: 1px solid #000;
+    margin: 10px 5px 0 0;
+}
+
+hr {
+  border-color: #76323F;
+}

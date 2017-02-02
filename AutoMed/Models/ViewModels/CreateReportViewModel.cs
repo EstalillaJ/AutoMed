@@ -17,6 +17,7 @@ namespace AutoMed.Models
                 ColumnsToInclude.Add(new Checkbox<string>() { Item = item });
             }
         }
+        public int Id { get; set; }
         public List<Checkbox<string>> ColumnsToInclude { get; set; }
 
         [Display(Name = "All")]
@@ -25,28 +26,28 @@ namespace AutoMed.Models
         [Display(Name="All")]
         public bool AllLocations { get; set; }
         public List<Checkbox<Location>> Locations { get; set; }
-        [Display(Prompt="Max ($)")]
+        [Display(Name="Max ($)")]
         public double? MaxDiscountDollars { get; set; }
-        [Display(Prompt="Min ($)")]
+        [Display(Name="Min ($)")]
         public double? MinDiscountDollars { get; set; }
-        [Display(Prompt = "Max (%)")]
+        [Display(Name = "Max (%)")]
         public double? MaxDiscountPercentage { get; set; }
-        [Display(Prompt = "Min (%)")]
+        [Display(Name = "Min (%)")]
         public double? MinDiscountPercentage { get; set; }
-        public Month? StartMonth { get; set; }
-        public int? StartDay { get; set; }
-        public int? StartYear { get; set; }
-        public Month? EndMonth { get; set; }
-        public int? EndDay { get; set; }
-        public int? EndYear { get; set; }
-        [Display(Prompt = "# in Household")]
+        [DataType(DataType.Date)]
+        [Display(Name = "Start Date")]
+        public DateTime? StartDate { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "End Date")]
+        public DateTime? EndDate { get; set; }
+        [Display(Name = "# in Household")]
         public int? NumberInHousehold { get; set; }
-        [Display(Prompt = "Address")]
+        [Display(Name = "Address")]
         public string Address { get; set; }
-        [Display(Prompt = "Zip Code")]
+        [Display(Name = "Zip Code")]
         public int? ZipCode { get; set; }
         public State? State { get; set; }
-        [Display(Prompt ="City")]
+        [Display(Name ="City")]
         public string City { get; set; }
     }
 
