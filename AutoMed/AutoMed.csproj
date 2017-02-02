@@ -329,6 +329,7 @@
     <Content Include="Views\Vehicles\Details.cshtml" />
     <Content Include="Views\Vehicles\Edit.cshtml" />
     <Content Include="Views\Vehicles\Index.cshtml" />
+    <Content Include="Views\Report\ReportCreate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="fonts\" />

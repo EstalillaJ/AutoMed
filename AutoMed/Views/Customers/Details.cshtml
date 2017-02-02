@@ -3,15 +3,12 @@
 
 
 <head>
-
-
-    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+    <!-- DataTables CDN -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css" />
     <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
     @Scripts.Render("~/Scripts/collapse.js")
 </head>
 
-
-<h2>Index</h2>
 <body>
 
     <h1>Customer Details</h1>
@@ -22,41 +19,25 @@
 
     <h1> @Html.DisplayFor(modelItem => Model.FirstName)  @Html.DisplayFor(modelItem => Model.LastName)</h1>
 
-
-    <div class="container">
-        <div class="col-sm-12">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="accordion-group">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="toggle" href="#collapseOne">
-                                <i class="fa fa-plus"></i>     Vehicles
-                            </a>
-                        </div>
-                        <div id="collapseOne" class="accordion-body collapse out">
-                            <div class="accordion-inner">
-                                <br>
-                                <p>
-
                                     @Html.ActionLink("Create New", "Create", "Vehicles", new { id = Model.Id }, new { })
 
 
-                                    <table class="table table-striped">
+                                    <table class="table table-striped" id="vehicles-table">
                                         <tr>
                                             <th>
-                                                "vin"
+                                                Vin
                                             </th>
                                             <th>
-                                                "make"
+                                                Make
                                             </th>
                                             <th>
-                                                "model"
+                                                Model
                                             </th>
                                             <th>
-                                                color
+                                                Color
                                             </th>
                                             <th>
-                                                year
+                                                Year
                                             </th>
                                             <th>
                                                 License Plate
@@ -97,30 +78,11 @@
                                         }
 
                                     </table>
-                            </div>
-                        </div>
-
-                    </div>
-
-
-                    <div class="accordion-group">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="toggle" href="#collapseTwo">
-                                <i class="fa fa-plus"></i>  Quotes
-                            </a>
-                        </div>
-
-                        <div id="collapseTwo" class="accordion-body collapse out">
-                            <div class="accordion-inner">
-                                <br>
-                                <p>
-                                    @Html.ActionLink("Create New", "Create", "Quotes", new { id = Model.Id }, new { })
-                                </p>
-                                <table class="table table-striped">
+                  
+                                    @Html.ActionLink("Create New", "Create", "Quotes", new { id = Model.Id }, new { style="padding-top: 15px;" })
+                               
+                                <table class="table table-striped" id="quotes-table">
                                     <tr>
-                                        @* <th>
-                                                Persons in Houshold
-                                            </th>*@
                                         <th>
                                             Date Created
                                         </th>
@@ -136,18 +98,12 @@
                                         <th>
                                             Approval
                                         </th>
-                                        @* <th>
-                                               Description
-                                            </th>*@
                                         <th></th>
                                     </tr>
 
                                     @for (int j = 0; j < Model.Quotes.Count; j++)
                                     {
                                         <tr>
-                                            @* <td>
-                                                    @Html.DisplayFor(modelItem => Model.Quotes[j].CurrentNumberInHousehold)
-                                                </td>*@
                                             <td>
                                                 @Html.DisplayFor(modelItem => Model.Quotes[j].DateCreated)
                                             </td>
@@ -163,9 +119,6 @@
                                             <td>
                                                 @Html.DisplayFor(modelItem => Model.Quotes[j].Approval)
                                             </td>
-                                            @*<td>
-                                                    @Html.DisplayFor(modelItem => Model.Quotes[j].WorkDescription)
-                                                </td>*@
                                             <td>
                                                
                                                 @Html.ActionLink("Edit", "Edit", "Quotes", new { id = Model.Quotes[j].Id }, new { }) |
@@ -177,13 +130,16 @@
 
                                 </table>
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            
+            
 
-            </div>
-        </div>
-    </div>
 
 </body>
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $("#vehicles-table").DataTable();
+        $("#quotes-table").DataTable();
+    </script>    
+}
