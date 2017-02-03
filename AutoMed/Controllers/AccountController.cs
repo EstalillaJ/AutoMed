@@ -16,7 +16,7 @@ using System.Collections.Generic;
 
 namespace AutoMed.Controllers
 {
-    [Authorize(Roles="Administrator")]
+    [Authorize]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -100,6 +100,7 @@ namespace AutoMed.Controllers
             }
         }
         //The list page. Lists the employees and their 
+        [Authorize(Roles = "Administrator")]
         public ActionResult Index()
         {
             List<AutoMedUser> lists = db.Users.Include("Location").ToList();
@@ -112,6 +113,7 @@ namespace AutoMed.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(string id)
         {
             if (id == null)
@@ -143,6 +145,7 @@ namespace AutoMed.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(EditViewModel model)
         {
             if (ModelState.IsValid)
@@ -163,6 +166,7 @@ namespace AutoMed.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(string id)
         {
 
@@ -179,6 +183,7 @@ namespace AutoMed.Controllers
         /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public ActionResult DeleteConfirmed(string id)
         {
             AutoMedUser deletion = UserManager.FindById(id);
@@ -190,7 +195,7 @@ namespace AutoMed.Controllers
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Register()
         {
             return View();
@@ -199,8 +204,8 @@ namespace AutoMed.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -242,6 +247,7 @@ namespace AutoMed.Controllers
         // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager,Employee,Administrator")]
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
