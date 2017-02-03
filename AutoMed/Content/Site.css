@@ -1,7 +1,5 @@
 .container {
     background-color: #ffffff;
-    display: flex;
-    flex-wrap: wrap;
     box-shadow: 3px 3px 3px grey;
 }
 
@@ -15,7 +13,7 @@ p {
     color: #76323F;
 }
 
-.header {
+#header {
 	text-align: center;
 	text-transform: uppercase;
     font-size: 80px;
@@ -126,6 +124,7 @@ textarea {
 .navbar-fixed-left .navbar-nav > li {
   float: none;  /* Cancel default li float: left */
   margin: 0 0 5px 0;
+
 }
 
 .navbar-fixed-left .navbar-nav > li > a{
