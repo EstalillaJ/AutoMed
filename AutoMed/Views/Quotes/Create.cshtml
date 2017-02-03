@@ -33,7 +33,7 @@
             <div class="form-group col-md-12">
                 @Html.LabelFor(model => model.Vehicle, htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-8">
-                    @Html.DropDownListFor(m => m.VehicleId, (IEnumerable<SelectListItem>)ViewBag.VehicleSelect, new { @class = "form-control max-width" })
+                    @Html.DropDownListFor(m => m.VehicleId, (IEnumerable<SelectListItem>)ViewBag.VehicleSelect, new { @class = "form-control maxwidth" })
                     @Html.ValidationMessageFor(model => model.Vehicle.Id, "", new { @class = "text-danger" })
                 </div>
             </div>
