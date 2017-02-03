@@ -41,6 +41,10 @@ textarea {
     max-width: 50%;
 }
 
+.btn-default{
+    max-width: 100%;
+}
+
 
 .navbar .navbar-nav {
   display: inline-block;

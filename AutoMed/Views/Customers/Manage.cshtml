@@ -1,0 +1,148 @@
+﻿@model AutoMed.Models.Customer
+
+
+
+<head>
+    <!-- DataTables CDN -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css" />
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+    <h1>Customer Details</h1>
+
+    @Html.ActionLink("Back to Customers", "Index", "Customers")
+
+
+
+    <h1> @Html.DisplayFor(modelItem => Model.FirstName)  @Html.DisplayFor(modelItem => Model.LastName)</h1>
+    <h2>Vehicles</h2>
+
+                                    @Html.ActionLink("Create New", "Create", "Vehicles", new { id = Model.Id }, new { })
+
+                                    <table class="table table-striped" id="vehicles-table">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Vin
+                                                </th>
+                                                <th>
+                                                    Make
+                                                </th>
+                                                <th>
+                                                    Model
+                                                </th>
+                                                <th>
+                                                    Color
+                                                </th>
+                                                <th>
+                                                    Year
+                                                </th>
+                                                <th>
+                                                    License Plate
+                                                </th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            @for (int i = 0; i < Model.Vehicles.Count; i++)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => Model.Vehicles[i].Vin)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => Model.Vehicles[i].Make)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => Model.Vehicles[i].Model)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => Model.Vehicles[i].Color)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => Model.Vehicles[i].Year)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => Model.Vehicles[i].LicensePlate)
+                                                    </td>
+                                                    <td>
+
+                                                        @Html.ActionLink("Edit", "Edit", "Vehicles", new { id = Model.Vehicles[i].Id }, new { }) |
+                                                        @Html.ActionLink("Details", "Details", "Vehicles", new { id = Model.Vehicles[i].Id }, new { }) |
+                                                        @Html.ActionLink("Delete", "Delete", "Vehicles", new { id = Model.Vehicles[i].Id }, new { })
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+    <h2>Quotes</h2>
+
+                                    @Html.ActionLink("Create New", "Create", "Quotes", new { id = Model.Id }, new { style="padding-top: 15px;" })
+                               
+                                <table class="table table-striped" id="quotes-table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Date Created
+                                            </th>
+                                            <th>
+                                                Date Review
+                                            </th>
+                                            <th>
+                                                Discount %
+                                            </th>
+                                            <th>
+                                                Total Cost
+                                            </th>
+                                            <th>
+                                                Approval
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (int j = 0; j < Model.Quotes.Count; j++)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => Model.Quotes[j].DateCreated)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => Model.Quotes[j].DateReviewed)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => Model.Quotes[j].DiscountPercentage)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => Model.Quotes[j].TotalCost)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => Model.Quotes[j].Approval)
+                                                </td>
+                                                <td>
+
+                                                    @Html.ActionLink("Edit", "Edit", "Quotes", new { id = Model.Quotes[j].Id }, new { }) |
+                                                    @Html.ActionLink("Details", "Details", "Quotes", new { id = Model.Quotes[j].Id }, new { }) |
+                                                    @Html.ActionLink("Delete", "Delete", "Quotes", new { id = Model.Quotes[j].Id }, new { })
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+            
+            
+
+
+</body>
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $("#vehicles-table").DataTable();
+        $("#quotes-table").DataTable();
+    </script>    
+}
