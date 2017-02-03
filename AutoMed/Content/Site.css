@@ -41,6 +41,11 @@ textarea {
     max-width: 50%;
 }
 
+.maxwidth {
+    max-width: 100%;
+}
+
+
 
 .navbar .navbar-nav {
   display: inline-block;

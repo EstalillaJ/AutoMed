@@ -37,8 +37,8 @@ namespace AutoMed.Controllers
             //return View(db.Users.ToList());
         }
 
-        // GET: Customers/Details/5
-        public ActionResult Details(int? id)
+        // GET: Customers/Manage/5
+        public ActionResult Manage(int? id)
         {
             if (id == null)
             {

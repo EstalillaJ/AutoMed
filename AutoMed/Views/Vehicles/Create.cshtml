@@ -74,7 +74,7 @@
 @*<div>
         <a href="javascript:void(0);" onclick="history.go(-1);">Back to Details</a>
     </div>*@
-@Html.ActionLink("Back to Details", "Details", "Customers", new { id = Model.OwnerId }, new { })
+@Html.ActionLink("Back to Manage", "Manage", "Customers", new { id = Model.OwnerId }, new { })
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
