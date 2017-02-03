@@ -41,9 +41,10 @@ textarea {
     max-width: 50%;
 }
 
-.btn-default{
+.maxwidth {
     max-width: 100%;
 }
+
 
 
 .navbar .navbar-nav {
