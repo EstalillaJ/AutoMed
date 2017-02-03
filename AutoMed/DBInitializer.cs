@@ -9,7 +9,7 @@ using AutoMed.Models;
 
 namespace AutoMed
 {
-    public class DBInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
+    public class DBInitializer : CreateDatabaseIfNotExists<ApplicationDbContext>
     {
         protected override void Seed(ApplicationDbContext context)
         {

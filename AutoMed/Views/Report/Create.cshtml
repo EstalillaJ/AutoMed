@@ -3,161 +3,212 @@
 @{
     ViewBag.Title = "Reports";
 }
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <h2>Generate A Report</h2>
-        </div>
-    </div>
 
-    @using (Html.BeginForm("Details", "Report", FormMethod.Post, new { @class = "form-horizontal", role = "form" , id = "form-create" }))
+    <h2>Generate A Report</h2>
+    <br />
+
+    @using (Html.BeginForm("Details", "Report", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "form-create" }))
     {
         @Html.AntiForgeryToken()
-
-        <h3 class="text-center">Quote Info</h3>
-
-        <div class="row">
-            <div class="col-sm-6 col-xs-12 text-center">
-                <h4>Start Date</h4>
-            </div>
-            <div class="col-sm-6 col-xs-12 text-center">
-                <h4>End Date</h4>
-             </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-2 col-xs-4 text-center">
-                @Html.EnumDropDownListFor(m => m.StartMonth, "Month", new { @class="form-control" })
-            </div>
-            <div class="col-sm-2 col-xs-4 text-center">
-                @Html.DropDownListFor(m => m.StartDay, new SelectList(Enumerable.Range(1, 31)), "Day", new { @class = "form-control" })
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.MaxDiscountDollars, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-col-md-10">
+                    @Html.EditorFor(model => model.MaxDiscountDollars, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.MaxDiscountDollars, "", new { @class = "text-danger" })
                 </div>
-            <div class="col-sm-2 col-xs-4 text-center">
-                @Html.DropDownListFor(m => m.StartYear, new SelectList(Enumerable.Range(2016, DateTime.Today.Year - 2016 + 1)), "Year", new { @class = "form-control" })
-            </div>
-            <div class="col-sm-2 col-xs-4 text-center">
-                @Html.EnumDropDownListFor(m => m.EndMonth, "Month", new { @class = "form-control" })
-            </div>
-            <div class="col-sm-2 col-xs-4 text-center">
-                @Html.DropDownListFor(m => m.EndDay, new SelectList(Enumerable.Range(1, 31)), "Day", new { @class = "form-control" })
-            </div>
-            <div class="col-sm-2 col-xs-4 text-center">
-                @Html.DropDownListFor(m => m.EndYear, new SelectList(Enumerable.Range(2016, DateTime.Today.Year - 2016 + 1)), "Year", new { @class = "form-control" })
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-6 col-xs-12 text-center">
-                <h4>Dollar Amount</h4>
-            </div>
-            <div class="col-sm-6 col-xs-12 text-center">
-                <h4>Percentage</h4>
-            </div>
-        </div>
-
-
-        <div class="row">
-            <div class="col-sm-3 col-xs-12 text-center">
-                @Html.EditorFor(m => m.MinDiscountDollars, "WatermarkNumber")
-            </div>
-            <div class="col-sm-3 col-xs-12 text-center">
-                @Html.EditorFor(m => m.MaxDiscountDollars, "WatermarkNumber")
-            </div>
-            <div class="col-sm-3 col-xs-12 text-center">
-                @Html.EditorFor(m => m.MinDiscountPercentage, "WatermarkNumber")
-            </div>
-            <div class="col-sm-3 col-xs-12 text-center">
-                @Html.EditorFor(m => m.MaxDiscountPercentage, "WatermarkNumber")
             </div>
 
-        </div>
-
-       <h3 class="text-center">Customer Info</h3>
-
-        <div class="row">
-                <div class="col-sm-3 text-center">
-                    @Html.EditorFor(m => m.Address, "WatermarkString")
+            <div class="form-group">
+                @Html.LabelFor(model => model.MinDiscountDollars, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-col-md-10">
+                    @Html.EditorFor(model => model.MinDiscountDollars, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.MinDiscountDollars, "", new { @class = "text-danger" })
                 </div>
-                <div class="col-sm-3 text-center">
-                    @Html.EditorFor(m => m.City, "WatermarkString")
-                </div>
-                <div class="col-sm-2 text-center">
-                    @Html.EnumDropDownListFor(m => m.State, "State", new { @class = "form-control" })
-                </div>
-                <div class="col-sm-2 text-center">
-                    @Html.EditorFor(m => m.ZipCode, "WatermarkNumber")
-                </div>
-                <div class="col-sm-2 text-center">
-                    @Html.EditorFor(m => m.NumberInHousehold, "WatermarkNumber")
-                </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <h3>Locations</h3>
-                <p class="hidden text-danger" id="location-checkbox-error">Please choose at least one location</p>
-                @Html.CheckBoxFor(m => m.AllLocations) @Html.LabelFor(m => m.AllLocations)
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Include</th>
-                        </tr>
-                    </thead>
-                @for (int i = 0; i < Model.Locations.Count(); i++)
-                {
-                    <tr>
-                        <td>
-                            @Model.Locations[i].Item.Id
-                        </td>
-                        <td>
-                            @Model.Locations[i].Item.Name
-                        </td>
-                        <td>
-                            @Html.CheckBoxFor(m => m.Locations[i].IsChecked, new { @class = "location_checkbox" })
-                            @Html.HiddenFor(m => m.Locations[i].Item.Id)
-                        </td>
-                    </tr>
-                }
-                </table>
+            <div class="form-group">
+                @Html.LabelFor(model => model.MaxDiscountPercentage, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-col-md-10">
+                    @Html.EditorFor(model => model.MaxDiscountPercentage, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.MaxDiscountPercentage, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
-        <hr />
-        <div class="col-md-12 text-center">
-            <h3>Data To Include</h3>
-            <p class="hidden text-danger"  id="data-field-error">Please choose at least one data field</p>
-            @Html.CheckBoxFor(m => m.AllColumns) @Html.LabelFor(m => m.AllColumns)
-        </div>
-            <div class="row form-group">
-                @for (int i = 0; i < Model.ColumnsToInclude.Count; i++)
-                {
-                    <div class="col-md-3 col-sm-4 col-xs-6">
-                        <label class="checkbox-inline">
-                            @Html.CheckBoxFor(m => m.ColumnsToInclude[i].IsChecked, new { @class = "column_checkbox" })
-                            @Model.ColumnsToInclude[i].Item 
-                            @Html.HiddenFor(m => m.ColumnsToInclude[i].Item)
-                        </label>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MinDiscountPercentage, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-col-md-10">
+                    @Html.EditorFor(model => model.MinDiscountPercentage, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.MinDiscountPercentage, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-col-md-10">
+                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-col-md-10">
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.NumberInHousehold, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-col-md-10">
+                    @Html.EditorFor(model => model.NumberInHousehold, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.NumberInHousehold, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-col-md-10">
+                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ZipCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-col-md-10">
+                    @Html.EditorFor(model => model.ZipCode, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-col-md-10">
+                    @Html.EnumDropDownListFor(model => model.State, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-col-md-10">
+                    @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <a data-toggle="modal" class="col-md-10 col-md-offset-2" data-target="#location-settings-modal"  style="padding-left:0em;">
+                    Location Filter
+                    <p class="hidden text-danger col-md-8" id="location-checkbox-error">Please choose at least one location</p>
+
+                </a>
+
+            </div>
+            <div class="form-group">
+
+                <a data-toggle="modal" class="col-md-10 col-md-offset-2" data-target="#data-settings-modal" style="padding-left:0em;">
+                    Data Filter
+                    <p class="hidden text-danger col-md-8" id="data-field-error">Please choose at least one data field</p>
+
+                </a>
+
+            </div>
+            <div class="modal fade" id="location-settings-modal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Location Filter</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    @Html.CheckBoxFor(m => m.AllLocations) @Html.LabelFor(m => m.AllLocations)
+                                </div>
+                            </div>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Name</th>
+                                        <th>Include</th>
+                                    </tr>
+                                </thead>
+                                @for (int i = 0; i < Model.Locations.Count(); i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Model.Locations[i].Item.Id
+                                        </td>
+                                        <td>
+                                            @Model.Locations[i].Item.Name
+                                        </td>
+                                        <td>
+                                            @Html.CheckBoxFor(m => m.Locations[i].IsChecked, new { @class = "location_checkbox" })
+                                            @Html.HiddenFor(m => m.Locations[i].Item.Id)
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
-                }
+                </div>
             </div>
+
+            <div class="modal fade" id="data-settings-modal">
+                <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Data Filter</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-md-12 text-center">
+                                @Html.CheckBoxFor(m => m.AllColumns) @Html.LabelFor(m => m.AllColumns)
+                            </div>
+                            <div class="row form-group">
+                                @for (int i = 0; i < Model.ColumnsToInclude.Count; i++)
+                                {
+                                    <div class="col-md-3 col-sm-4 col-xs-6">
+                                        <label class="checkbox-inline">
+                                            @Html.CheckBoxFor(m => m.ColumnsToInclude[i].IsChecked, new { @class = "column_checkbox" })
+                                            @Model.ColumnsToInclude[i].Item
+                                            @Html.HiddenFor(m => m.ColumnsToInclude[i].Item)
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        
         <div class="form-group">
             <div class="col-md-offset-10 col-md-2">
-                <input type="submit" class="btn btn-default" value="Generate" />
+                <input type="submit" class="btn btn-primary btn-default" value="Generate" />
             </div>
         </div>
+      
+            }
 
-
-    }
+    
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/Scripts/DateSelect.js")
     <script>
+
+        $("#reports-link").addClass("active");
+
         var numLocations = @Model.Locations.Count();        
 
         function toggleCheckboxes(idOfMaster, classOfSlaves, cb){

@@ -16,7 +16,7 @@ using System.Collections.Generic;
 
 namespace AutoMed.Controllers
 {
-    [Authorize]
+    [Authorize(Roles="Administrator")]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -83,11 +83,16 @@ namespace AutoMed.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    AutoMedUser user = db.Users.Where(u => u.UserName == model.UserName).First();
+                    IdentityRole role = db.Roles.Find(user.Roles.First().RoleId);
+                    if (role.Name == "Administrator")
+                        return RedirectToAction("Create", "Report", routeValues: null);
+                    else if (role.Name == "Manager")
+                        return RedirectToAction("Index", "Quotes", routeValues: null);
+                    else
+                        return RedirectToAction("Index", "Customers");
                 case SignInStatus.LockedOut:
                     return RedirectToAction("Login");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
@@ -98,9 +103,9 @@ namespace AutoMed.Controllers
         public ActionResult Index()
         {
             List<AutoMedUser> lists = db.Users.Include("Location").ToList();
-
             return View(lists);
         }
+
         /// <summary>
         /// edits the users takes on their user id as a string. uses that id to create a list of all possible locations
         /// list of all prossible roles 
@@ -113,18 +118,21 @@ namespace AutoMed.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             List<SelectListItem> locationList = new List<SelectListItem>();
             db.Locations.ToList().ForEach(
-                v => locationList.Add(new SelectListItem { Text = v.Name, Value = v.Id.ToString()})
-                );
-            ViewBag.locationList = (IEnumerable<SelectListItem>)locationList;
+                location => locationList.Add(new SelectListItem { Text = location.Name, Value = location.Id.ToString()})
+            );
+            ViewBag.locationList = (IEnumerable<SelectListItem>) locationList;
+
             List<SelectListItem> rolesList = new List<SelectListItem>();
             db.Roles.ToList().ForEach(
-                v => rolesList.Add(new SelectListItem { Text = v.Name, Value = v.Id.ToString() })
+                role => rolesList.Add(new SelectListItem { Text = role.Name, Value = role.Id.ToString() })
                 );
-            ViewBag.rolesList = (IEnumerable<SelectListItem>)rolesList;
+            ViewBag.rolesList = (IEnumerable<SelectListItem>) rolesList;
+
             AutoMedUser user = UserManager.FindById(id);
-            var viewModel = new EditViewModel { UserName = user.UserName, LocationId = user.LocationId, Id = user.Id, Role = user.Roles.First().RoleId };   
+            EditViewModel viewModel = new EditViewModel { UserName = user.UserName, LocationId = user.LocationId, Id = user.Id, Role = user.Roles.First().RoleId };   
             return View(viewModel);
 
         }
@@ -213,13 +221,9 @@ namespace AutoMed.Controllers
                 {
                     UserManager.AddToRole(user.Id, "Employee");
                 }
+
                 if (result.Succeeded)
-                {
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");                    
+                {                  
                     return RedirectToAction("Index");
                 }
                 AddErrors(result);
@@ -241,7 +245,7 @@ namespace AutoMed.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         protected override void Dispose(bool disposing)

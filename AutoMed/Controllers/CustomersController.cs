@@ -10,109 +10,126 @@ using AutoMed.DAL;
 using AutoMed.Models;
 
 namespace AutoMed.Controllers
-{
-    [Authorize(Roles = "Administrator")]
-    public class LocationsController : Controller
+{   [Authorize]
+    public class CustomersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Locations
-        public ActionResult Index()
+        // GET: Customers
+        public ActionResult Index(string searchString)
         {
-            return View(db.Locations.ToList());
+            //string searchString = id;
+            var context = new ApplicationDbContext();
+           
+            var users = from m in db.Customers
+                        //let fillName = m.FirstName + " " + m.LastName
+                        //where fillName.ToLower().Trim().Contains(searchString)
+                        select m;
+            
+            if (!String.IsNullOrEmpty(searchString))
+            {
+               
+                users = users.Where(s => s.FirstName.Contains(searchString)
+                                    ||s.LastName.Contains(searchString) );
+            }
+
+            return View(users);
+            //return View(db.Users.ToList());
         }
 
-        // GET: Locations/Details/5
+        // GET: Customers/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Location location = db.Locations.Find(id);
-            if (location == null)
+            Customer customer = db.Customers.Find(id);
+            if (customer == null)
             {
                 return HttpNotFound();
             }
-            return View(location);
+            return View(customer);
         }
 
-        // GET: Locations/Create
+        // GET: Customers/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Locations/Create
+        // POST: Customers/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Name")] Location location)
+        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,AddressLine1,AddressLine2,State,ZipCode,City,Email,PhoneNumber,BirthDate,Sex")] Customer customer)
         {
             if (ModelState.IsValid)
             {
-                db.Locations.Add(location);
+                db.Customers.Add(customer);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(location);
+            return View(customer);
         }
 
-        // GET: Locations/Edit/5
+        // GET: Customers/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Location location = db.Locations.Find(id);
-            if (location == null)
+            Customer customer = db.Customers.Find(id);
+            if (customer == null)
             {
                 return HttpNotFound();
             }
-            return View(location);
+            return View(customer);
         }
 
-        // POST: Locations/Edit/5
+        // POST: Customers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Name")] Location location)
+        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,AddressLine1,AddressLine2,State,ZipCode,City,Email,PhoneNumber,BirthDate,Sex")] Customer customer)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(location).State = EntityState.Modified;
+                db.Entry(customer).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(location);
+            return View(customer);
         }
 
-        // GET: Locations/Delete/5
+        [Authorize(Roles ="Manager,Administrator")]
+        // GET: Customers/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Location location = db.Locations.Find(id);
-            if (location == null)
+            Customer customer = db.Customers.Find(id);
+            if (customer == null)
             {
                 return HttpNotFound();
             }
-            return View(location);
+            return View(customer);
         }
 
-        // POST: Locations/Delete/5
+        // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager,Administrator")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Location location = db.Locations.Find(id);
-            db.Locations.Remove(location);
+            Customer customer = db.Customers.Find(id);
+            db.Customers.Remove(customer);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -7,7 +7,7 @@
 <!-- DataTables CDN -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css" />
 <h2 class="text-center">Quotes</h2>
- <table class="table-striped table" id="ReportTable">
+ <table class="table-striped table table-hover" id="report-table">
         <thead>
             <tr>
                 @foreach (string header in Model.Columns)
@@ -46,5 +46,5 @@
 @section Scripts { 
     <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript">$("#ReportTable").DataTable({ "scrollX": true });</script>
+    <script type="text/javascript">$("#report-table").DataTable({ "scrollX": true });</script>
 }
