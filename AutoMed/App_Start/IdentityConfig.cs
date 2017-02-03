@@ -86,8 +86,11 @@ namespace AutoMed
         public override Task<SignInStatus> PasswordSignInAsync(string userName, string password, bool rememberMe, bool shouldLockout)
         {
             var user = UserManager.FindByNameAsync(userName).Result;
-
-            if (user.isDeleted == true)
+            if (user == null)
+            {
+                              
+            }
+            else if (user.isDeleted == true)
             {
                 return Task.FromResult<SignInStatus>(SignInStatus.LockedOut);
             }
