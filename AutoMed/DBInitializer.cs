@@ -44,6 +44,7 @@ namespace AutoMed
                 new AutoMedUser() { UserName = "Manager_1", LocationId = 1 },
                 new AutoMedUser() { UserName = "Manager_2", LocationId = 2 }
                 };
+
                 UserStore<AutoMedUser> userStore = new UserStore<AutoMedUser>(context);
                 UserManager<AutoMedUser> userManager = new UserManager<AutoMedUser>(userStore);
 
@@ -174,6 +175,81 @@ namespace AutoMed
                         Email = "Jane.Doe@yahoo.com",
                         PhoneNumber = "123-456-7890",
                         Sex = Sex.Female,
+                    },
+                    new Customer()
+                    {
+                        Id = 3,
+                        FirstName = "Christian",
+                        LastName = "Kaseburg",
+                        AddressLine1 = "15 3rd Ave",
+                        AddressLine2 = string.Empty,
+                        BirthDate = new DateTime(1993, 12 ,25),
+                        City = "Ellensburg",
+                        State = State.WA,
+                        ZipCode = 98926,
+                        Email = "Christian.Kaseburg@yahoo.com",
+                        PhoneNumber = "457-345-8569",
+                        Sex = Sex.Male,
+                    },
+                    new Customer()
+                    {
+                        Id = 4,
+                        FirstName = "Vance",
+                        LastName = "Jones",
+                        AddressLine1 = "354 Cherry St",
+                        AddressLine2 = "Apt B",
+                        BirthDate = new DateTime(1991, 6, 29),
+                        City = "Tacoma",
+                        State = State.WA,
+                        ZipCode = 93802,
+                        Email = "Vance.Jones@yahoo.com",
+                        PhoneNumber = "386-386-3097",
+                        Sex = Sex.Male,
+                    },
+                    new Customer()
+                    {
+                        Id = 5,
+                        FirstName = "Josh",
+                        LastName = "Estalilla",
+                        AddressLine1 = "105 E Patrick",
+                        AddressLine2 = "# 16",
+                        BirthDate = new DateTime(1993, 8, 29),
+                        City = "Kittitas",
+                        State = State.WA,
+                        ZipCode = 98934,
+                        Email = "Josh.Estalilla@gmail.com",
+                        PhoneNumber = "343-287-4593",
+                        Sex = Sex.Male,
+                    },
+                    new Customer()
+                    {
+                        Id = 6,
+                        FirstName = "Jason",
+                        LastName = "Burke",
+                        AddressLine1 = "12 Sampson St",
+                        AddressLine2 = string.Empty,
+                        BirthDate = new DateTime(1989, 2, 12),
+                        City = "Pasco",
+                        State = State.WA,
+                        ZipCode = 93802,
+                        Email = "JasonBurek@yahoo.com",
+                        PhoneNumber = "323-386-3295",
+                        Sex = Sex.Male,
+                    },
+                    new Customer()
+                    {
+                        Id = 7,
+                        FirstName = "David",
+                        LastName = "Rigby",
+                        AddressLine1 = "125 E Helena Ave",
+                        AddressLine2 = string.Empty,
+                        BirthDate = new DateTime(1995, 3, 30),
+                        City = "Ellensburg",
+                        State = State.WA,
+                        ZipCode = 98926,
+                        Email = "David.Rigby@yahoo.com",
+                        PhoneNumber = "546-458-7985",
+                        Sex = Sex.Male,
                     }
                 }
                 );
