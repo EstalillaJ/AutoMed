@@ -37,7 +37,6 @@
     <tbody>
         @for (var i = 0; i < Model.Count; i++)
         {
-            @Html.HiddenFor(m => m[i].Id)
             <tr>
                 <td>
                     @Html.DisplayFor(m => m[i].Customer.Id)
@@ -59,6 +58,7 @@
                 <td>
                     @Html.EnumDropDownListFor(m => m[i].Approval, new { @class = "btn btn-default" })
                 </td>
+                @Html.HiddenFor(m => m[i].Id)
             </tr>
         }
     </tbody>
