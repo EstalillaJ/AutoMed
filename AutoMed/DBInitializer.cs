@@ -7,6 +7,7 @@ using AutoMed.DAL;
 using Microsoft.AspNet.Identity;
 using AutoMed.Models;
 using AutoMed.Models.DataModels;
+
 namespace AutoMed
 {
     public class DBInitializer : CreateDatabaseIfNotExists<ApplicationDbContext>

@@ -13,6 +13,8 @@ using Microsoft.Owin.Security;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
+using AutoMed.Models.DataModels;
+using AutoMed.Models.ViewModels;
 
 namespace AutoMed.Controllers
 {

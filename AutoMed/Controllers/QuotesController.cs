@@ -12,8 +12,8 @@ using AutoMed.Models;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
-using AutoMed.Models.DataModels;
 using System.Web.Configuration;
+using AutoMed.Models.DataModels;
 
 namespace AutoMed.Controllers
 {
@@ -35,7 +35,7 @@ namespace AutoMed.Controllers
                 quotes = db.Quotes.Where(x => x.Approval == QuoteStatus.Pending).ToList();
             else
             {
-                int locationId = db.Users.Where(x => x.UserName == User.Identity.Name).First().Location.Id;
+                int locationId = db.Users.Single(x => x.UserName == User.Identity.Name).Location.Id;
                 quotes = db.Quotes.Where(x => x.Approval == QuoteStatus.Pending && locationId == x.Location.Id).ToList();
             }
 
@@ -296,10 +296,10 @@ namespace AutoMed.Controllers
 
         private void SetDiscount(Quote quote)
         {
-            Scale scale = db.Scales.Where(x => x.Year == DateTime.Now.Year).FirstOrDefault();
+            Scale scale = db.Scales.SingleOrDefault(x => x.Year == DateTime.Now.Year);
             // Fall back to last year's scale if they haven't put up the new one yet
             if (scale == null)
-                scale = db.Scales.Where(x => x.Year == DateTime.Now.Year - 1).First();
+                scale = db.Scales.Single(x => x.Year == DateTime.Now.Year - 1);
 
             double baseIncome = quote.CurrentNumberInHousehold < 9 ?
                                 scale.IncomeBrackets.Single(b => b.NumInHousehold == quote.CurrentNumberInHousehold).Income:

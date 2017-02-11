@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
 
-namespace AutoMed.Models
+namespace AutoMed.Models.ViewModels
 {
     public class IndexViewModel
     {

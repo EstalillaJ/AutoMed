@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace AutoMed.Models.DataModels
+﻿namespace AutoMed.Models.DataModels
 {
     public class IncomeBracket
     {   

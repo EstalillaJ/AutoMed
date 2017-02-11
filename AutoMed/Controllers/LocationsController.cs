@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using AutoMed.DAL;
 using AutoMed.Models;
+using AutoMed.Models.DataModels;
 
 namespace AutoMed.Controllers
 {

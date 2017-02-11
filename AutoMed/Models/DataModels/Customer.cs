@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System;
-namespace AutoMed.Models
+
+namespace AutoMed.Models.DataModels
 {
     public class Customer
     {   
