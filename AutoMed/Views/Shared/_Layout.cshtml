@@ -29,21 +29,22 @@
             @if (User.Identity.IsAuthenticated)
             {
                 <ul class="nav navbar-nav">
-                    <li><a id="customers-link" href="/Customers" class="btn btn-sm">Customers</a> </li>
+                    <li><a id="customers-link" href="/Customers" >Customers</a> </li>
                     @if (User.IsInRole("Manager") || User.IsInRole("Administrator"))
                     {
-                        <li><a id="quotes-link" href="/Quotes" class="btn btn-sm">Quotes</a></li>
+                        <li><a id="quotes-link" href="/Quotes" >Quotes</a></li>
                     }
                     @if (User.IsInRole("Administrator"))
                     {
-                        <li><a id="locations-link" href="/Locations" class="btn btn-sm">Locations</a></li>
-                        <li><a id="reports-link" href="/Report/Create" class="btn btn-sm">Reports</a></li>
-                        <li><a id="employees-link" href="/Account" class="btn btn-sm">Employees</a></li>
+                        <li><a id="locations-link" href="/Locations" >Locations</a></li>
+                        <li><a id="reports-link" href="/Report/Create" >Reports</a></li>
+                        <li><a id="employees-link" href="/Account" >Employees</a></li>
+                        <li><a id="scale-link" href="/Scale/Index">Scale</a></li>
                     }
                     <li>
-                        <a id="changepassword-link" href="/Manage/ChangePassword" class="btn btn-sm">Change Password</a>
+                        <a id="changepassword-link" href="/Manage/ChangePassword" >Change Password</a>
                     </li>
-                    <li><a class="btn btn-sm" href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                    <li><a  href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
                 </ul>
             }
         </div>

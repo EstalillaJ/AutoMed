@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Create";
 }
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css" />
+
 
 <h2>Create</h2>
 
@@ -21,6 +23,35 @@
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
         </div>
+        <button class="btn btn-default disabled" id="remove-row"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
+        <button class="btn btn-default" id="add-row"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+            <table id="mappings-table" class="table table-striped table-condensed">
+                <thead>
+                    <tr>
+                        <th>
+                            Poverty Level (%)
+                        </th>
+                        <th>
+                            Associated Discount (%)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input class="form-control text-box single-line"
+                                   data-val="true"
+                                   data-val-number="Must be a number."
+                                   id="BracketMappings_0__BracketPercentage" name="BracketMappings[0].BracketPercentage" type="text" value="">
+                        </td>
+                        <td>
+                            <input class="form-control text-box single-line"
+                                   data-val="true" data-val-number="Must be a number."
+                                   id="BracketMappings_0__CustomPercentage" name="BracketMappings[0].CustomPercentage" type="text" value="">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -33,3 +64,43 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var table = $("#mappings-table").DataTable({
+                        "paging": false,
+                        "searching": false,
+                        "info": false,
+                        "ordering": false
+        });
+        var count = 0;
+        $("#add-row").click(function (event) {
+            event.preventDefault();
+            table.row.add([
+                '<input class="form-control text-box single-line"' +
+                               'data-val="true"' +
+                               'data-val-number="Must be a number."' +
+                               'id="BracketMappings_' + count  + '__BracketPercentage" name="BracketMappings['+ count + '].BracketPercentage" type="text" value="">',
+                '<input class="form-control text-box single-line"' +
+                               'data-val="true"' +
+                               'data-val-number="Must be a number."' +
+                               'id="BracketMappings_' + count + '__CustomPercentage" name="BracketMappings[' + count + '].CustomPercentage" type="text" value="">'
+            ]).draw(false);
+            if (count == 1) {
+                $("#remove-row").removeClass("disabled");
+            }
+            count++;
+        });
+        $("#remove-row").click(function (event) {
+            event.preventDefault();
+            if (count != 0) {
+                table.row(table.rows()[-1]).remove().draw(false);
+                count--;
+            }
+            else {
+                $("#remove-row").addClass("disabled");
+            }
+        })
+    </script>
+}

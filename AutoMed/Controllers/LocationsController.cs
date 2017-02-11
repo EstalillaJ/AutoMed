@@ -48,7 +48,7 @@ namespace AutoMed.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Name")] Location location)
+        public ActionResult Create([Bind(Include = "Name,BracketMappings")] Location location)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +80,7 @@ namespace AutoMed.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Name")] Location location)
+        public ActionResult Edit([Bind(Include = "Name,BracketMappings")] Location location)
         {
             if (ModelState.IsValid)
             {

@@ -6,7 +6,7 @@ using System.Data.Entity;
 using AutoMed.DAL;
 using Microsoft.AspNet.Identity;
 using AutoMed.Models;
-
+using AutoMed.Models.DataModels;
 namespace AutoMed
 {
     public class DBInitializer : CreateDatabaseIfNotExists<ApplicationDbContext>
@@ -15,6 +15,26 @@ namespace AutoMed
         {
             if (context.Users.Where(x => x.UserName == "Sy_Danton").Count() == 0)
             {
+                context.Scales.Add(
+                    new Scale()
+                    {
+                        Id = 1,
+                        Year = 2017,
+                        AdditionalPersonBase = 4160
+                    }
+                );
+
+                context.IncomeBrackets.AddRange(new List<IncomeBracket>{
+                    new IncomeBracket() { Id = 1, Income = 11880, NumInHousehold = 1, ScaleId = 1 },
+                    new IncomeBracket() { Id = 2, Income = 16020, NumInHousehold = 2, ScaleId = 1 },
+                    new IncomeBracket() { Id = 3, Income = 20160, NumInHousehold = 3, ScaleId = 1 },
+                    new IncomeBracket() { Id = 4, Income = 24300, NumInHousehold = 4, ScaleId = 1 },
+                    new IncomeBracket() { Id = 5, Income = 28440, NumInHousehold = 5, ScaleId = 1 },
+                    new IncomeBracket() { Id = 6, Income = 32580, NumInHousehold = 6, ScaleId = 1 },
+                    new IncomeBracket() { Id = 7, Income = 36730, NumInHousehold = 7, ScaleId = 1 },
+                    new IncomeBracket() { Id = 8, Income = 40890, NumInHousehold = 8, ScaleId = 1 },
+                });
+
                 context.Locations.AddRange(new List<Location> {
                  new Location() { Id = 1, Name = "Ellensburg" },
                  new Location() { Id = 2, Name = "Yakima" },

@@ -12,6 +12,7 @@ using AutoMed.Models;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using AutoMed.Models.DataModels;
 using System.Web.Configuration;
 
 namespace AutoMed.Controllers
@@ -102,7 +103,7 @@ namespace AutoMed.Controllers
                 quote.DateCreated = DateTime.Now;
                 quote.LocationId = loggedIn.Location.Id;
                 quote.CreatedById = loggedIn.Id;
-                quote.SetDiscountPercentage();
+                SetDiscount(quote);
 
                 string redir;
                 if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
@@ -172,7 +173,7 @@ namespace AutoMed.Controllers
                 db.Entry(quote).Property(x => x.TotalCost).IsModified = true;
                 db.Entry(quote).Property(x => x.Approval).IsModified = true;
                 db.Entry(quote).Property(x => x.WorkDescription).IsModified = true;
-                quote.SetDiscountPercentage();
+                SetDiscount(quote);
                 db.SaveChanges();
                 UploadDocumentBlobs(quote.Documents);
 
@@ -291,6 +292,43 @@ namespace AutoMed.Controllers
                 blockBlob.Properties.ContentType = document.UploadedImage.ContentType;
                 blockBlob.UploadFromStream(document.UploadedImage.InputStream);
             }
+        }
+
+        private void SetDiscount(Quote quote)
+        {
+            Scale scale = db.Scales.Where(x => x.Year == DateTime.Now.Year).FirstOrDefault();
+            // Fall back to last year's scale if they haven't put up the new one yet
+            if (scale == null)
+                scale = db.Scales.Where(x => x.Year == DateTime.Now.Year - 1).First();
+
+            double baseIncome = quote.CurrentNumberInHousehold < 9 ?
+                                scale.IncomeBrackets.Single(b => b.NumInHousehold == quote.CurrentNumberInHousehold).Income:
+                                scale.IncomeBrackets.Single(b => b.NumInHousehold == 8).Income + (scale.AdditionalPersonBase * quote.CurrentNumberInHousehold - 8);
+
+
+            double povertyLevel = 1.0;
+            while (quote.Location.MinPovertyLevel < povertyLevel && povertyLevel < quote.Location.MaxPovertyLevel)
+            {
+                if (baseIncome <= quote.Income - quote.Expenses && quote.Income - quote.Expenses <= baseIncome * povertyLevel)
+                {   
+                    // TODO This will fail if they dont have mappings for all multiples of 10 between MinPovertyLevel and MaxPovertyLevel
+                    quote.DiscountPercentage = quote.Location.BracketMappings.Single(b => b.BracketPercentage == povertyLevel * 100).CustomPercentage;
+                    return;
+                }
+                else if (baseIncome <= quote.Income - quote.Expenses)
+                {
+                    povertyLevel += .1;
+                }
+                else
+                {
+                    povertyLevel -= .1;
+                }
+            }
+
+            if (povertyLevel == quote.Location.MinPovertyLevel)
+                quote.DiscountPercentage = quote.Location.BracketMappings.Single(b => b.BracketPercentage == povertyLevel).CustomPercentage;
+            else
+                quote.DiscountPercentage = 0;
         }
     }
 }
