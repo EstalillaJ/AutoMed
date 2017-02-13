@@ -43,6 +43,51 @@ namespace AutoMed
                  new Location() { Id = 4, Name = "Corporate" }
                 });
 
+                List<BracketMapping> bracketMappingsEllensburg = new List<BracketMapping>()
+                {
+                    new BracketMapping() { Id = 1,  PovertyLevel = 50,  Discount = 100, LocationId = 1  },
+                    new BracketMapping() { Id = 2,  PovertyLevel = 60,  Discount = 90,  LocationId = 1  },
+                    new BracketMapping() { Id = 3,  PovertyLevel = 70,  Discount = 80,  LocationId = 1  },
+                    new BracketMapping() { Id = 4,  PovertyLevel = 80,  Discount = 70,  LocationId = 1  },
+                    new BracketMapping() { Id = 5,  PovertyLevel = 90,  Discount = 60,  LocationId = 1  },
+                    new BracketMapping() { Id = 6,  PovertyLevel = 100, Discount = 50,  LocationId = 1  },
+                    new BracketMapping() { Id = 7,  PovertyLevel = 110, Discount = 40,  LocationId = 1  },
+                    new BracketMapping() { Id = 8,  PovertyLevel = 120, Discount = 30,  LocationId = 1  },
+                    new BracketMapping() { Id = 9,  PovertyLevel = 130, Discount = 20,  LocationId = 1  },
+                    new BracketMapping() { Id = 10, PovertyLevel = 140, Discount = 10,  LocationId = 1  }
+                };
+
+                List<BracketMapping> bracketMappingsYakima = new List<BracketMapping>()
+                {
+                    new BracketMapping() { Id = 11,  PovertyLevel = 70,  Discount = 100, LocationId = 2  },
+                    new BracketMapping() { Id = 12,  PovertyLevel = 80,  Discount = 90,  LocationId = 2  },
+                    new BracketMapping() { Id = 13,  PovertyLevel = 90,  Discount = 80,  LocationId = 2  },
+                    new BracketMapping() { Id = 14,  PovertyLevel = 100, Discount = 70,  LocationId = 2  },
+                    new BracketMapping() { Id = 15,  PovertyLevel = 110, Discount = 60,  LocationId = 2  },
+                    new BracketMapping() { Id = 16,  PovertyLevel = 120, Discount = 50,  LocationId = 2  },
+                    new BracketMapping() { Id = 17,  PovertyLevel = 130, Discount = 40,  LocationId = 2  },
+                    new BracketMapping() { Id = 18,  PovertyLevel = 140, Discount = 30,  LocationId = 2  },
+                    new BracketMapping() { Id = 19,  PovertyLevel = 150, Discount = 20,  LocationId = 2  },
+                    new BracketMapping() { Id = 20,  PovertyLevel = 160, Discount = 10,  LocationId = 2  }
+                };
+
+                List<BracketMapping> bracketMappingsSeattle = new List<BracketMapping>()
+                {
+                    new BracketMapping() { Id = 21,  PovertyLevel = 100,  Discount = 100, LocationId = 3  },
+                    new BracketMapping() { Id = 22,  PovertyLevel = 110,  Discount = 90,  LocationId = 3  },
+                    new BracketMapping() { Id = 23,  PovertyLevel = 120,  Discount = 80,  LocationId = 3  },
+                    new BracketMapping() { Id = 24,  PovertyLevel = 130,  Discount = 70,  LocationId = 3  },
+                    new BracketMapping() { Id = 25,  PovertyLevel = 140,  Discount = 60,  LocationId = 3  },
+                    new BracketMapping() { Id = 26,  PovertyLevel = 150,  Discount = 50,  LocationId = 3  },
+                    new BracketMapping() { Id = 27,  PovertyLevel = 160,  Discount = 40,  LocationId = 3  },
+                    new BracketMapping() { Id = 28,  PovertyLevel = 170,  Discount = 30,  LocationId = 3  },
+                    new BracketMapping() { Id = 29,  PovertyLevel = 180,  Discount = 20,  LocationId = 3  },
+                    new BracketMapping() { Id = 30,  PovertyLevel = 190,  Discount = 10,  LocationId = 3  }
+                };
+
+                context.BracketMappings.AddRange(bracketMappingsEllensburg);
+                context.BracketMappings.AddRange(bracketMappingsYakima);
+                context.BracketMappings.AddRange(bracketMappingsSeattle);
                 context.SaveChanges();
 
                 IdentityRole[] roles = { new IdentityRole { Name = "Administrator" }, new IdentityRole { Name = "Manager" }, new IdentityRole { Name = "Employee" } };

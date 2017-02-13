@@ -11,9 +11,15 @@ namespace AutoMed.Models.DataModels
         [Display(Name = "# of People in Household")]
         public int CurrentNumberInHousehold { get; set; }
         [Display(Name = "Total Income")]
-        public int Income { get; set; }
+        public double Income { get; set; }
         [Display(Name = "Total Expenses")]
-        public int Expenses { get; set; }
+        public double Expenses { get; set; }
+
+        [NotMapped]
+        public double AdjustedIncome
+        {
+            get { return Income - Expenses; }
+        }
         public virtual List<Document> Documents { get; set; }
         [Display(Name = "Date Created")]
         [DataType(DataType.Date)]

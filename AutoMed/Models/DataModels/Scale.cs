@@ -7,7 +7,7 @@ namespace AutoMed.Models.DataModels
     {   
         public int Id { get; set; }
         public int Year { get; set; }
-        public List<IncomeBracket> IncomeBrackets { get; set; }
+        public virtual List<IncomeBracket> IncomeBrackets { get; set; }
 
         [Display(Name = "Additional Person Base")]
         public int AdditionalPersonBase { get; set; }

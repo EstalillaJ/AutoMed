@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -57,6 +58,7 @@ namespace AutoMed.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            
 
             return View(location);
         }
@@ -81,11 +83,24 @@ namespace AutoMed.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Name,BracketMappings")] Location location)
+        public ActionResult Edit([Bind(Include = "Id,Name,BracketMappings")] Location location, List<BracketMapping> deletedMappings)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(location).State = EntityState.Modified;
+                foreach (BracketMapping mapping in location.BracketMappings)
+                {
+                    if (mapping.Id == 0)
+                        db.BracketMappings.Add(mapping);
+                    else 
+                        db.Entry(mapping).State = EntityState.Modified;
+                }
+
+                for (int i = 0; i < deletedMappings.Count; i++)
+                {
+                    db.BracketMappings.Attach(deletedMappings[i]);
+                    db.BracketMappings.Remove(deletedMappings[i]);
+                }
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

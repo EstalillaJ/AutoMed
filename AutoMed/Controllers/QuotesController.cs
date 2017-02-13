@@ -92,7 +92,7 @@ namespace AutoMed.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Employee,Manager,Administrator")]
-        public ActionResult Create([Bind(Include = "CustomerId,VehicleId,CurrentNumberInHousehold,TotalCost,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
+        public ActionResult Create([Bind(Include = "CustomerId,VehicleId,CurrentNumberInHousehold,TotalCost,Income,Expenses,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
         {
             if (ModelState.IsValid)
             {
@@ -103,6 +103,7 @@ namespace AutoMed.Controllers
                 quote.DateCreated = DateTime.Now;
                 quote.LocationId = loggedIn.Location.Id;
                 quote.CreatedById = loggedIn.Id;
+                quote.Location = db.Locations.Find(quote.LocationId);
                 SetDiscount(quote);
 
                 string redir;
@@ -254,7 +255,7 @@ namespace AutoMed.Controllers
         /// </summary>
         /// <param name="documentId"></param>
         /// <returns>returns file image</returns>
-        [Authorize(Roles = "Manager,Administrator")]
+        [Authorize(Roles = "Manager,Administrator,Employee")]
         [Route("Document/Image/{documentId}")]
         // <img src="Document/Image/{documentId}" />
         public ActionResult GetImage(int documentId)
@@ -279,7 +280,6 @@ namespace AutoMed.Controllers
         /// <param name="documents"></param>
         private void UploadDocumentBlobs(List<Document> documents)
         {
-
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(WebConfigurationManager.AppSettings["BlobStorageConnection"]);
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
             CloudBlobContainer container = blobClient.GetContainerReference(WebConfigurationManager.AppSettings["BlobContainer"]);
@@ -295,40 +295,34 @@ namespace AutoMed.Controllers
         }
 
         private void SetDiscount(Quote quote)
-        {
-            Scale scale = db.Scales.SingleOrDefault(x => x.Year == DateTime.Now.Year);
-            // Fall back to last year's scale if they haven't put up the new one yet
-            if (scale == null)
-                scale = db.Scales.Single(x => x.Year == DateTime.Now.Year - 1);
+        {   
+            // Fallback to last year's scale if this year's hasn't been entered
+            Scale scale = db.Scales.SingleOrDefault(x => x.Year == DateTime.Now.Year) ?? db.Scales.Single(x => x.Year == DateTime.Now.Year - 1);
 
             double baseIncome = quote.CurrentNumberInHousehold < 9 ?
                                 scale.IncomeBrackets.Single(b => b.NumInHousehold == quote.CurrentNumberInHousehold).Income:
                                 scale.IncomeBrackets.Single(b => b.NumInHousehold == 8).Income + (scale.AdditionalPersonBase * quote.CurrentNumberInHousehold - 8);
 
 
-            double povertyLevel = 1.0;
-            while (quote.Location.MinPovertyLevel < povertyLevel && povertyLevel < quote.Location.MaxPovertyLevel)
+            IEnumerable<BracketMapping> sortedMappings = quote.Location.BracketMappings.OrderByDescending(m => m.PovertyLevel);
+            int povertyLevel = 100;
+            while (true)
             {
-                if (baseIncome <= quote.Income - quote.Expenses && quote.Income - quote.Expenses <= baseIncome * povertyLevel)
-                {   
-                    // TODO This will fail if they dont have mappings for all multiples of 10 between MinPovertyLevel and MaxPovertyLevel
-                    quote.DiscountPercentage = quote.Location.BracketMappings.Single(b => b.BracketPercentage == povertyLevel * 100).CustomPercentage;
-                    return;
+                if (baseIncome <= quote.AdjustedIncome && quote.AdjustedIncome < baseIncome * 1.1)
+                {   // Return first mapping with poverty level less than povertyLevel
+                    foreach (BracketMapping mapping in sortedMappings)
+                    {
+                        if (mapping.PovertyLevel <= povertyLevel)
+                        {
+                            quote.DiscountPercentage = mapping.Discount;
+                            return;
+                        }
+                    }
                 }
-                else if (baseIncome <= quote.Income - quote.Expenses)
-                {
-                    povertyLevel += .1;
-                }
-                else
-                {
-                    povertyLevel -= .1;
-                }
+                // We could do this in multiples of 10, but this allows more customization
+                povertyLevel = baseIncome <= quote.AdjustedIncome ? povertyLevel + 1 : povertyLevel - 1;
+                baseIncome = povertyLevel / 100.0 * baseIncome;
             }
-
-            if (povertyLevel == quote.Location.MinPovertyLevel)
-                quote.DiscountPercentage = quote.Location.BracketMappings.Single(b => b.BracketPercentage == povertyLevel).CustomPercentage;
-            else
-                quote.DiscountPercentage = 0;
         }
     }
 }
