@@ -30,7 +30,6 @@ namespace AutoMed.DAL
         public DbSet<Location> Locations { get; set; }
         public DbSet<IncomeBracket> IncomeBrackets { get; set; }
         public DbSet<BracketMapping> BracketMappings { get; set; }
-
         public DbSet<Scale> Scales { get; set; }
     }
 }
