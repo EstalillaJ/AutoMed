@@ -8,7 +8,7 @@
 
 <h2>Create</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create", "Locations", FormMethod.Post, new { id = "location-form" })) 
 {
     @Html.AntiForgeryToken()
     
@@ -39,13 +39,13 @@
                 <tbody>
                     <tr>
                         <td>
-                            <input class="form-control text-box single-line"
+                            <input class="form-control text-box single-line poverty-level"
                                    data-val="true"
                                    data-val-number="Must be a number."
-                                   id="BracketMappings_0__BracketPercentage" name="BracketMappings[0].PovertyLevel" type="text" value="">
+                                   id="BracketMappings_0__PovertyLevel" name="BracketMappings[0].PovertyLevel" type="text" value="">
                         </td>
                         <td>
-                            <input class="form-control text-box single-line"
+                            <input class="form-control text-box single-line poverty-level discount"
                                    data-val="true" data-val-number="Must be a number."
                                    id="BracketMappings_0__CustomPercentage" name="BracketMappings[0].Discount" type="text" value="">
                         </td>
@@ -67,37 +67,15 @@
 @section Scripts {
     <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/Scripts/Locations/ManipulateDataTable.js"></script>
     <script type="text/javascript">
-        var table = $("#mappings-table").DataTable({
-                        "paging": false,
-                        "searching": false,
-                        "info": false,
-                        "ordering": false
-        });
-        var count = 1;
-        $("#add-row").click(function (event) {
+        $("#add-row").click(function(event) {
             event.preventDefault();
-            table.row.add([
-                '<input class="form-control text-box single-line"' +
-                               'data-val="true"' +
-                               'data-val-number="Must be a number."' +
-                               'id="BracketMappings_' + count  + '__PovertyLevel" name="BracketMappings['+ count + '].PovertyLevel" type="text" value="">',
-                '<input class="form-control text-box single-line"' +
-                               'data-val="true"' +
-                               'data-val-number="Must be a number."' +
-                               'id="BracketMappings_' + count + '__Discount" name="BracketMappings[' + count + '].Discount" type="text" value="">'
-            ]).draw(false);
-            $("#remove-row").removeClass("disabled");
-            count++;
+            addRow();
         });
-        $("#remove-row").click(function (event) {
+        $("#remove-row").click(function(event) {
             event.preventDefault();
-            if (count >  1) {
-                table.row(count-1).remove().draw(false);
-                if (count == 2)
-                    $("#remove-row").addClass("disabled");
-                count--;
-            }
-        })
+            removeRow();
+        });
     </script>
 }

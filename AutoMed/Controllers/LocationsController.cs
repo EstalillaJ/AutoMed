@@ -96,11 +96,15 @@ namespace AutoMed.Controllers
                         db.Entry(mapping).State = EntityState.Modified;
                 }
 
-                for (int i = 0; i < deletedMappings.Count; i++)
+                if (deletedMappings != null)
                 {
-                    db.BracketMappings.Attach(deletedMappings[i]);
-                    db.BracketMappings.Remove(deletedMappings[i]);
+                    for (int i = 0; i < deletedMappings.Count; i++)
+                    {
+                        db.BracketMappings.Attach(deletedMappings[i]);
+                        db.BracketMappings.Remove(deletedMappings[i]);
+                    }
                 }
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

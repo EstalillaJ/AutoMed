@@ -2,12 +2,13 @@
 
 @{
     ViewBag.Title = "Edit";
+    string removeRowClass = Model.BracketMappings.Count == 1 ? "disabled" : "";
 }
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css" />
 
 <h2>Edit</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Locations", FormMethod.Post, new { id = "location-form" }))
 {
     @Html.AntiForgeryToken()
     
@@ -24,7 +25,8 @@
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
         </div>
-        <button class="btn btn-default" id="remove-row"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
+
+        <button class="btn btn-default @removeRowClass" id="remove-row"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
         <button class="btn btn-default" id="add-row"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
         <table id="mappings-table" class="table table-striped">
             <thead>
@@ -42,10 +44,10 @@
                 {
                     <tr>
                         <td>
-                            @Html.EditorFor(m => m.BracketMappings[i].PovertyLevel, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(m => m.BracketMappings[i].PovertyLevel, new { htmlAttributes = new { @class = "form-control discount" } })
                         </td>
                         <td>
-                            @Html.EditorFor(m => m.BracketMappings[i].Discount, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(m => m.BracketMappings[i].Discount, new { htmlAttributes = new { @class = "form-control discount" } })
                         </td>
                         @Html.HiddenFor(m => m.BracketMappings[i].Id)
                         <input data-val="true" data-val-required="The Id field is required." id=@string.Format("BracketMappings_{0}__LocationId", i) name=@string.Format("BracketMappings[{0}].LocationId", i) type="hidden" value=@Model.BracketMappings[i].LocationId>
@@ -70,47 +72,23 @@
 @section Scripts {
     <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/Scripts/Locations/ManipulateDataTable.js"></script>
     <script type="text/javascript">
-        var table = $("#mappings-table").DataTable({
-                        "paging": false,
-                        "searching": false,
-                        "info": false,
-                        "ordering": false
-                    });
-        var count = @Model.BracketMappings.Count;
+
         var locationId = @Model.Id;
-        var deletedMappings = 0;
         $("#add-row").click(function (event) {
             event.preventDefault();
-            table.row.add([
-                '<input class="form-control text-box single-line"' +
-                               'data-val="true"' +
-                               'data-val-number="Must be a number."' +
-                               'id="BracketMappings_' + count + '__PovertyLevel" name="BracketMappings[' + count + '].PovertyLevel" type="text" value="">',
-                '<input class="form-control text-box single-line"' +
-                               'data-val="true"' +
-                               'data-val-number="Must be a number."' +
-                               'id="BracketMappings_' + count + '__Discount" name="BracketMappings[' + count + '].Discount" type="text" value="">'
-
-            ]).draw(false);
-            $("td").last().after('<input type=hidden id="BracketMappings_' + count + '__LocationId"  name="BracketMappings[' + count + '].LocationId" value="' + locationId + '">');
-            $("td").last().after('<input type="hidden" name="BracketMappings.Index" value="'+ count + '" />');
-            $("#remove-row").removeClass("disabled");
-            count++;
+            addRow();
+            var lastTd = $("td").last();
+            var lastIndex = table.data().length - 1;
+            lastTd.after('<input type=hidden id="BracketMappings_' + lastIndex + '__LocationId"  name="BracketMappings[' + lastIndex + '].LocationId" value="' + locationId + '">');
+            lastTd.after('<input type="hidden" name="BracketMappings.Index" value="'+ lastIndex + '" />');
         });
-        $("#remove-row").click(function (event) {
+
+        $("#remove-row").click(function(event) {
             event.preventDefault();
-            var idInput = $("#BracketMappings_" + (count - 1) + "__Id");
-            if (idInput.length == 1) {
-                idInput.attr("name", "deletedMappings[" + deletedMappings + "].Id").insertAfter($("#mappings-table"));
-                deletedMappings++;
-            }
-            if (count > 1) {
-                table.row(count-1).remove().draw(false);
-                if (count == 2)
-                    $("#remove-row").addClass("disabled");
-                count--;
-            }
-        })
+            markRowAsDeleted();
+            removeRow();
+        });
     </script>
 }

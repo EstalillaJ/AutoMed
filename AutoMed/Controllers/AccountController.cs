@@ -85,7 +85,7 @@ namespace AutoMed.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    AutoMedUser user = db.Users.Where(u => u.UserName == model.UserName).First();
+                    AutoMedUser user = db.Users.First(u => u.UserName == model.UserName);
                     IdentityRole role = db.Roles.Find(user.Roles.First().RoleId);
                     if (role.Name == "Administrator")
                         return RedirectToAction("Create", "Report", routeValues: null);
@@ -95,7 +95,6 @@ namespace AutoMed.Controllers
                         return RedirectToAction("Index", "Customers");
                 case SignInStatus.LockedOut:
                     return RedirectToAction("Login");
-                case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
@@ -127,13 +126,13 @@ namespace AutoMed.Controllers
             db.Locations.ToList().ForEach(
                 location => locationList.Add(new SelectListItem { Text = location.Name, Value = location.Id.ToString()})
             );
-            ViewBag.locationList = (IEnumerable<SelectListItem>) locationList;
+            ViewBag.locationList = locationList;
 
             List<SelectListItem> rolesList = new List<SelectListItem>();
             db.Roles.ToList().ForEach(
                 role => rolesList.Add(new SelectListItem { Text = role.Name, Value = role.Id.ToString() })
                 );
-            ViewBag.rolesList = (IEnumerable<SelectListItem>) rolesList;
+            ViewBag.rolesList = rolesList;
 
             AutoMedUser user = UserManager.FindById(id);
             EditViewModel viewModel = new EditViewModel { UserName = user.UserName, LocationId = user.LocationId, Id = user.Id, Role = user.Roles.First().RoleId };   
@@ -212,7 +211,7 @@ namespace AutoMed.Controllers
         {
             if (ModelState.IsValid)
             {
-                Location location = db.Locations.Where(x => x.Name.Equals(model.Location)).FirstOrDefault();
+                Location location = db.Locations.Single(x => x.Name.Equals(model.Location));
                 var user = new AutoMedUser { UserName = model.UserName, LocationId = location.Id, isDeleted = false };
 
                 IdentityResult result = UserManager.Create(user, model.Password);

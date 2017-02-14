@@ -303,26 +303,36 @@ namespace AutoMed.Controllers
                                 scale.IncomeBrackets.Single(b => b.NumInHousehold == quote.CurrentNumberInHousehold).Income:
                                 scale.IncomeBrackets.Single(b => b.NumInHousehold == 8).Income + (scale.AdditionalPersonBase * quote.CurrentNumberInHousehold - 8);
 
-
-            IEnumerable<BracketMapping> sortedMappings = quote.Location.BracketMappings.OrderByDescending(m => m.PovertyLevel);
-            int povertyLevel = 100;
-            while (true)
-            {
-                if (baseIncome <= quote.AdjustedIncome && quote.AdjustedIncome < baseIncome * 1.1)
-                {   // Return first mapping with poverty level less than povertyLevel
-                    foreach (BracketMapping mapping in sortedMappings)
-                    {
-                        if (mapping.PovertyLevel <= povertyLevel)
-                        {
-                            quote.DiscountPercentage = mapping.Discount;
-                            return;
-                        }
-                    }
+            quote.Location.BracketMappings.Sort((x,y) => x.PovertyLevel.CompareTo(y.PovertyLevel));
+            for (int i = 0; i < quote.Location.BracketMappings.Count; i++)
+            {   
+                if (i == quote.Location.BracketMappings.Count || 
+                    (quote.Location.BracketMappings[i].PovertyLevel / 100.0 * baseIncome <= quote.AdjustedIncome
+                    && quote.AdjustedIncome < quote.Location.BracketMappings[i + 1].PovertyLevel / 100.0 * quote.AdjustedIncome))
+                {
+                    quote.DiscountPercentage = quote.Location.BracketMappings[i].Discount;
+                    return;
                 }
-                // We could do this in multiples of 10, but this allows more customization
-                povertyLevel = baseIncome <= quote.AdjustedIncome ? povertyLevel + 1 : povertyLevel - 1;
-                baseIncome = povertyLevel / 100.0 * baseIncome;
             }
+
+            //int povertyLevel = 100;
+            //while (true)
+            //{
+            //    if (baseIncome <= quote.AdjustedIncome && quote.AdjustedIncome < baseIncome * 1.1)
+            //    {   // Return first mapping with poverty level less than povertyLevel
+            //        foreach (BracketMapping mapping in sortedMappings)
+            //        {
+            //            if (mapping.PovertyLevel <= povertyLevel)
+            //            {
+            //                quote.DiscountPercentage = mapping.Discount;
+            //                return;
+            //            }
+            //        }
+            //    }
+            //    // We could do this in multiples of 10, but this allows more customization
+            //    povertyLevel = baseIncome <= quote.AdjustedIncome ? povertyLevel + 1 : povertyLevel - 1;
+            //    baseIncome = povertyLevel / 100.0 * baseIncome;
+            //}
         }
     }
 }
