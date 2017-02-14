@@ -81,7 +81,7 @@
             addRow();
             var lastTd = $("td").last();
             var lastIndex = table.data().length - 1;
-            lastTd.after('<input type=hidden id="BracketMappings_' + lastIndex + '__LocationId"  name="BracketMappings[' + lastIndex + '].LocationId" value="' + locationId + '">');
+            lastTd.after('<input type="hidden" id="BracketMappings_' + lastIndex + '__LocationId"  name="BracketMappings[' + lastIndex + '].LocationId" value="' + locationId + '">');
             lastTd.after('<input type="hidden" name="BracketMappings.Index" value="'+ lastIndex + '" />');
         });
 
