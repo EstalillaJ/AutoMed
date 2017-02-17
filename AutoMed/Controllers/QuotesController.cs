@@ -13,6 +13,7 @@ using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.Web.Configuration;
+using AutoMed.Models.DataModels;
 
 namespace AutoMed.Controllers
 {
@@ -34,7 +35,7 @@ namespace AutoMed.Controllers
                 quotes = db.Quotes.Where(x => x.Approval == QuoteStatus.Pending).ToList();
             else
             {
-                int locationId = db.Users.Where(x => x.UserName == User.Identity.Name).First().Location.Id;
+                int locationId = db.Users.Single(x => x.UserName == User.Identity.Name).Location.Id;
                 quotes = db.Quotes.Where(x => x.Approval == QuoteStatus.Pending && locationId == x.Location.Id).ToList();
             }
 
@@ -91,7 +92,7 @@ namespace AutoMed.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Employee,Manager,Administrator")]
-        public ActionResult Create([Bind(Include = "CustomerId,VehicleId,CurrentNumberInHousehold,TotalCost,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
+        public ActionResult Create([Bind(Include = "CustomerId,VehicleId,CurrentNumberInHousehold,TotalCost,Income,Expenses,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
         {
             if (ModelState.IsValid)
             {
@@ -102,7 +103,8 @@ namespace AutoMed.Controllers
                 quote.DateCreated = DateTime.Now;
                 quote.LocationId = loggedIn.Location.Id;
                 quote.CreatedById = loggedIn.Id;
-                quote.SetDiscountPercentage();
+                quote.Location = db.Locations.Find(quote.LocationId);
+                SetDiscount(quote);
 
                 string redir;
                 if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
@@ -172,7 +174,7 @@ namespace AutoMed.Controllers
                 db.Entry(quote).Property(x => x.TotalCost).IsModified = true;
                 db.Entry(quote).Property(x => x.Approval).IsModified = true;
                 db.Entry(quote).Property(x => x.WorkDescription).IsModified = true;
-                quote.SetDiscountPercentage();
+                SetDiscount(quote);
                 db.SaveChanges();
                 UploadDocumentBlobs(quote.Documents);
 
@@ -253,7 +255,7 @@ namespace AutoMed.Controllers
         /// </summary>
         /// <param name="documentId"></param>
         /// <returns>returns file image</returns>
-        [Authorize(Roles = "Manager,Administrator")]
+        [Authorize(Roles = "Manager,Administrator,Employee")]
         [Route("Document/Image/{documentId}")]
         // <img src="Document/Image/{documentId}" />
         public ActionResult GetImage(int documentId)
@@ -278,7 +280,6 @@ namespace AutoMed.Controllers
         /// <param name="documents"></param>
         private void UploadDocumentBlobs(List<Document> documents)
         {
-
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(WebConfigurationManager.AppSettings["BlobStorageConnection"]);
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
             CloudBlobContainer container = blobClient.GetContainerReference(WebConfigurationManager.AppSettings["BlobContainer"]);
@@ -291,6 +292,47 @@ namespace AutoMed.Controllers
                 blockBlob.Properties.ContentType = document.UploadedImage.ContentType;
                 blockBlob.UploadFromStream(document.UploadedImage.InputStream);
             }
+        }
+
+        private void SetDiscount(Quote quote)
+        {   
+            // Fallback to last year's scale if this year's hasn't been entered
+            Scale scale = db.Scales.SingleOrDefault(x => x.Year == DateTime.Now.Year) ?? db.Scales.Single(x => x.Year == DateTime.Now.Year - 1);
+
+            double baseIncome = quote.CurrentNumberInHousehold < 9 ?
+                                scale.IncomeBrackets.Single(b => b.NumInHousehold == quote.CurrentNumberInHousehold).Income:
+                                scale.IncomeBrackets.Single(b => b.NumInHousehold == 8).Income + (scale.AdditionalPersonBase * quote.CurrentNumberInHousehold - 8);
+
+            quote.Location.BracketMappings.Sort((x,y) => x.PovertyLevel.CompareTo(y.PovertyLevel));
+            for (int i = 0; i < quote.Location.BracketMappings.Count; i++)
+            {   
+                if (i == quote.Location.BracketMappings.Count || 
+                    (quote.Location.BracketMappings[i].PovertyLevel / 100.0 * baseIncome <= quote.AdjustedIncome
+                    && quote.AdjustedIncome < quote.Location.BracketMappings[i + 1].PovertyLevel / 100.0 * quote.AdjustedIncome))
+                {
+                    quote.DiscountPercentage = quote.Location.BracketMappings[i].Discount;
+                    return;
+                }
+            }
+
+            //int povertyLevel = 100;
+            //while (true)
+            //{
+            //    if (baseIncome <= quote.AdjustedIncome && quote.AdjustedIncome < baseIncome * 1.1)
+            //    {   // Return first mapping with poverty level less than povertyLevel
+            //        foreach (BracketMapping mapping in sortedMappings)
+            //        {
+            //            if (mapping.PovertyLevel <= povertyLevel)
+            //            {
+            //                quote.DiscountPercentage = mapping.Discount;
+            //                return;
+            //            }
+            //        }
+            //    }
+            //    // We could do this in multiples of 10, but this allows more customization
+            //    povertyLevel = baseIncome <= quote.AdjustedIncome ? povertyLevel + 1 : povertyLevel - 1;
+            //    baseIncome = povertyLevel / 100.0 * baseIncome;
+            //}
         }
     }
 }

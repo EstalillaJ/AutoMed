@@ -7,6 +7,8 @@ using System.Text;
 using System.Collections.Generic;
 using LinqKit;
 using System.Data.Entity;
+using AutoMed.Models.DataModels;
+using AutoMed.Models.ViewModels;
 
 namespace AutoMed.Controllers
 {   

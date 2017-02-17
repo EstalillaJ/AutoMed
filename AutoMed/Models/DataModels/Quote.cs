@@ -1,17 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-namespace AutoMed.Models
+
+namespace AutoMed.Models.DataModels
 {
     public class Quote
     {
         public int Id { get; set; }
         [Display(Name = "# of People in Household")]
         public int CurrentNumberInHousehold { get; set; }
+        [Display(Name = "Total Income")]
+        public double Income { get; set; }
+        [Display(Name = "Total Expenses")]
+        public double Expenses { get; set; }
+
+        [NotMapped]
+        public double AdjustedIncome
+        {
+            get { return Income - Expenses; }
+        }
         public virtual List<Document> Documents { get; set; }
         [Display(Name = "Date Created")]
         [DataType(DataType.Date)]
@@ -27,7 +35,7 @@ namespace AutoMed.Models
         public AutoMedUser CreatedBy { get; set; }
         [Display(Name = "Calculated Discount (%)")]
         public double DiscountPercentage { get; set; }
-        [Display(Name = "Total Cost w/o discount")]
+        [Display(Name = "Total Cost")]
         public double TotalCost { get; set; }
         [NotMapped]
         public double DiscountDollars { get { return TotalCost * DiscountPercentage; } }
@@ -41,10 +49,5 @@ namespace AutoMed.Models
         public virtual Customer Customer { get; set; }
         public int VehicleId { get; set; }
         public virtual Vehicle Vehicle { get; set; }
-
-        public void SetDiscountPercentage()
-        {
-            this.DiscountPercentage = new Random().NextDouble();
-        }
     }
 }

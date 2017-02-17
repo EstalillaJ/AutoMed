@@ -1,12 +1,14 @@
-﻿@model AutoMed.Models.Location
+﻿@model AutoMed.Models.DataModels.Location
 
 @{
     ViewBag.Title = "Create";
 }
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css" />
+
 
 <h2>Create</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create", "Locations", FormMethod.Post, new { id = "location-form" })) 
 {
     @Html.AntiForgeryToken()
     
@@ -21,6 +23,35 @@
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
         </div>
+        <button class="btn btn-default disabled" id="remove-row"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
+        <button class="btn btn-default" id="add-row"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+            <table id="mappings-table" class="table table-striped table-condensed">
+                <thead>
+                    <tr>
+                        <th>
+                            Poverty Level (%)
+                        </th>
+                        <th>
+                            Associated Discount (%)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input class="form-control text-box single-line poverty-level"
+                                   data-val="true"
+                                   data-val-number="Must be a number."
+                                   id="BracketMappings_0__PovertyLevel" name="BracketMappings[0].PovertyLevel" type="text" value="">
+                        </td>
+                        <td>
+                            <input class="form-control text-box single-line poverty-level discount"
+                                   data-val="true" data-val-number="Must be a number."
+                                   id="BracketMappings_0__CustomPercentage" name="BracketMappings[0].Discount" type="text" value="">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -33,3 +64,18 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/Scripts/Locations/ManipulateDataTable.js"></script>
+    <script type="text/javascript">
+        $("#add-row").click(function(event) {
+            event.preventDefault();
+            addRow();
+        });
+        $("#remove-row").click(function(event) {
+            event.preventDefault();
+            removeRow();
+        });
+    </script>
+}

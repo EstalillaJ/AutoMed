@@ -234,11 +234,15 @@
     <Compile Include="Controllers\QuotesController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
+    <Compile Include="Controllers\ScaleController.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
     <Compile Include="DBInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DataModels\BracketMapping.cs" />
+    <Compile Include="Models\DataModels\IncomeBracket.cs" />
+    <Compile Include="Models\DataModels\Scale.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="ApplicationDbContext.cs" />
     <Compile Include="Models\Checkbox.cs" />
@@ -278,6 +282,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\Locations\ManipulateDataTable.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -327,9 +332,13 @@
     <Content Include="Views\Vehicles\Delete.cshtml" />
     <Content Include="Views\Vehicles\Details.cshtml" />
     <Content Include="Views\Vehicles\Edit.cshtml" />
+    <Content Include="Views\Scale\Index.cshtml" />
+    <Content Include="Views\Scale\Create.cshtml" />
+    <Content Include="Views\Scale\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="fonts\" />
+    <Folder Include="Scripts\Quotes\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

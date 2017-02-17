@@ -12,6 +12,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using AutoMed.Models;
 using AutoMed.DAL;
+using AutoMed.Models.DataModels;
 
 namespace AutoMed
 {
