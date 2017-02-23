@@ -133,9 +133,11 @@ namespace AutoMed.Controllers
         {
             Location location = db.Locations.Find(id);
             location.IsDeleted = true;
-            var user = db.Users.Where(x => x.Location.Name == location.Name).FirstOrDefault();
-            user.isDeleted = true;
-            //db.Locations.Remove(location);
+            List<AutoMedUser> users = db.Users.Where(x => x.Location.Name == location.Name).ToList();
+            foreach (AutoMedUser user in users)
+            {
+                user.isDeleted = true;
+            }
             db.SaveChanges();
             return RedirectToAction("Index");
         }
