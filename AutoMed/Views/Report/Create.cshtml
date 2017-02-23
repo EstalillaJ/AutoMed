@@ -137,6 +137,8 @@
                                 </thead>
                                 @for (int i = 0; i < Model.Locations.Count(); i++)
                                 {
+                                    if (Model.Locations[i].Item.IsDeleted == false)
+                                    {
                                     <tr>
                                         <td>
                                             @Model.Locations[i].Item.Id
@@ -148,7 +150,8 @@
                                             @Html.CheckBoxFor(m => m.Locations[i].IsChecked, new { @class = "location_checkbox" })
                                             @Html.HiddenFor(m => m.Locations[i].Item.Id)
                                         </td>
-                                    </tr>
+                                    </tr> 
+                                    }
                                 }
                             </table>
                         </div>
