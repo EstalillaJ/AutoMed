@@ -1,16 +1,53 @@
 ﻿@using AutoMed.Models;
-@model CreateReportViewModel
+@model AutoMed.Models.CreateReportViewModel
 @{
     ViewBag.Title = "Reports";
 }
 
     <h2>Generate A Report</h2>
     <br />
+<style>
+    	.dropdown-toggle {
+		float: right;
+		z-index: 2;
+	}
+        .filter {
+        max-width: 200px;
+         margin-top: 100px;
+         margin-right: 100px;
 
+     }
+</style>
     @using (Html.BeginForm("Details", "Report", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "form-create" }))
     {
+     
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+                <div class="filter">
+                    <ul class="nav nav-tabs nav-justified split-button-nav">
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="caret"></span>
+                            </a>
+                            <a href="#" class="">Fill Default</a>
+                            <ul class="dropdown-menu" role="menu">
+                                @if (Model.Filters != null)
+                                {
+                                    for (int i = 0; i < Model.Filters.Count(); i++)
+                                    {
+                                        <li><a class="dropdown-item"> @Model.Filters[i].Default_Name</a></li>
+                                    }
+                                }
+                                <li class="divider"></li>
+                                <li><a class="dropdown-item" data-toggle="modal" data-target="#save-default-modal" style="padding-left:0em;">Save New Default</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        
+
             <div class="form-group">
                 @Html.LabelFor(model => model.MaxDiscountDollars, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-col-md-10">
@@ -99,7 +136,7 @@
 
             <div class="form-group">
 
-                <a data-toggle="modal" class="col-md-10 col-md-offset-2" data-target="#location-settings-modal"  style="padding-left:0em;">
+                <a data-toggle="modal" class="col-md-10 col-md-offset-2" data-target="#location-settings-modal" style="padding-left:0em;">
                     Location Filter
                     <p class="hidden text-danger col-md-8" id="location-checkbox-error">Please choose at least one location</p>
 
@@ -170,6 +207,7 @@
                                 @Html.CheckBoxFor(m => m.AllColumns) @Html.LabelFor(m => m.AllColumns)
                             </div>
                             <div class="row form-group">
+
                                 @for (int i = 0; i < Model.ColumnsToInclude.Count; i++)
                                 {
                                     <div class="col-md-3 col-sm-4 col-xs-6">
@@ -189,98 +227,131 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="save-default-modal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Save Filter as a Default</h3>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Default_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.Default_Name, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Default_Name, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <input type="submit" value="Save" name="action" @*class="btn btn-default"*@ />
+                                    </div>
+                                </div>
+
+                            </div>
 
 
-        
-        <div class="form-group">
-            <div class="col-md-offset-10 col-md-2">
-                <input type="submit" class="btn btn-primary btn-default maxwidth" value="Generate" />
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-      
+
+
+
+            <div class="form-group">
+                <div class="col-md-offset-10 col-md-2">
+                    <input type="submit" class="btn btn-primary btn-default maxwidth" value="Generate" name="action" />
+                </div>
+            </div>
+
             }
 
-    
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/Scripts/DateSelect.js")
-    <script>
 
-        $("#reports-link").addClass("active");
+            @section Scripts {
+                @Scripts.Render("~/bundles/jqueryval")
+                @Scripts.Render("~/Scripts/DateSelect.js")
+                <script>
 
-        var numLocations = @Model.Locations.Count();        
+                    $("#reports-link").addClass("active");
 
-        function toggleCheckboxes(idOfMaster, classOfSlaves, cb){
-            $(idOfMaster).change(
-                function () {
-                    var checked = $(this).is(":checked");
-                    $(classOfSlaves).prop('checked', checked);
-                });
+                    var numLocations = @Model.Locations.Count();
 
-        $(classOfSlaves).change(
-                function(){
-                    var checked = $(this).is(":checked");
-                    if (!checked){
-                        $(idOfMaster).prop('checked', false);
+                    function toggleCheckboxes(idOfMaster, classOfSlaves, cb){
+                        $(idOfMaster).change(
+                            function () {
+                                var checked = $(this).is(":checked");
+                                $(classOfSlaves).prop('checked', checked);
+                            });
+
+                        $(classOfSlaves).change(
+                                function(){
+                                    var checked = $(this).is(":checked");
+                                    if (!checked){
+                                        $(idOfMaster).prop('checked', false);
+                                    }
+                                    else{
+                                        var allchecked = $(classOfSlaves).not(":checked").length === 0;
+                                        $(idOfMaster).prop('checked', allchecked);
+                                    }
+                                    cb();
+                                });
                     }
-                    else{
-                        var allchecked = $(classOfSlaves).not(":checked").length === 0;
-                        $(idOfMaster).prop('checked', allchecked);
-                    }
-                    cb();
-                });
-        }
 
-        $("#form-create").submit(function (event) {
-            if (!$(".location_checkbox").is(":checked")) {
-                $("#location-checkbox-error").removeClass('hidden');
-                event.preventDefault();
+                    $("#form-create").submit(function (event) {
+                        if (!$(".location_checkbox").is(":checked")) {
+                            $("#location-checkbox-error").removeClass('hidden');
+                            event.preventDefault();
+                        }
+
+                        if (!$(".column_checkbox").is(":checked")) {
+                            $('#data-field-error').removeClass('hidden');
+                            event.preventDefault();
+                        }
+                    });
+
+                    toggleCheckboxes("#AllLocations", ".location_checkbox", function() {
+                        $("#location-checkbox-error").addClass("hidden");
+                    });
+                    toggleCheckboxes("#AllColumns", ".column_checkbox", function() {
+                        $("#data-field-error").addClass("hidden");
+                    });
+
+
+                    $("#AnyDiscountDollars").change(
+                        function () {
+                            var checked = $(this).is(":checked");
+                            $("#MaxDiscountDollars").prop('disabled', checked);
+                            $("#MinDiscountDollars").prop('disabled', checked);
+                        });
+
+                    $("#AnyDiscountPercentage").change(
+                        function () {
+                            var checked = $(this).is(":checked");
+                            $("#MaxDiscountPercentage").prop('disabled', checked);
+                            $("#MinDiscountPercentage").prop('disabled', checked);
+                        });
+                    $("#AnyDate").change(
+                        function () {
+                            var checked = $(this).is(":checked");
+                            $("#StartDay").prop('disabled', checked);
+                            $("#EndDay").prop('disabled', checked);
+                            $("#StartMonth").prop('disabled', checked);
+                            $("#EndMonth").prop('disabled', checked);
+                            $("#StartYear").prop('disabled', checked);
+                            $("#EndYear").prop('disabled', checked);
+                        });
+
+                    $("#EndMonth").change(function(){
+                        changeDaysAvailable(this.value, $("#EndYear").value, $("#EndDay"))
+                    })
+                    $("#StartMonth").change(function(){
+                        changeDaysAvailable(this.value, $("#StartYear").value, $("#StartDay"))
+                    })
+                </script>
             }
-
-            if (!$(".column_checkbox").is(":checked")) {
-                $('#data-field-error').removeClass('hidden');
-                event.preventDefault();
-            }
-        });
-
-        toggleCheckboxes("#AllLocations", ".location_checkbox", function() {
-            $("#location-checkbox-error").addClass("hidden");
-        });
-        toggleCheckboxes("#AllColumns", ".column_checkbox", function() {
-            $("#data-field-error").addClass("hidden");   
-        });
-
-  
-        $("#AnyDiscountDollars").change(
-            function () {
-                var checked = $(this).is(":checked");
-                $("#MaxDiscountDollars").prop('disabled', checked);
-                $("#MinDiscountDollars").prop('disabled', checked);
-            });
-        
-        $("#AnyDiscountPercentage").change(
-            function () {
-                var checked = $(this).is(":checked");
-                $("#MaxDiscountPercentage").prop('disabled', checked);
-                $("#MinDiscountPercentage").prop('disabled', checked);
-            });
-        $("#AnyDate").change(
-            function () {
-                var checked = $(this).is(":checked");
-                $("#StartDay").prop('disabled', checked);
-                $("#EndDay").prop('disabled', checked);
-                $("#StartMonth").prop('disabled', checked);
-                $("#EndMonth").prop('disabled', checked);
-                $("#StartYear").prop('disabled', checked);
-                $("#EndYear").prop('disabled', checked);
-            });
-        
-        $("#EndMonth").change(function(){
-            changeDaysAvailable(this.value, $("#EndYear").value, $("#EndDay"))
-        })
-        $("#StartMonth").change(function(){
-            changeDaysAvailable(this.value, $("#StartYear").value, $("#StartDay"))
-        })
-    </script>
-}

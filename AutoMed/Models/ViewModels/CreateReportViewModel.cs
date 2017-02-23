@@ -22,7 +22,8 @@ namespace AutoMed.Models
 
         [Display(Name = "All")]
         public bool AllColumns { get; set; }
-
+        [Display(Name = "Filter Name")]
+        public string Default_Name { get; set; }
         [Display(Name="All")]
         public bool AllLocations { get; set; }
         public List<Checkbox<Location>> Locations { get; set; }
@@ -49,11 +50,14 @@ namespace AutoMed.Models
         public State? State { get; set; }
         [Display(Name ="City")]
         public string City { get; set; }
+
+        public virtual List<Filter> Filters { get; set; }
     }
 
     public class ReportDetailsViewModel
     {
         public List<Quote> Quotes { get; set; }
         public List<string> Columns { get; set; }
+        public virtual List<Filter> Filters { get; set; }
     }
 }

@@ -13,6 +13,7 @@ namespace AutoMed.Controllers
     [Authorize(Roles="Administrator")]
     public class ReportController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationDbContext Context = ApplicationDbContext.Create();
         public ActionResult Create()
         {
@@ -35,8 +36,25 @@ namespace AutoMed.Controllers
            List<Quote> quotes = IncludeAllNavigationProperties(Context.Quotes).Where(q => quoteIds.Contains(q.Id)).ToList();
            return File(Encoding.ASCII.GetBytes(GenerateReportString(quotes, model.Columns)), "text/plain", string.Format("Report_{0}.csv", DateTime.Now));
         }
+        
 
+        // POST: Customers/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MultiButton(Name = "action", Aurgument = "Save")]
+        public ActionResult Save([Bind(Include = "Id,Default_Name,MAX_Money,MIN_Money,MAX_Percentage,Min_Percentage,StartDate,EndDate,household,Address,Zipe_Code,State,City")] Models.Filter Filters, ReportDetailsViewModel reports )
+        {
+            if (ModelState.IsValid)
+            {
+                db.Filters.Add(Filters);
+                db.SaveChanges();
+                return RedirectToAction("Filters");
+            }
 
+            return View(reports);
+        }
         private List<Quote> GetMatchingQuotes(CreateReportViewModel model)
         {
             List<Quote> matchedQuotes = new List<Quote>();
