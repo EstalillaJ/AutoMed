@@ -132,7 +132,8 @@ namespace AutoMed.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Location location = db.Locations.Find(id);
-            db.Locations.Remove(location);
+            location.IsDeleted = true;
+            //db.Locations.Remove(location);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
