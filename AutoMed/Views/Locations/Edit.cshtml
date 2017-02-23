@@ -74,7 +74,7 @@
     <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
     <script src="~/Scripts/Locations/ManipulateDataTable.js"></script>
     <script type="text/javascript">
-
+        $("#locations-link").addClass("active");
         var locationId = @Model.Id;
         $("#add-row").click(function (event) {
             event.preventDefault();

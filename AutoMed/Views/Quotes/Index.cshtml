@@ -75,6 +75,13 @@
     <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
         $("#quotes-link").addClass("active");
-        $("#quotes-table").DataTable();
+        $('#quotes-table').dataTable({
+            "fnDrawCallback": function (oSettings) {
+                if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
+                    $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
+                    $(oSettings.nTableWrapper).find('.dataTables_length').hide();
+                }
+            }
+        });
     </script>
 }

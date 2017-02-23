@@ -74,7 +74,12 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            @Html.ActionLink("Back to List", "Index", "Customers")
         </div>
     }
 </div>
+@section Scripts {
+    <script type="text/javascript">
+        $("#customers-link").addClass("active");
+    </script>    
+}
