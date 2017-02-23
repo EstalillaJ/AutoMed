@@ -14,7 +14,7 @@ using AutoMed.Models.DataModels;
 namespace AutoMed.Controllers
 {
     [Authorize(Roles = "Administrator")]
-    public class LocationsController : Controller
+    public class LocationsController  : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
