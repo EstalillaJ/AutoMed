@@ -92,7 +92,7 @@ namespace AutoMed.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Employee,Manager,Administrator")]
-        public ActionResult Create([Bind(Include = "CustomerId,VehicleId,CurrentNumberInHousehold,TotalCost,Income,Expenses,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
+        public ActionResult Create([Bind(Include = "CustomerId,VehicleId,CurrentNumberInHousehold,MandatoryCost,EligibleCost,Income,Expenses,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
         {
             if (ModelState.IsValid)
             {
@@ -161,7 +161,7 @@ namespace AutoMed.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Manager,Administrator")]
-        public ActionResult Edit([Bind(Include = "Id,CurrentNumberInHousehold,DiscountPercentage,TotalCost,Approval,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
+        public ActionResult Edit([Bind(Include = "Id,CurrentNumberInHousehold,DiscountPercentage,EligibleCost,MandatoryCost,Approval,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
         {
             if (ModelState.IsValid)
 
@@ -171,7 +171,7 @@ namespace AutoMed.Controllers
                 files.ForEach(x => { if (x != null) quote.Documents.Add(new Document() { UploadedImage = x }); });
                 db.Entry(quote).Property(x => x.CurrentNumberInHousehold).IsModified = true;
                 db.Entry(quote).Property(x => x.DiscountPercentage).IsModified = true;
-                db.Entry(quote).Property(x => x.TotalCost).IsModified = true;
+                db.Entry(quote).Property(x => x.EligibleCost).IsModified = true;
                 db.Entry(quote).Property(x => x.Approval).IsModified = true;
                 db.Entry(quote).Property(x => x.WorkDescription).IsModified = true;
                 SetDiscount(quote);
@@ -303,7 +303,14 @@ namespace AutoMed.Controllers
                                 scale.IncomeBrackets.Single(b => b.NumInHousehold == quote.CurrentNumberInHousehold).Income:
                                 scale.IncomeBrackets.Single(b => b.NumInHousehold == 8).Income + (scale.AdditionalPersonBase * quote.CurrentNumberInHousehold - 8);
 
+            if (quote.AdjustedIncome >= quote.Location.PovertyLevelCutoff / 100.0 * baseIncome)
+            {
+                quote.DiscountPercentage = 0;
+                return;
+            }
+
             quote.Location.BracketMappings.Sort((x,y) => x.PovertyLevel.CompareTo(y.PovertyLevel));
+            
             for (int i = 0; i < quote.Location.BracketMappings.Count; i++)
             {   
                 if (i == quote.Location.BracketMappings.Count || 
@@ -314,25 +321,6 @@ namespace AutoMed.Controllers
                     return;
                 }
             }
-
-            //int povertyLevel = 100;
-            //while (true)
-            //{
-            //    if (baseIncome <= quote.AdjustedIncome && quote.AdjustedIncome < baseIncome * 1.1)
-            //    {   // Return first mapping with poverty level less than povertyLevel
-            //        foreach (BracketMapping mapping in sortedMappings)
-            //        {
-            //            if (mapping.PovertyLevel <= povertyLevel)
-            //            {
-            //                quote.DiscountPercentage = mapping.Discount;
-            //                return;
-            //            }
-            //        }
-            //    }
-            //    // We could do this in multiples of 10, but this allows more customization
-            //    povertyLevel = baseIncome <= quote.AdjustedIncome ? povertyLevel + 1 : povertyLevel - 1;
-            //    baseIncome = povertyLevel / 100.0 * baseIncome;
-            //}
         }
     }
 }

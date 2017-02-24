@@ -13,6 +13,8 @@ namespace AutoMed.Models.DataModels
         [MaxLength(450)]
         public string Name { get; set; }
 
+        [Display(Name = "Poverty Level Cutoff")]
+        public int PovertyLevelCutoff { get; set; }
         public virtual List<Quote> Quotes { get; set; }
         public virtual List<AutoMedUser> Employees { get; set; }
         public virtual List<BracketMapping> BracketMappings { get; set; }

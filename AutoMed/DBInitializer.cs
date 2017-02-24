@@ -14,7 +14,7 @@ namespace AutoMed
     {
         protected override void Seed(ApplicationDbContext context)
         {
-            if (context.Users.Where(x => x.UserName == "Sy_Danton").Count() == 0)
+            if (context.Users.Count(x => x.UserName == "Sy_Danton") == 0)
             {
                 context.Scales.Add(
                     new Scale()
@@ -37,10 +37,9 @@ namespace AutoMed
                 });
 
                 context.Locations.AddRange(new List<Location> {
-                 new Location() { Id = 1, Name = "Ellensburg" },
-                 new Location() { Id = 2, Name = "Yakima" },
-                 new Location() { Id = 3, Name = "Seattle" },
-                 new Location() { Id = 4, Name = "Corporate" }
+                 new Location() { Id = 1, Name = "Ellensburg", PovertyLevelCutoff = 150},
+                 new Location() { Id = 2, Name = "Yakima", PovertyLevelCutoff = 170},
+                 new Location() { Id = 3, Name = "Seattle", PovertyLevelCutoff = 200},
                 });
 
                 List<BracketMapping> bracketMappingsEllensburg = new List<BracketMapping>()
@@ -104,7 +103,7 @@ namespace AutoMed
 
                 AutoMedUser[] users =
                 {
-                new AutoMedUser() { UserName = "Sy_Danton", LocationId = 4, },
+                new AutoMedUser() { UserName = "Sy_Danton", LocationId = 1, },
                 new AutoMedUser() { UserName = "Employee_1", LocationId = 1 },
                 new AutoMedUser() { UserName = "Employee_2", LocationId = 2 },
                 new AutoMedUser() { UserName = "Manager_1", LocationId = 1 },
@@ -145,7 +144,8 @@ namespace AutoMed
                          CurrentNumberInHousehold = 4,
                          DateReviewed = DateTime.Now,
                          DateCreated = new DateTime(2016, 1, 1),
-                         TotalCost = 1000,
+                         EligibleCost = 1000,
+                         MandatoryCost = 100,
                          DiscountPercentage = 20,
                          LocationId = 2,
                          WorkDescription = "Description",
@@ -161,7 +161,8 @@ namespace AutoMed
                          CurrentNumberInHousehold = 2,
                          DateReviewed = DateTime.Now,
                          DateCreated = new DateTime(2016, 5, 3),
-                         TotalCost = 400,
+                         EligibleCost = 400,
+                         MandatoryCost = 50,
                          DiscountPercentage = 25,
                          LocationId = 1,
                          WorkDescription = "Description",
@@ -177,7 +178,8 @@ namespace AutoMed
                          CurrentNumberInHousehold = 3,
                          DateReviewed = DateTime.Now,
                          DateCreated = new DateTime(2016, 4, 2),
-                         TotalCost = 100,
+                         EligibleCost = 100,
+                         MandatoryCost = 25,
                          DiscountPercentage = 10,
                          LocationId = 1,
                          WorkDescription = "Description",
