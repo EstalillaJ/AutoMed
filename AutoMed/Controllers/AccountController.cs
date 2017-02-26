@@ -202,6 +202,15 @@ namespace AutoMed.Controllers
             return View();
         }
 
+        [HttpPost]
+        public JsonResult doesUserNameExist(string UserName)
+        {
+
+            var user = db.Users.Where(x => x.UserName == UserName).FirstOrDefault();
+
+            return Json(user == null);
+        }
+
         //
         // POST: /Account/Register
         [HttpPost]

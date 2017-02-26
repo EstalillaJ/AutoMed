@@ -22,6 +22,7 @@ namespace AutoMed.Models.ViewModels
     {
         [Required]
         [Display(Name = "Username")]
+        [System.Web.Mvc.Remote("doesUserNameExist", "Account", HttpMethod = "POST", ErrorMessage = "User name already exists. Please enter a different user name.")]
         public string UserName { get; set; }
 
         [Required]
