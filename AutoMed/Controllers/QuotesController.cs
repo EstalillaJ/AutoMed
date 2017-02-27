@@ -99,7 +99,10 @@ namespace AutoMed.Controllers
                 AutoMedUser loggedIn = db.Users.Where(x => x.UserName.Equals(User.Identity.Name)).Include("Location").First();
 
                 quote.Documents = new List<Document>();
-                files.ForEach(file => { if (file != null) quote.Documents.Add(new Document() { UploadedImage = file }); });
+                for (int i = 0; i < files.Count; i++)
+                { 
+                        if (i != files.Count -1) quote.Documents.Add(new Document() {UploadedImage = files[i]});
+                }
                 quote.DateCreated = DateTime.Now;
                 quote.LocationId = loggedIn.Location.Id;
                 quote.CreatedById = loggedIn.Id;

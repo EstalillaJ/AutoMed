@@ -154,5 +154,30 @@ textarea {
 }
 
 hr {
-  border-color: #76323F;
+    border-color: #76323F;
+}
+
+.thumb {
+    height: 75px;
+    border: 1px solid #000;
+    margin: 10px 5px 0 0;
+}
+
+.remove {
+    display: block;
+    background: #444;
+    border: 1px solid black;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+}
+
+hr {
+    border-color: #76323F;
+}
+
+.imageContainer {
+    height: 75px;
+    border: 1px solid #000;
+    margin: 10px 5px 0 0;
 }

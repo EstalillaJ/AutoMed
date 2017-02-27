@@ -15,12 +15,22 @@
         reader.onload = (function (theFile) {
             return function (e) {
                 // Render thumbnail.
-                var span = document.createElement("span");
-                span.innerHTML = ['<img class="thumb" src="', e.target.result,
-                    '" title="', escape(theFile.name), '"/>'].join('');
-                document.getElementById("list").insertBefore(span, null);
+                var div = document.createElement("div");
+                div.innerHTML = ["<div class=\"imageContainer\">" +'<img class="thumb" src="', e.target.result,
+                    '" title="', escape(theFile.name), '"/>' +
+                    "<br/><span class=\"remove\">Remove Image</span>" + "</div>"].join("");
+
+                document.getElementById("list").insertBefore(div, null);
+            
+                $(".remove").click(function () {
+                    
+                    $(this).parent(".imageContainer").remove();
+                    document.getElementById("files").value = "";
+                    
+                });
             };
         })(f);
+
         var oldInput = $("#files");
         var newInput = oldInput.clone();
         newInput.change(function (evt) {
