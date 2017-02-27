@@ -14,7 +14,7 @@
         <hr />
         <div class="col-md-6">
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            
+
             <div class="form-group col-md-12">
                 @Html.LabelFor(model => model.Income, htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-8">
@@ -22,7 +22,7 @@
                     @Html.ValidationMessageFor(model => model.Income, "", new { @class = "text-danger" })
                 </div>
             </div>
-            
+
             <div class="form-group col-md-12">
                 @Html.LabelFor(model => model.Expenses, htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-8">
@@ -75,21 +75,23 @@
             <label class="btn btn-default btn-file">
                 Upload Picture <input type="file" id="files" name="files" multiple />
             </label>
-            <output id="list"></output>
-        </div>
+            <div id="list" class="col-md-12"></div>
 
-       
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-primary col-md-1" />
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    <input type="submit" value="Create" class="btn btn-primary col-md-3" />
+                </div>
+            </div>
+            <div>
+                @Html.ActionLink("Back to List", "Index")
             </div>
         </div>
+
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
 @section Scripts {
     @Scripts.Render("~/Scripts/UploadImages.js")
 }
