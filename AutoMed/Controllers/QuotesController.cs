@@ -168,13 +168,17 @@ namespace AutoMed.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Manager,Administrator")]
-        public ActionResult Edit([Bind(Include = "Id,CurrentNumberInHousehold,DiscountPercentage,EligibleCost,MandatoryCost,Approval,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
+        public ActionResult Edit([Bind(Include = "Id,CurrentNumberInHousehold,Income,Expenses,DiscountPercentage,EligibleCost,LocationId,MandatoryCost,Approval,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
         {
             if (ModelState.IsValid)
             {
+                quote.Location = db.Locations.Find(quote.LocationId);
                 db.Quotes.Attach(quote);
                 quote.Documents = new List<Document>();
-                files.ForEach(x => { if (x != null) quote.Documents.Add(new Document() { UploadedImage = x }); });
+                for (int i = 0; i < files.Count; i++)
+                {
+                    if (i != files.Count - 1) quote.Documents.Add(new Document() { UploadedImage = files[i] });
+                }
                 db.Entry(quote).Property(x => x.CurrentNumberInHousehold).IsModified = true;
                 db.Entry(quote).Property(x => x.DiscountPercentage).IsModified = true;
                 db.Entry(quote).Property(x => x.EligibleCost).IsModified = true;
@@ -184,7 +188,7 @@ namespace AutoMed.Controllers
                 db.SaveChanges();
                 UploadDocumentBlobs(quote.Documents);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Edit", new {id = quote.Id});
             }
 
             return View(quote);
