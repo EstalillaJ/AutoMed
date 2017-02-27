@@ -51,7 +51,7 @@ namespace AutoMed.Models
         [Display(Name ="City")]
         public string City { get; set; }
 
-        public virtual List<Filter> Filters { get; set; }
+        public List<Filter> Filters { get; set; }
     }
 
     public class ReportDetailsViewModel

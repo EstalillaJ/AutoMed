@@ -19,6 +19,7 @@ namespace AutoMed.Controllers
         {
             CreateReportViewModel viewModel = new CreateReportViewModel();
             Context.Locations.ToList().ForEach(x => viewModel.Locations.Add(new Checkbox<Location>(x)));
+            viewModel.Filters = Context.Filters.ToList();
             return View(viewModel);
         }
 
@@ -50,7 +51,7 @@ namespace AutoMed.Controllers
             {
                 db.Filters.Add(Filters);
                 db.SaveChanges();
-                return RedirectToAction("Filters");
+                return RedirectToAction("Create");
             }
 
             return View(reports);
