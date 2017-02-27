@@ -16,12 +16,13 @@
             return function (e) {
                 // Render thumbnail.
                 var div = document.createElement("div");
+                div.className = "images";
                 div.innerHTML = ["<div class=\"imageContainer\">" +'<img class="thumb" src="', e.target.result,
                     '" title="', escape(theFile.name), '"/>' +
                     "<br/><span class=\"remove\">Remove Image</span>" + "</div>"].join("");
 
                 document.getElementById("list").insertBefore(div, null);
-            
+                
                 $(".remove").click(function () {
                     
                     $(this).parent(".imageContainer").remove();

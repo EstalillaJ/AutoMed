@@ -150,7 +150,6 @@ textarea {
 .thumb {
     height: 75px;
     border: 1px solid #000;
-    margin: 10px 5px 0 0;
 }
 
 hr {
@@ -159,8 +158,8 @@ hr {
 
 .thumb {
     height: 75px;
+    width: 100px;
     border: 1px solid #000;
-    margin: 10px 5px 0 0;
 }
 
 .remove {
@@ -176,8 +175,11 @@ hr {
     border-color: #76323F;
 }
 
-.imageContainer {
-    height: 75px;
-    border: 1px solid #000;
-    margin: 10px 5px 0 0;
+.images{
+	padding: 0px 0px 1px 0px;
 }
+
+.imageContainer {
+    width: 100px;
+}
+
