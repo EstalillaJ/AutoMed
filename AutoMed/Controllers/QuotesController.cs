@@ -146,11 +146,15 @@ namespace AutoMed.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Quote quote = db.Quotes.Find(id);
-            if (quote == null)
-            {
-                return HttpNotFound();
-            }
+            Quote quote = db.Quotes.Include("CreatedBy").First(x => x.Id == id);
+            List<SelectListItem> vehicleSelect = new List<SelectListItem>();
+
+            db.Customers.Find(quote.CustomerId).Vehicles.ForEach(
+                   v => vehicleSelect.Add(new SelectListItem { Text = string.Format("{0} {1} {2}", v.Year, v.Make, v.Model), Value = v.Id.ToString() })
+               );
+
+            ViewBag.VehicleSelect = (IEnumerable<SelectListItem>)vehicleSelect;
+
             return View(quote);
         }
 
@@ -167,7 +171,6 @@ namespace AutoMed.Controllers
         public ActionResult Edit([Bind(Include = "Id,CurrentNumberInHousehold,DiscountPercentage,EligibleCost,MandatoryCost,Approval,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
         {
             if (ModelState.IsValid)
-
             {
                 db.Quotes.Attach(quote);
                 quote.Documents = new List<Document>();
@@ -200,6 +203,7 @@ namespace AutoMed.Controllers
             {
                 db.Quotes.Attach(quote); // State = Unchanged
                 db.Entry(quote).Property(x => x.Approval).IsModified = true;
+                quote.ReviewedBy = db.Users.First(x => x.UserName.Equals(User.Identity.Name));
             }
             db.SaveChanges();
             return RedirectToAction("Index");
