@@ -39,7 +39,7 @@ namespace AutoMed.Controllers
                 quotes = db.Quotes.Where(x => x.Approval == QuoteStatus.Pending && locationId == x.Location.Id).ToList();
             }
 
-            return View(quotes);
+            return View(quotes.OrderByDescending(x => x.DateCreated).ToList());
         }
 
         // GET: Quotes/Details/5
