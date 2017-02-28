@@ -10,7 +10,7 @@ using AutoMed.Models.DataModels;
 
 namespace AutoMed
 {
-    public class DBInitializer : CreateDatabaseIfNotExists<ApplicationDbContext>
+    public class DatabaseInitializer : CreateDatabaseIfNotExists<ApplicationDbContext>
     {
         protected override void Seed(ApplicationDbContext context)
         {

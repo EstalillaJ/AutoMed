@@ -1,11 +1,6 @@
 ﻿<!DOCTYPE html>
 <html>
-@{
-    bool isAuthenticated = User.Identity.IsAuthenticated;
-    bool isAdmin = User.IsInRole("Administrator");
-    bool isManager = User.IsInRole("Manager");
-    bool isEmployee = User.IsInRole("Employee");
-}
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +17,7 @@
     @Html.AntiForgeryToken()
 </form>
     <div class="header-container">
-        <img src="~/logo.jpg" class="header" />
+        <img src="~/Content/Images/logo.jpg" class="header" />
     </div>
 <div class="container body-content">
 

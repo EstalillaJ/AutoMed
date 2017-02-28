@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AutoMed.DAL;
+using System.Data.Entity;
 using AutoMed.Models.DataModels;
 
 
@@ -32,10 +33,10 @@ namespace AutoMed.Controllers
         /// <returns>HTML page for creating Poverty Scale</returns>
         public ActionResult Create()
         {
-            Scale scale = new Scale() { IncomeBrackets = new List<IncomeBracket>() };
+            Scale scale = new Scale { IncomeBrackets = new List<IncomeBracket>() };
             for (int i = 1; i <= 8; i++)
             {
-                scale.IncomeBrackets.Add(new IncomeBracket() { NumInHousehold = i });
+                scale.IncomeBrackets.Add(new IncomeBracket { NumInHousehold = i });
             }
 
             return View(scale);
@@ -51,7 +52,7 @@ namespace AutoMed.Controllers
         {
             db.Scales.Add(scale);
             db.SaveChanges();
-            return RedirectToAction("Edit", new { id = scale.Id });
+            return RedirectToAction(nameof(Edit), new { id = scale.Id });
         }
 
         /// <summary>
@@ -61,7 +62,7 @@ namespace AutoMed.Controllers
         /// <returns>An HTML page to edit the existing scale.</returns>
         public ActionResult Edit(int id)
         {
-            Scale scale = db.Scales.Include("IncomeBrackets").FirstOrDefault(x => x.Id == id);
+            Scale scale = db.Scales.Include(x => x.IncomeBrackets).FirstOrDefault(x => x.Id == id);
             if (scale != null)
             {
                 return View(scale);
@@ -79,7 +80,7 @@ namespace AutoMed.Controllers
         [HttpPost]
         public ActionResult Edit(Scale scale)
         {
-            return RedirectToAction("Edit", new { year = scale.Year });
+            return RedirectToAction(nameof(Edit), new { year = scale.Year });
         }
     }
 }

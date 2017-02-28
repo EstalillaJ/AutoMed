@@ -15,11 +15,11 @@ namespace AutoMed.Controllers
     [Authorize(Roles="Administrator")]
     public class ReportController : Controller
     {
-        private ApplicationDbContext Context = ApplicationDbContext.Create();
+        private ApplicationDbContext db = ApplicationDbContext.Create();
         public ActionResult Create()
         {
             CreateReportViewModel viewModel = new CreateReportViewModel();
-            Context.Locations.ToList().ForEach(x => viewModel.Locations.Add(new Checkbox<Location>(x)));
+            db.Locations.ToList().ForEach(x => viewModel.Locations.Add(new Checkbox<Location>(x)));
             return View(viewModel);
         }
 
@@ -34,14 +34,13 @@ namespace AutoMed.Controllers
         public ActionResult Download(ReportDetailsViewModel model)
         {
            IEnumerable<int> quoteIds = model.Quotes.Select(x => x.Id);
-           List<Quote> quotes = IncludeAllNavigationProperties(Context.Quotes).Where(q => quoteIds.Contains(q.Id)).ToList();
-           return File(Encoding.ASCII.GetBytes(GenerateReportString(quotes, model.Columns)), "text/plain", string.Format("Report_{0}.csv", DateTime.Now));
+           List<Quote> quotes = IncludeAllNavigationProperties(db.Quotes).Where(q => quoteIds.Contains(q.Id)).ToList();
+           return File(Encoding.ASCII.GetBytes(GenerateReportString(quotes, model.Columns)), "text/plain", $"Report_{DateTime.Now}.csv");
         }
 
 
         private List<Quote> GetMatchingQuotes(CreateReportViewModel model)
         {
-            List<Quote> matchedQuotes = new List<Quote>();
             List<int> selectedLocations = model.Locations.Where(checkbox => checkbox.IsChecked).Select(checkbox => checkbox.Item.Id).ToList();
             double maxDiscountPercentage = model.MaxDiscountPercentage ?? double.MaxValue;
             double minDiscountPercentage = model.MinDiscountPercentage ?? double.MinValue;
@@ -79,9 +78,9 @@ namespace AutoMed.Controllers
                 matchesNumberInHousehold.DefaultExpression = q => q.CurrentNumberInHousehold == model.NumberInHousehold;
             }
 
-            return IncludeAllNavigationProperties(Context.Quotes)
-                .AsExpandable()
-                .Where(isMostlyMatched.And(matchesZip.And(matchesState).And(matchesNumberInHousehold))).ToList();
+            return IncludeAllNavigationProperties(db.Quotes)
+                        .AsExpandable()
+                        .Where(isMostlyMatched.And(matchesZip.And(matchesState).And(matchesNumberInHousehold))).ToList();
         }
         
         //TODO find a generic way, or use multiple db sets
@@ -104,23 +103,22 @@ namespace AutoMed.Controllers
 
         private string GenerateReportString(List<Quote> quotes, List<string> columns)
         {
-            StringBuilder rowFormatter = new StringBuilder(string.Empty);
             StringBuilder report = new StringBuilder(string.Empty);
             char seperator;
-
+            // Column Headers
             for (int i = 0; i < columns.Count; i++)
             {
                 seperator = i == columns.Count - 1 ? '\n' : ',';
-                rowFormatter.Append(string.Format("{0}{1}", i, seperator));
-                report.Append(string.Format("{0}{1}", columns[i], seperator));
+                report.Append($"{columns[i]}{seperator}");
             }
 
+            // Table Rows
             foreach (Quote q in quotes)
             {
                 for (int i = 0; i < columns.Count; i++)
                 {
                     seperator = i == columns.Count - 1 ? '\n' : ',';
-                    report.Append(string.Format("{0}{1}", ReportGenerator.GetColumn(q, columns[i]), seperator));
+                    report.Append($"{ReportGenerator.GetColumn(q, columns[i])} {seperator}");
                 }
             }
 

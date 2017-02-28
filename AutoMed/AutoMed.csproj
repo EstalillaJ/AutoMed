@@ -236,13 +236,14 @@
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\ScaleController.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
-    <Compile Include="DBInitializer.cs" />
+    <Compile Include="DatabaseInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DataModels\BracketMapping.cs" />
     <Compile Include="Models\DataModels\IncomeBracket.cs" />
     <Compile Include="Models\DataModels\Scale.cs" />
+    <Compile Include="Models\Role.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="ApplicationDbContext.cs" />
     <Compile Include="Models\Checkbox.cs" />
@@ -268,11 +269,9 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="nike-logo.png" />
     <Content Include="logo.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Connected Services\automed2123341232020AzureStorage\ConnectedService.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\DateSelect.js" />
     <Content Include="Scripts\collapse.js" />
