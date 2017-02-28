@@ -25,6 +25,8 @@
     <tbody>
         @foreach (var item in Model)
         {
+            if (item.IsDeleted == false)
+            {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Id)
@@ -38,6 +40,7 @@
                     @Html.ActionLink("Delete", "Delete", new { id = item.Id })
                 </td>
             </tr>
+            }
         }
     </tbody>
 </table>
