@@ -49,6 +49,13 @@
     <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
         $("#locations-link").addClass("active");
-        $("#locations-table").DataTable();
+        $('#locations-table').dataTable({
+            "fnDrawCallback": function (oSettings) {
+                if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
+                    $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
+                    $(oSettings.nTableWrapper).find('.dataTables_length').hide();
+                }
+            }
+        });
     </script>
 }

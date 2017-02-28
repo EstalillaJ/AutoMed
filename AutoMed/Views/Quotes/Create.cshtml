@@ -79,8 +79,11 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index", "Customers")
 </div>
 @section Scripts {
+    <script type="text/javascript">
+        $("#customers-link").addClass("active");
+    </script>
     @Scripts.Render("~/Scripts/UploadImages.js")
 }
