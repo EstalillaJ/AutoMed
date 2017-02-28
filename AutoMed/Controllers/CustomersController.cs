@@ -17,9 +17,9 @@ namespace AutoMed.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Customers
-        public ActionResult Index(string searchString)
+        public ActionResult Index()
         {
-            return View(db.Users.ToList());
+            return View(db.Customers);
         }
 
         // GET: Customers/Manage/5
