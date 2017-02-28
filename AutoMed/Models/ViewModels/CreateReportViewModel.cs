@@ -13,7 +13,7 @@ namespace AutoMed.Models.ViewModels
             ColumnsToInclude = new List<Checkbox<string>>();
             foreach (string item in ReportGenerator.GetColumnNames<Quote>())
             {
-                ColumnsToInclude.Add(new Checkbox<string>() { Item = item });
+                ColumnsToInclude.Add(new Checkbox<string> { Item = item });
             }
         }
         public int Id { get; set; }

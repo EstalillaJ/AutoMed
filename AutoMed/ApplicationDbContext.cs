@@ -12,7 +12,7 @@ namespace AutoMed.DAL
         {
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
+        {   //  Vehicles will still get deleted via cascade delete from the customers quotes
             modelBuilder.Entity<Vehicle>().HasRequired(v => v.Owner).WithMany(c => c.Vehicles).WillCascadeOnDelete(false);
             modelBuilder.Entity<Quote>().HasMany(x => x.Documents).WithRequired(x => x.Quote).WillCascadeOnDelete(true);
             modelBuilder.Entity<IncomeBracket>().HasKey(x => new { x.ScaleId, x.Income, x.NumInHousehold }).HasKey(x => x.Id);

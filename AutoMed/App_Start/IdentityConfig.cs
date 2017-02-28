@@ -91,7 +91,7 @@ namespace AutoMed
             {
                               
             }
-            else if (user.isDeleted == true)
+            else if (user.IsDeleted == true)
             {
                 return Task.FromResult<SignInStatus>(SignInStatus.LockedOut);
             }

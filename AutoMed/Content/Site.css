@@ -13,6 +13,16 @@ p {
     color: #76323F;
 }
 
+.header {
+	width:30%;
+	height: 30%;
+}
+
+.header-container{
+	display: flex;
+	justify-content:center;
+}
+
 #header {
 	text-align: center;
 	text-transform: uppercase;
@@ -150,9 +160,41 @@ textarea {
 .thumb {
     height: 75px;
     border: 1px solid #000;
-    margin: 10px 5px 0 0;
+    padding: 0px 0px 0px 0px;
 }
 
 hr {
-  border-color: #76323F;
+    border-color: #76323F;
+}
+
+.thumb {
+    height: 75px;
+    border: 1px solid #000;
+}
+
+.remove {
+    display: block;
+    background: #444;
+    border: 1px solid black;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+}
+
+hr {
+    border-color: #e8d7da;
+}
+
+.imageContainer img {
+	width: 100%;
+}
+
+.images{
+	padding-left: 0px;
+
+}
+
+.imageContainer{
+	padding-left: 0px;
 }

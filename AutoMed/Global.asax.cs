@@ -16,7 +16,7 @@ namespace AutoMed
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            Database.SetInitializer(new DBInitializer());
+            Database.SetInitializer(new DatabaseInitializer());
         }
     }
 }
