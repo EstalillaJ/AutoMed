@@ -1,4 +1,5 @@
-﻿@model IEnumerable<AutoMed.Models.DataModels.Customer>
+﻿@using AutoMed.Models.DataModels
+@model IEnumerable<AutoMed.Models.DataModels.Customer>
 
 @{
     ViewBag.Title = "Index";
@@ -20,7 +21,7 @@
                 Last Name
             </th>
             <th>
-                Address 1
+                Address
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.State)
@@ -30,6 +31,9 @@
             </th>
             <th>
                 Phone Number
+            </th>
+            <th>
+                VINs
             </th>
             <th></th>
         </tr>
@@ -55,6 +59,13 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    @foreach (Vehicle vehicle in item.Vehicles)
+                    {
+                        @vehicle.Vin
+                        <br/>
+                    }
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |

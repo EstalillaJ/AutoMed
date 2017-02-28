@@ -60,7 +60,7 @@ namespace AutoMed.Controllers
                   selectedLocations.Contains(q.Location.Id) &&
                   model.StartDate <= q.DateCreated && q.DateCreated <= model.EndDate &&
                   minDiscountPercentage <= q.DiscountPercentage && q.DiscountPercentage <= maxDiscountPercentage &&
-                  minDiscountDollars <= q.TotalCost && q.TotalCost <= maxDiscountDollars &&
+                  minDiscountDollars <= q.EligibleCost && q.EligibleCost <= maxDiscountDollars &&
                   q.Customer.City.Contains(city));
 
             // These ones only work with exact equality

@@ -92,14 +92,17 @@ namespace AutoMed.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Employee,Manager,Administrator")]
-        public ActionResult Create([Bind(Include = "CustomerId,VehicleId,CurrentNumberInHousehold,TotalCost,Income,Expenses,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
+        public ActionResult Create([Bind(Include = "CustomerId,VehicleId,CurrentNumberInHousehold,MandatoryCost,EligibleCost,Income,Expenses,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
         {
             if (ModelState.IsValid)
             {
                 AutoMedUser loggedIn = db.Users.Where(x => x.UserName.Equals(User.Identity.Name)).Include("Location").First();
 
                 quote.Documents = new List<Document>();
-                files.ForEach(file => { if (file != null) quote.Documents.Add(new Document() { UploadedImage = file }); });
+                for (int i = 0; i < files.Count; i++)
+                { 
+                        if (i != files.Count -1) quote.Documents.Add(new Document() {UploadedImage = files[i]});
+                }
                 quote.DateCreated = DateTime.Now;
                 quote.LocationId = loggedIn.Location.Id;
                 quote.CreatedById = loggedIn.Id;
@@ -143,11 +146,15 @@ namespace AutoMed.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Quote quote = db.Quotes.Find(id);
-            if (quote == null)
-            {
-                return HttpNotFound();
-            }
+            Quote quote = db.Quotes.Include("CreatedBy").First(x => x.Id == id);
+            List<SelectListItem> vehicleSelect = new List<SelectListItem>();
+
+            db.Customers.Find(quote.CustomerId).Vehicles.ForEach(
+                   v => vehicleSelect.Add(new SelectListItem { Text = string.Format("{0} {1} {2}", v.Year, v.Make, v.Model), Value = v.Id.ToString() })
+               );
+
+            ViewBag.VehicleSelect = (IEnumerable<SelectListItem>)vehicleSelect;
+
             return View(quote);
         }
 
@@ -161,24 +168,27 @@ namespace AutoMed.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Manager,Administrator")]
-        public ActionResult Edit([Bind(Include = "Id,CurrentNumberInHousehold,DiscountPercentage,TotalCost,Approval,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
+        public ActionResult Edit([Bind(Include = "Id,CurrentNumberInHousehold,Income,Expenses,DiscountPercentage,EligibleCost,LocationId,MandatoryCost,Approval,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
         {
             if (ModelState.IsValid)
-
             {
+                quote.Location = db.Locations.Find(quote.LocationId);
                 db.Quotes.Attach(quote);
                 quote.Documents = new List<Document>();
-                files.ForEach(x => { if (x != null) quote.Documents.Add(new Document() { UploadedImage = x }); });
+                for (int i = 0; i < files.Count; i++)
+                {
+                    if (i != files.Count - 1) quote.Documents.Add(new Document() { UploadedImage = files[i] });
+                }
                 db.Entry(quote).Property(x => x.CurrentNumberInHousehold).IsModified = true;
                 db.Entry(quote).Property(x => x.DiscountPercentage).IsModified = true;
-                db.Entry(quote).Property(x => x.TotalCost).IsModified = true;
+                db.Entry(quote).Property(x => x.EligibleCost).IsModified = true;
                 db.Entry(quote).Property(x => x.Approval).IsModified = true;
                 db.Entry(quote).Property(x => x.WorkDescription).IsModified = true;
                 SetDiscount(quote);
                 db.SaveChanges();
                 UploadDocumentBlobs(quote.Documents);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Edit", new {id = quote.Id});
             }
 
             return View(quote);
@@ -197,6 +207,7 @@ namespace AutoMed.Controllers
             {
                 db.Quotes.Attach(quote); // State = Unchanged
                 db.Entry(quote).Property(x => x.Approval).IsModified = true;
+                quote.ReviewedBy = db.Users.First(x => x.UserName.Equals(User.Identity.Name));
             }
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -303,7 +314,14 @@ namespace AutoMed.Controllers
                                 scale.IncomeBrackets.Single(b => b.NumInHousehold == quote.CurrentNumberInHousehold).Income:
                                 scale.IncomeBrackets.Single(b => b.NumInHousehold == 8).Income + (scale.AdditionalPersonBase * quote.CurrentNumberInHousehold - 8);
 
+            if (quote.AdjustedIncome >= quote.Location.PovertyLevelCutoff / 100.0 * baseIncome)
+            {
+                quote.DiscountPercentage = 0;
+                return;
+            }
+
             quote.Location.BracketMappings.Sort((x,y) => x.PovertyLevel.CompareTo(y.PovertyLevel));
+            
             for (int i = 0; i < quote.Location.BracketMappings.Count; i++)
             {   
                 if (i == quote.Location.BracketMappings.Count || 
@@ -314,25 +332,6 @@ namespace AutoMed.Controllers
                     return;
                 }
             }
-
-            //int povertyLevel = 100;
-            //while (true)
-            //{
-            //    if (baseIncome <= quote.AdjustedIncome && quote.AdjustedIncome < baseIncome * 1.1)
-            //    {   // Return first mapping with poverty level less than povertyLevel
-            //        foreach (BracketMapping mapping in sortedMappings)
-            //        {
-            //            if (mapping.PovertyLevel <= povertyLevel)
-            //            {
-            //                quote.DiscountPercentage = mapping.Discount;
-            //                return;
-            //            }
-            //        }
-            //    }
-            //    // We could do this in multiples of 10, but this allows more customization
-            //    povertyLevel = baseIncome <= quote.AdjustedIncome ? povertyLevel + 1 : povertyLevel - 1;
-            //    baseIncome = povertyLevel / 100.0 * baseIncome;
-            //}
         }
     }
 }
