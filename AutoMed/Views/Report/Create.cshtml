@@ -1,5 +1,5 @@
-﻿@using AutoMed.Models;
-@model AutoMed.Models.ViewModels.CreateReportViewModel
+﻿@using AutoMed.Models.ViewModels;
+@model CreateReportViewModel
 @{
     ViewBag.Title = "Reports";
 }
@@ -13,7 +13,7 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="form-group">
                 @Html.LabelFor(model => model.MaxDiscountDollars, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-col-md-10">
+                <div class="col-md-10">
                     @Html.EditorFor(model => model.MaxDiscountDollars, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.MaxDiscountDollars, "", new { @class = "text-danger" })
                 </div>
@@ -21,7 +21,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.MinDiscountDollars, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-col-md-10">
+                <div class="col-md-10">
                     @Html.EditorFor(model => model.MinDiscountDollars, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.MinDiscountDollars, "", new { @class = "text-danger" })
                 </div>
@@ -29,7 +29,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.MaxDiscountPercentage, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-col-md-10">
+                <div class="col-md-10">
                     @Html.EditorFor(model => model.MaxDiscountPercentage, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.MaxDiscountPercentage, "", new { @class = "text-danger" })
                 </div>
@@ -37,7 +37,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.MinDiscountPercentage, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-col-md-10">
+                <div class="col-md-10">
                     @Html.EditorFor(model => model.MinDiscountPercentage, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.MinDiscountPercentage, "", new { @class = "text-danger" })
                 </div>
@@ -45,14 +45,14 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-col-md-10">
+                <div class="col-md-10">
                     @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-col-md-10">
+                <div class="col-md-10">
                     @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
                 </div>
@@ -60,14 +60,14 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.NumberInHousehold, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-col-md-10">
+                <div class="col-md-10">
                     @Html.EditorFor(model => model.NumberInHousehold, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.NumberInHousehold, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-col-md-10">
+                <div class="col-md-10">
                     @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
                 </div>
@@ -75,7 +75,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.ZipCode, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-col-md-10">
+                <div class="col-md-10">
                     @Html.EditorFor(model => model.ZipCode, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
                 </div>
@@ -83,7 +83,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-col-md-10">
+                <div class="col-md-10">
                     @Html.EnumDropDownListFor(model => model.State, htmlAttributes: new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
                 </div>
@@ -91,7 +91,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-col-md-10">
+                <div class="col-md-10">
                     @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
                 </div>
@@ -206,84 +206,8 @@
     
 
 @section Scripts {
+    <script> var numLocations = @Model.Locations.Count; </script>
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/Scripts/DateSelect.js")
-    <script>
-
-        $("#reports-link").addClass("active");
-
-        var numLocations = @Model.Locations.Count();        
-
-        function toggleCheckboxes(idOfMaster, classOfSlaves, cb){
-            $(idOfMaster).change(
-                function () {
-                    var checked = $(this).is(":checked");
-                    $(classOfSlaves).prop('checked', checked);
-                });
-
-        $(classOfSlaves).change(
-                function(){
-                    var checked = $(this).is(":checked");
-                    if (!checked){
-                        $(idOfMaster).prop('checked', false);
-                    }
-                    else{
-                        var allchecked = $(classOfSlaves).not(":checked").length === 0;
-                        $(idOfMaster).prop('checked', allchecked);
-                    }
-                    cb();
-                });
-        }
-
-        $("#form-create").submit(function (event) {
-            if (!$(".location_checkbox").is(":checked")) {
-                $("#location-checkbox-error").removeClass('hidden');
-                event.preventDefault();
-            }
-
-            if (!$(".column_checkbox").is(":checked")) {
-                $('#data-field-error').removeClass('hidden');
-                event.preventDefault();
-            }
-        });
-
-        toggleCheckboxes("#AllLocations", ".location_checkbox", function() {
-            $("#location-checkbox-error").addClass("hidden");
-        });
-        toggleCheckboxes("#AllColumns", ".column_checkbox", function() {
-            $("#data-field-error").addClass("hidden");   
-        });
-
-  
-        $("#AnyDiscountDollars").change(
-            function () {
-                var checked = $(this).is(":checked");
-                $("#MaxDiscountDollars").prop('disabled', checked);
-                $("#MinDiscountDollars").prop('disabled', checked);
-            });
-        
-        $("#AnyDiscountPercentage").change(
-            function () {
-                var checked = $(this).is(":checked");
-                $("#MaxDiscountPercentage").prop('disabled', checked);
-                $("#MinDiscountPercentage").prop('disabled', checked);
-            });
-        $("#AnyDate").change(
-            function () {
-                var checked = $(this).is(":checked");
-                $("#StartDay").prop('disabled', checked);
-                $("#EndDay").prop('disabled', checked);
-                $("#StartMonth").prop('disabled', checked);
-                $("#EndMonth").prop('disabled', checked);
-                $("#StartYear").prop('disabled', checked);
-                $("#EndYear").prop('disabled', checked);
-            });
-        
-        $("#EndMonth").change(function(){
-            changeDaysAvailable(this.value, $("#EndYear").value, $("#EndDay"))
-        })
-        $("#StartMonth").change(function(){
-            changeDaysAvailable(this.value, $("#StartYear").value, $("#StartDay"))
-        })
-    </script>
+    @Scripts.Render("~/Scripts/Report/Create.js")
 }
