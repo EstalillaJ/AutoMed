@@ -13,6 +13,19 @@ p {
     color: #76323F;
 }
 
+.btn-danger{
+	background-color: #76323F;
+	border-color: #76323F;
+}
+
+
+hr {
+   color: #76323F;
+}
+.table>thead>tr>th {
+    border-bottom: 2px solid #76323F;
+}
+
 .header {
 	width:30%;
 	height: 30%;
@@ -51,9 +64,7 @@ textarea {
     max-width: 50%;
 }
 
-.maxwidth {
-    max-width: 100%;
-}
+.maxwidth {min-width: 100%;}
 
 
 
@@ -180,10 +191,6 @@ hr {
     text-align: center;
     cursor: pointer;
     width: 100%;
-}
-
-hr {
-    border-color: #e8d7da;
 }
 
 .imageContainer img {

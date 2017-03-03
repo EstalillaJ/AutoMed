@@ -8,10 +8,10 @@
 }
 <!-- DataTables CDN -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css" />
-<h2>All Employees</h2>
+<h2>Employees</h2>
 
 <p>
-    @Html.ActionLink("Register New Employee", "Register")
+    @Html.ActionLink("Create", "Register", new {}, new {@class="btn btn-primary"})
 </p>
 <table class="table table-striped" id="accounts-table">
     <thead>
@@ -51,8 +51,8 @@
                     @locationName
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-default" }) 
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-sm btn-danger" })
                 </td>
             </tr>
        }

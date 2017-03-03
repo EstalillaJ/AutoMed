@@ -10,17 +10,21 @@
 
 <body>
 
-    <h1>Customer Details</h1>
 
+
+
+
+<h1> @Html.DisplayFor(modelItem => Model.FirstName)  @Html.DisplayFor(modelItem => Model.LastName)</h1>
     @Html.ActionLink("Back to Customers", "Index", "Customers")
 
 
+    <hr/>    
 
-    <h1> @Html.DisplayFor(modelItem => Model.FirstName)  @Html.DisplayFor(modelItem => Model.LastName)</h1>
-    <h2>Vehicles</h2>
 
-                                    @Html.ActionLink("Create New", "Create", "Vehicles", new { id = Model.Id }, new { })
+<h2>Vehicles</h2>
+        @Html.ActionLink("Create", "Create", "Vehicles", new { id = Model.Id }, new { @class = "btn btn-primary" })
 
+                            
                                     <table class="table table-striped" id="vehicles-table">
                                         <thead>
                                             <tr>
@@ -68,20 +72,20 @@
                                                     <td>
                                                         @Html.DisplayFor(modelItem => Model.Vehicles[i].LicensePlate)
                                                     </td>
-                                                    <td>
+                                                    <td class="text-right">
                                                         @if (User.IsInRole("Employee"))
                                                         {
-                                                            @Html.ActionLink("Details", "Details", "Vehicles", new { id = Model.Vehicles[i].Id }, new { })
+                                                            @Html.ActionLink("Details", "Details", "Vehicles", new { id = Model.Vehicles[i].Id }, new { @class = "btn btn-sm btn-default" })
                                                             @Html.Raw(" | ")
                                                         }
                                                         @if (User.IsInRole("Employee") || User.IsInRole("Manager") || User.IsInRole("Administrator"))
                                                         {
-                                                            @Html.ActionLink("Edit", "Edit", "Vehicles", new { id = Model.Vehicles[i].Id }, new { })
+                                                            @Html.ActionLink("Edit", "Edit", "Vehicles", new { id = Model.Vehicles[i].Id }, new { @class = "btn btn-sm btn-default" })
                                                         }
                                                         @if (User.IsInRole("Manager") || User.IsInRole("Administrator"))
                                                         {
                                                             @Html.Raw(" | ")
-                                                            @Html.ActionLink("Delete", "Delete", "Vehicles", new { id = Model.Vehicles[i].Id }, new { })
+                                                            @Html.ActionLink("Delete", "Delete", "Vehicles", new { id = Model.Vehicles[i].Id }, new { @class = "btn btn-sm btn-danger" })
                                                         }
 
                                                     </td>
@@ -89,10 +93,10 @@
                                             }
                                         </tbody>
                                     </table>
-    <h2>Quotes</h2>
-
-                                    @Html.ActionLink("Create New", "Create", "Quotes", new { id = Model.Id }, new { style="padding-top: 15px;" })
-                               
+                                <h2>Quotes</h2>
+ 
+        @Html.ActionLink("Create", "Create", "Quotes", new { id = Model.Id }, new { @class = "btn btn-primary" })
+                        
                                 <table class="table table-striped" id="quotes-table">
                                     <thead>
                                         <tr>
@@ -133,16 +137,16 @@
                                                 <td>
                                                     @Html.DisplayFor(modelItem => Model.Quotes[j].Approval)
                                                 </td>
-                                                <td>
+                                                <td class="text-right">
                                                     @if (User.IsInRole("Employee"))
                                                     {
-                                                        @Html.ActionLink("Details", "Details", "Quotes", new { id = Model.Quotes[j].Id }, new { })
+                                                        @Html.ActionLink("Details", "Details", "Quotes", new { id = Model.Quotes[j].Id }, new { @class = "btn btn-sm btn-default" })
                                                     }
                                                     @if (User.IsInRole("Manager") || User.IsInRole("Administrator"))
                                                     {
-                                                        @Html.ActionLink("Edit", "Edit", "Quotes", new { id = Model.Quotes[j].Id }, new { })
+                                                        @Html.ActionLink("Edit", "Edit", "Quotes", new { id = Model.Quotes[j].Id }, new { @class = "btn btn-sm btn-default" })
                                                         @Html.Raw(" | ")
-                                                        @Html.ActionLink("Delete", "Delete", "Quotes", new { id = Model.Quotes[j].Id }, new { })
+                                                        @Html.ActionLink("Delete", "Delete", "Quotes", new { id = Model.Quotes[j].Id }, new { @class = "btn btn-sm btn-danger" })
                                                     }
 
                                                 </td>
@@ -160,8 +164,24 @@
     <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
-    $("#customers-link").addClass("active");
-        $("#vehicles-table").DataTable();
-        $("#quotes-table").DataTable();
+        $("#customers-link").addClass("active");
+        $('#vehicles-table').dataTable({
+            "fnDrawCallback": function (oSettings) {
+                if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
+                    $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
+                    $(oSettings.nTableWrapper).find('.dataTables_length').hide();
+                    $(oSettings.nTableWrapper).find('.dataTables_info').hide();
+                }
+            }
+        });
+        $('#quotes-table').dataTable({
+            "fnDrawCallback": function (oSettings) {
+                if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
+                    $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
+                    $(oSettings.nTableWrapper).find('.dataTables_length').hide();
+                    $(oSettings.nTableWrapper).find('.dataTables_info').hide();
+                }
+            }
+        });
     </script>    
 }

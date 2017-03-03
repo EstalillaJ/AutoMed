@@ -41,7 +41,7 @@
             @Html.HiddenFor(m => m.Columns[j]);
         }
         <div class="col-md-offset-10 col-md-2">
-            <input type="submit" value="Download Report" class="btn btn-primary maxwidth" />
+            <input type="submit" value="Download" class="btn btn-primary maxwidth" />
         </div>
     }
 @section Scripts { 
@@ -49,6 +49,14 @@
     <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
         $("#reports-link").addClass("active");
-        $("#report-table").DataTable({ "scrollX": true });
+        $('#report-table').DataTable({
+            "ScrollX": true,
+            "fnDrawCallback": function (oSettings) {
+                if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
+                    $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
+                    $(oSettings.nTableWrapper).find('.dataTables_length').hide();
+                }
+            }
+        });
     </script>
 }
