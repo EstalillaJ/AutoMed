@@ -7,6 +7,7 @@ using System.Text;
 using System.Collections.Generic;
 using LinqKit;
 using System.Data.Entity;
+using System.Net;
 
 namespace AutoMed.Controllers
 {   
@@ -15,14 +16,32 @@ namespace AutoMed.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationDbContext Context = ApplicationDbContext.Create();
-        public ActionResult Create()
+        /*public ActionResult Create()
         {
             CreateReportViewModel viewModel = new CreateReportViewModel();
             Context.Locations.ToList().ForEach(x => viewModel.Locations.Add(new Checkbox<Location>(x)));
             viewModel.Filters = Context.Filters.ToList();
             return View(viewModel);
+        }*/
+        public ActionResult Create(int? id)
+        {
+            if (id == null)
+            { 
+            CreateReportViewModel viewModel = new CreateReportViewModel();
+            Context.Locations.ToList().ForEach(x => viewModel.Locations.Add(new Checkbox<Location>(x)));
+            viewModel.Filters = Context.Filters.ToList();
+            return View(viewModel);
         }
-
+            Models.Filter filter = db.Filters.Find(id);
+            if (filter == null)
+            {
+                CreateReportViewModel viewModel = new CreateReportViewModel();
+                Context.Locations.ToList().ForEach(x => viewModel.Locations.Add(new Checkbox<Location>(x)));
+                viewModel.Filters = Context.Filters.ToList();
+                return View(viewModel);
+            }
+            return View();
+        }
         public ActionResult Details(CreateReportViewModel model)
         {
             List<Quote> matchedQuotes = GetMatchingQuotes(model);
@@ -54,6 +73,36 @@ namespace AutoMed.Controllers
                 return RedirectToAction("Create");
             }
 
+            return View(reports);
+        }
+        // GET: Customers/Edit/5
+        public ActionResult addFilter(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Models.Filter filter = db.Filters.Find(id);
+            if (filter == null)
+            {
+                return HttpNotFound();
+            }
+            return View(filter);
+        }
+        
+        // POST: Customers/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult addFilter([Bind(Include = "Id,Default_Name,MAX_Money,MIN_Money,MAX_Percentage,Min_Percentage,StartDate,EndDate,household,Address,Zipe_Code,State,City")] Models.Filter Filters, ReportDetailsViewModel reports)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(Filters).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Create");
+            }
             return View(reports);
         }
         private List<Quote> GetMatchingQuotes(CreateReportViewModel model)
