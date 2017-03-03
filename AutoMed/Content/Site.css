@@ -13,6 +13,10 @@ p {
     color: #76323F;
 }
 
+hr {
+	color: #76323F;
+}
+
 .header {
 	width:30%;
 	height: 30%;
@@ -183,7 +187,6 @@ hr {
 }
 
 hr {
-    border-color: #e8d7da;
 }
 
 .imageContainer img {
