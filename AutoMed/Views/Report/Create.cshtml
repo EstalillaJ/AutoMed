@@ -26,22 +26,32 @@
         <div class="form-group">
                 <div class="filter">
                     <ul class="nav nav-tabs nav-justified split-button-nav">
+                        
                         <li>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <span class="caret"></span>
                             </a>
+
                             <a href="#" class="">Fill Default</a>
                             <ul class="dropdown-menu" role="menu">
                                 @if (Model.Filters != null)
                                 {
                                     for (int i = 0; i < Model.Filters.Count(); i++)
                                     {
-                                        <li><a class="dropdown-item">@Html.ActionLink(@Model.Filters[i].Default_Name, "Create", new { id = Model.Filters[i].Id }, new { })  </a></li>
-                                    }
-                                        }
-                                <li class="divider"></li>
-                                <li><a class="dropdown-item" data-toggle="modal" data-target="#save-default-modal" style="padding-left:0em;">Save New Default</a></li>
-                            </ul>
+                                       
+                                         <li><a class="dropdown-item"> @Html.ActionLink(@Model.Filters[i].Default_Name, "Create", new { id = Model.Filters[i].Id }, new { }) | 
+                                                                       @Html.ActionLink(
+                                                                                 " ",
+                                                                                "Delete",
+                                                                                "Grocery",
+                                                                                new { id = Model.Filters[i].Id },
+                                                                                new { @onclick = "return confirm('Are you sure you want to delete filter?');",
+                                                                                    @class = "glyphicon glyphicon-remove" }) </a></li>
+    }
+    }
+    <li class="divider"></li>
+    <li><a class="dropdown-item" data-toggle="modal" data-target="#save-default-modal" style="padding-left:0em;">Save New Default</a></li>
+</ul>
                         </li>
                     </ul>
                 </div>

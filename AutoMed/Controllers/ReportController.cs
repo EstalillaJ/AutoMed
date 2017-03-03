@@ -23,24 +23,12 @@ namespace AutoMed.Controllers
             viewModel.Filters = Context.Filters.ToList();
             return View(viewModel);
         }*/
-        public ActionResult Create(int? id)
+        public ActionResult Create()
         {
-            if (id == null)
-            { 
             CreateReportViewModel viewModel = new CreateReportViewModel();
             Context.Locations.ToList().ForEach(x => viewModel.Locations.Add(new Checkbox<Location>(x)));
             viewModel.Filters = Context.Filters.ToList();
             return View(viewModel);
-        }
-            Models.Filter filter = db.Filters.Find(id);
-            if (filter == null)
-            {
-                CreateReportViewModel viewModel = new CreateReportViewModel();
-                Context.Locations.ToList().ForEach(x => viewModel.Locations.Add(new Checkbox<Location>(x)));
-                viewModel.Filters = Context.Filters.ToList();
-                return View(viewModel);
-            }
-            return View();
         }
         public ActionResult Details(CreateReportViewModel model)
         {
