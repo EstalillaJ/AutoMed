@@ -9,9 +9,14 @@
 <!-- DataTables CDN -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css" />
 <h2>Employees</h2>
+<hr/>
+
 
 <p>
-    @Html.ActionLink("Create", "Register", new {}, new {@class="btn btn-primary"})
+    <a class="btn btn-default" href="/Account/Register">
+        Create
+        <span class="glyphicon glyphicon-plus-sign"></span>
+    </a>
 </p>
 <table class="table table-striped" id="accounts-table">
     <thead>
@@ -51,8 +56,14 @@
                     @locationName
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-default" }) 
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-sm btn-danger" })
+                    <a class="btn btn-sm  btn-default" href="/Account/Edit/@item.Id">
+                        Edit
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="margin-left: 3px;"></span>
+                    </a>
+                    <a class="btn btn-sm btn-danger" href="/Account/Delete/@item.Id">
+                        Delete
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </a>
                 </td>
             </tr>
        }
@@ -71,6 +82,8 @@
                     if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
                         $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
                         $(oSettings.nTableWrapper).find('.dataTables_length').hide();
+                        $(oSettings.nTableWrapper).find('.dataTables_info').hide();
+
                     }
                 }
             });

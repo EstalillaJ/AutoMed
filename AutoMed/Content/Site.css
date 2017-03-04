@@ -133,30 +133,38 @@ textarea {
   }
 }
 
-.active {
-  background-color: #eee;
-  font-weight: bolder; 
+.navbar-fixed-left .navbar-nav > li > a:hover {
+  background-color: #76323F;
+  font-weight: bolder;
+  color: #ffffff;
+  border-radius: 4px;
 }
 
-.navbar-nav > li> .active:hover {
-  background-color: #eee;
+.navbar-fixed-left .navbar-nav > li > a:focus {
+  background-color: #ffffff;
+  color: #000000;
 }
 
 .navbar-fixed-left {
   padding-top:10%;
   width: 140px;
-  border-radius: 0;
 }
 
 .navbar-fixed-left .navbar-nav > li {
   float: none;  /* Cancel default li float: left */
-  margin: 0 0 5px 0;
-
+  margin: 0 0 15px 0;
 }
 
 .navbar-fixed-left .navbar-nav > li > a{
-  color: #565656
+    color: black;
+    padding: 10px;
+}
 
+.navbar-fixed-left .navbar-nav > li > .active {
+  background-color: #76323F;
+  font-weight: bolder;
+  color: #ffffff;
+  border-radius: 4px;
 }
 
 .navbar-fixed-left .navbar-nav > li:hover {

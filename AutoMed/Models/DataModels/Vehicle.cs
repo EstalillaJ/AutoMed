@@ -11,7 +11,7 @@ namespace AutoMed.Models.DataModels
         public int Year { get; set; }
         public string LicensePlate { get; set; }
         public int OwnerId { get; set; }
-        public Customer Owner { get; set; }
+        public virtual Customer Owner { get; set; }
         [ScaffoldColumn(false)]
         public int Id { get; set; }
     }

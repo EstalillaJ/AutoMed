@@ -7,7 +7,8 @@
 
 <!-- DataTables CDN -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css" />
-<h2 class="text-center">Quotes</h2>
+<h2 class="text-center">Report @DateTime.Now</h2>
+<hr />
  <table class="table-striped table table-hover" id="report-table">
         <thead>
             <tr>
@@ -41,7 +42,10 @@
             @Html.HiddenFor(m => m.Columns[j]);
         }
         <div class="col-md-offset-10 col-md-2">
-            <input type="submit" value="Download" class="btn btn-primary maxwidth" />
+            <button class="btn btn-default maxwidth">
+                Download
+                <span class="glyphicon glyphicon-floppy-disk"></span>
+            </button>
         </div>
     }
 @section Scripts { 
@@ -55,6 +59,7 @@
                 if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
                     $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
                     $(oSettings.nTableWrapper).find('.dataTables_length').hide();
+                    $(oSettings.nTableWrapper).find('.dataTables_info').hide();
                 }
             }
         });
