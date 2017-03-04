@@ -236,13 +236,14 @@
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\ScaleController.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
-    <Compile Include="DBInitializer.cs" />
+    <Compile Include="DatabaseInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DataModels\BracketMapping.cs" />
     <Compile Include="Models\DataModels\IncomeBracket.cs" />
     <Compile Include="Models\DataModels\Scale.cs" />
+    <Compile Include="Models\Role.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="ApplicationDbContext.cs" />
     <Compile Include="Models\Checkbox.cs" />
@@ -268,10 +269,9 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="nike-logo.png" />
+    <Content Include="Content\Images\logo.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Connected Services\automed2123341232020AzureStorage\ConnectedService.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\DateSelect.js" />
     <Content Include="Scripts\collapse.js" />
@@ -284,9 +284,10 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Locations\ManipulateDataTable.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\Quotes\UploadImages.js" />
+    <Content Include="Scripts\Report\Create.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\UploadImages.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -303,17 +304,14 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Manage\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Report\Create.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\WatermarkNumber.cshtml" />
     <Content Include="Views\Locations\Create.cshtml" />
     <Content Include="Views\Locations\Delete.cshtml" />
     <Content Include="Views\Locations\Details.cshtml" />
     <Content Include="Views\Locations\Edit.cshtml" />
     <Content Include="Views\Locations\Index.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\WatermarkString.cshtml" />
     <Content Include="Views\Report\Details.cshtml" />
     <Content Include="Views\Quotes\Create.cshtml" />
     <Content Include="Views\Quotes\Delete.cshtml" />
@@ -336,10 +334,7 @@
     <Content Include="Views\Scale\Create.cshtml" />
     <Content Include="Views\Scale\Edit.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="fonts\" />
-    <Folder Include="Scripts\Quotes\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />

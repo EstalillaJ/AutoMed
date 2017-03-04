@@ -17,17 +17,17 @@
                 // Render thumbnail.
                 var div = document.createElement("div");
                 div.className = "images col-md-12";
-                div.innerHTML = ["<div class=\"imageContainer col-md-offset-4 col-md-8\">" +'<img class="thumb col-md-12" src="', e.target.result,
+                div.innerHTML = ["<div class=\"imageContainer col-md-offset-4 col-md-8\">" + '<img class="thumb col-md-12" src="', e.target.result,
                     '" title="', escape(theFile.name), '"/>' +
                     "<br/><span class=\"remove col-md-12\">Remove Image</span>" + "</div>"].join("");
 
                 document.getElementById("list").insertBefore(div, null);
-                
+
                 $(".remove").click(function () {
-                    
+
                     $(this).parent(".imageContainer").parent().remove();
                     document.getElementById("files").value = "";
-                    
+
                 });
             };
         })(f);

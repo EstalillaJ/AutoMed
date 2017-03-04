@@ -10,7 +10,7 @@ namespace AutoMed.Models.DataModels
     {   
         public int LocationId { get; set; }
         public virtual Location Location { get; set; }
-        public bool? isDeleted { get; set; }
+        public bool? IsDeleted { get; set; }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<AutoMedUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType

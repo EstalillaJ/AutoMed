@@ -72,14 +72,17 @@
                 {
                     foreach (var item in list)
                     {
-                        listLocactions.Add(new SelectListItem
+                        if (item.IsDeleted == false)
                         {
-                            Text = item.Name,
-                            Value = item.Name
-                        });
+                            listLocactions.Add(new SelectListItem
+                            {
+                                Text = item.Name,
+                                Value = item.Name
+                            });
+                        }
+                     }
                     }
                 }
-            }
             @Html.DropDownListFor(model => model.Location, listLocactions, "-- Select Location --", new { @class = "form-control" })
         </div>
     </div>
@@ -90,5 +93,8 @@
     </div>
                 }
 @section Scripts {
+    <script type="text/javascript">
+        $("#employees-link").addClass("active");
+    </script>
     @Scripts.Render("~/bundles/jqueryval")
 }

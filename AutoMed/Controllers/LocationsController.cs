@@ -14,7 +14,7 @@ using AutoMed.Models.DataModels;
 namespace AutoMed.Controllers
 {
     [Authorize(Roles = "Administrator")]
-    public class LocationsController : Controller
+    public class LocationsController  : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
@@ -56,10 +56,9 @@ namespace AutoMed.Controllers
             {
                 db.Locations.Add(location);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             
-
             return View(location);
         }
 
@@ -106,7 +105,7 @@ namespace AutoMed.Controllers
                 }
 
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             return View(location);
         }
@@ -132,9 +131,21 @@ namespace AutoMed.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Location location = db.Locations.Find(id);
-            db.Locations.Remove(location);
+
+            if (location == null)
+            {
+                return HttpNotFound();
+            }
+
+            location.IsDeleted = true;
+            List<AutoMedUser> users = db.Users.Where(x => x.Location.Name == location.Name).ToList();
+            foreach (AutoMedUser user in users)
+            {
+                user.IsDeleted = true;
+            }
             db.SaveChanges();
-            return RedirectToAction("Index");
+
+            return RedirectToAction(nameof(Index));
         }
 
         protected override void Dispose(bool disposing)

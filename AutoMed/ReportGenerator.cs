@@ -12,7 +12,7 @@ namespace AutoMed.Models
 
         public static string GetColumn<T>(T entity, string columnName)
         {
-            return Columns[typeof(T)][columnName](entity); // TODO Maybe make this exception more friendly
+            return Columns[typeof(T)][columnName](entity); // TODO Maybe make this more exception friendly
         }
 
         public static IEnumerable<string> GetColumnNames<T>()

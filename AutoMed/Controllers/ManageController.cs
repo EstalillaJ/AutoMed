@@ -76,7 +76,7 @@ namespace AutoMed.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
-                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+                return View(model);
             }
             AddErrors(result);
             return View(model);

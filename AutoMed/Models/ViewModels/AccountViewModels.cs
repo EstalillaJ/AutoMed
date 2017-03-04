@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using AutoMed.Models.DataModels;
+using System.Web.Mvc;
 
 namespace AutoMed.Models.ViewModels
 {
@@ -22,6 +23,7 @@ namespace AutoMed.Models.ViewModels
     {
         [Required]
         [Display(Name = "Username")]
+        [Remote("DoesUserNameExist", "Account", HttpMethod = "POST", ErrorMessage = "User name already exists. Please enter a different user name.")]
         public string UserName { get; set; }
 
         [Required]
@@ -32,7 +34,7 @@ namespace AutoMed.Models.ViewModels
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         [Required]
@@ -78,7 +80,7 @@ namespace AutoMed.Models.ViewModels
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }

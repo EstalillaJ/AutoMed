@@ -35,10 +35,13 @@ namespace AutoMed.Models.DataModels
         public AutoMedUser CreatedBy { get; set; }
         [Display(Name = "Calculated Discount (%)")]
         public double DiscountPercentage { get; set; }
-        [Display(Name = "Total Cost")]
-        public double TotalCost { get; set; }
+        [Display(Name = "Eligible Cost")]
+        public double EligibleCost { get; set; }
+        [Display(Name = "Mandatory Cost")]
+        public double MandatoryCost { get; set; }
         [NotMapped]
-        public double DiscountDollars { get { return TotalCost * DiscountPercentage; } }
+        [Display(Name= "Discount ($)")]
+        public double DiscountDollars { get { return EligibleCost * DiscountPercentage/100; } }
         [Display(Name = "Approval Status")]
         public QuoteStatus Approval { get; set; }
         [Display(Name = "Work Description")]

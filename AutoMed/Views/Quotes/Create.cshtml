@@ -40,12 +40,21 @@
             </div>
 
             <div class="form-group col-md-12">
-                @Html.LabelFor(model => model.TotalCost, htmlAttributes: new { @class = "control-label col-md-4" })
+                @Html.LabelFor(model => model.EligibleCost, htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-8">
-                    @Html.EditorFor(model => model.TotalCost, new { htmlAttributes = new { @class = "form-control maxwidth" } })
-                    @Html.ValidationMessageFor(model => model.TotalCost, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.EligibleCost, new { htmlAttributes = new { @class = "form-control maxwidth" } })
+                    @Html.ValidationMessageFor(model => model.EligibleCost, "", new { @class = "text-danger" })
                 </div>
             </div>
+            
+            <div class="form-group col-md-12">
+                @Html.LabelFor(model => model.MandatoryCost, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.MandatoryCost, new { htmlAttributes = new { @class = "form-control maxwidth" } })
+                    @Html.ValidationMessageFor(model => model.MandatoryCost, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
 
             <div class="form-group col-md-12">
                 @Html.LabelFor(model => model.Vehicle, htmlAttributes: new { @class = "control-label col-md-4" })
@@ -81,8 +90,9 @@
 
     </div>
 }
-
-
 @section Scripts {
-    @Scripts.Render("~/Scripts/UploadImages.js")
+    <script type="text/javascript">
+        $("#customers-link").addClass("active");
+    </script>
+    @Scripts.Render("~/Scripts/Quotes/UploadImages.js")
 }
