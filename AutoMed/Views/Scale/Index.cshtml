@@ -3,35 +3,66 @@
 @{
     ViewBag.Title = "Index";
 }
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css" />
 
-<h2>Index</h2>
+<h2>Scales</h2>
+<hr/>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <a class="btn btn-default" href="/Scale/Create/">
+        Create
+        <span class="glyphicon glyphicon-plus-sign"></span>
+    </a>
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Year)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AdditionalPersonBase)
-        </th>
-        <th></th>
-    </tr>
+<table class="table" id="scale-table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Year)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AdditionalPersonBase)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+     @foreach (var item in Model)
+     {
+          <tr>
+              <td>
+                  @Html.DisplayFor(modelItem => item.Year)
+              </td>
+              <td>
+                  @Html.DisplayFor(modelItem => item.AdditionalPersonBase)
+              </td>
+              <td>
+                  <a class="btn btn-sm  btn-default" href="/Scale/Edit/@item.Id">
+                      Edit
+                      <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="margin-left: 3px;"></span>
+                  </a>
+              </td>
+          </tr>
+    }
+    
+    </tbody>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Year)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AdditionalPersonBase)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id })
-        </td>
-    </tr>
-}
+
 
 </table>
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $("#scale-link").addClass("active");
+        $('#scale-table').dataTable({
+            "fnDrawCallback": function (oSettings) {
+                if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
+                    $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
+                    $(oSettings.nTableWrapper).find('.dataTables_length').hide();
+                    $(oSettings.nTableWrapper).find('.dataTables_info').hide();
+                }
+            }
+        });
+    </script>
+}
