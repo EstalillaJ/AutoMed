@@ -6,7 +6,7 @@
 body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-color: #D7cec7;
+    background-color: #C0C0C0;
 }
 
 p {
@@ -134,9 +134,7 @@ textarea {
 }
 
 .navbar-fixed-left .navbar-nav > li > a:hover {
-  background-color: #76323F;
-  font-weight: bolder;
-  color: #ffffff;
+  background-color: #f2f2f2;
   border-radius: 4px;
 }
 
