@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AutoMed.Models
+namespace AutoMed.Models.DataModels
 {
     public class Vehicle
     {
@@ -15,6 +14,5 @@ namespace AutoMed.Models
         public Customer Owner { get; set; }
         [ScaffoldColumn(false)]
         public int Id { get; set; }
-        
     }
 }

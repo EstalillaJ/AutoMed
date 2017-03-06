@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using AutoMed.Models;
+using AutoMed.Models.ViewModels;
 
 namespace AutoMed.Controllers
 {
@@ -75,7 +76,7 @@ namespace AutoMed.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
-                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+                return View(model);
             }
             AddErrors(result);
             return View(model);

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Web;
-using System.Drawing;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Drawing.Imaging;
-namespace AutoMed.Models
+
+namespace AutoMed.Models.DataModels
 {
     public class Document
     {

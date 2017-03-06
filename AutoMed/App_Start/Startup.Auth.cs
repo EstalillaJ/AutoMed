@@ -7,6 +7,8 @@ using Microsoft.Owin.Security.Google;
 using Owin;
 using AutoMed.Models;
 using AutoMed.DAL;
+using AutoMed.Models.DataModels;
+
 namespace AutoMed
 {
     public partial class Startup

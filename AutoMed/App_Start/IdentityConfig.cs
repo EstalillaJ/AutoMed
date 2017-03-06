@@ -12,6 +12,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using AutoMed.Models;
 using AutoMed.DAL;
+using AutoMed.Models.DataModels;
 
 namespace AutoMed
 {
@@ -90,7 +91,7 @@ namespace AutoMed
             {
                               
             }
-            else if (user.isDeleted == true)
+            else if (user.IsDeleted == true)
             {
                 return Task.FromResult<SignInStatus>(SignInStatus.LockedOut);
             }

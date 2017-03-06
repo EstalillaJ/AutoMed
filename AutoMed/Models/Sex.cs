@@ -7,6 +7,8 @@ namespace AutoMed.Models
 {
     public enum Sex
     {
-        Male, Female, Other
+        Male,
+        Female,
+        Other
     }
 }

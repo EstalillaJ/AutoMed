@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using AutoMed.DAL;
 using AutoMed.Models;
+using AutoMed.Models.DataModels;
 
 namespace AutoMed.Controllers
 {
@@ -54,10 +55,8 @@ namespace AutoMed.Controllers
             {
                 db.Vehicles.Add(vehicle);
                 db.SaveChanges();
-                return RedirectToAction("Details", "Customers",  new { id = customer.Id });
+                return RedirectToAction("Manage", "Customers",  new { id = customer.Id });
             }
-
-            ViewBag.OwnerId = new SelectList(db.Customers, "Id", "FirstName", vehicle.OwnerId);
             return View(vehicle);
         }
 
@@ -73,7 +72,6 @@ namespace AutoMed.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.OwnerId = new SelectList(db.Customers, "Id", "FirstName", vehicle.OwnerId);
             return View(vehicle);
         }
 
@@ -88,9 +86,8 @@ namespace AutoMed.Controllers
             {
                 db.Entry(vehicle).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Details", "Customers", new { id = customer.Id });
+                return RedirectToAction("Manage", "Customers", new { id = customer.Id });
             }
-            ViewBag.OwnerId = new SelectList(db.Customers, "Id", "FirstName", vehicle.OwnerId);
             return View(vehicle);
         }
 
@@ -119,7 +116,7 @@ namespace AutoMed.Controllers
             Vehicle vehicle = db.Vehicles.Find(id);
             db.Vehicles.Remove(vehicle);
             db.SaveChanges();
-            return RedirectToAction("Details", "Customers", new { id = customer.Id });
+            return RedirectToAction("Manage", "Customers", new { id = customer.Id });
         }
 
         protected override void Dispose(bool disposing)

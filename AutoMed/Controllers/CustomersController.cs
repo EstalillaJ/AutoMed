@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using AutoMed.DAL;
 using AutoMed.Models;
+using AutoMed.Models.DataModels;
 
 namespace AutoMed.Controllers
 {   [Authorize]
@@ -16,25 +17,9 @@ namespace AutoMed.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Customers
-        public ActionResult Index(string searchString)
+        public ActionResult Index()
         {
-            //string searchString = id;
-            var context = new ApplicationDbContext();
-           
-            var users = from m in db.Customers
-                        //let fillName = m.FirstName + " " + m.LastName
-                        //where fillName.ToLower().Trim().Contains(searchString)
-                        select m;
-            
-            if (!String.IsNullOrEmpty(searchString))
-            {
-               
-                users = users.Where(s => s.FirstName.Contains(searchString)
-                                    ||s.LastName.Contains(searchString) );
-            }
-
-            return View(users);
-            //return View(db.Users.ToList());
+            return View(db.Customers);
         }
 
         // GET: Customers/Manage/5
@@ -69,7 +54,7 @@ namespace AutoMed.Controllers
             {
                 db.Customers.Add(customer);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
 
             return View(customer);
@@ -101,7 +86,7 @@ namespace AutoMed.Controllers
             {
                 db.Entry(customer).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             return View(customer);
         }
@@ -131,7 +116,7 @@ namespace AutoMed.Controllers
             Customer customer = db.Customers.Find(id);
             db.Customers.Remove(customer);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         protected override void Dispose(bool disposing)

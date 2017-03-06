@@ -13,6 +13,8 @@ using Microsoft.Owin.Security;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
+using AutoMed.Models.DataModels;
+using AutoMed.Models.ViewModels;
 
 namespace AutoMed.Controllers
 {
@@ -83,7 +85,7 @@ namespace AutoMed.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    AutoMedUser user = db.Users.Where(u => u.UserName == model.UserName).First();
+                    AutoMedUser user = db.Users.First(u => u.UserName == model.UserName);
                     IdentityRole role = db.Roles.Find(user.Roles.First().RoleId);
                     if (role.Name == "Administrator")
                         return RedirectToAction("Create", "Report", routeValues: null);
@@ -92,8 +94,7 @@ namespace AutoMed.Controllers
                     else
                         return RedirectToAction("Index", "Customers");
                 case SignInStatus.LockedOut:
-                    return RedirectToAction("Login");
-                case SignInStatus.Failure:
+                    return RedirectToAction(nameof(Login));
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
@@ -103,7 +104,7 @@ namespace AutoMed.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult Index()
         {
-            List<AutoMedUser> lists = db.Users.Include("Location").ToList();
+            List<AutoMedUser> lists = db.Users.Include(x => x.Location).ToList();
             return View(lists);
         }
 
@@ -125,13 +126,13 @@ namespace AutoMed.Controllers
             db.Locations.ToList().ForEach(
                 location => locationList.Add(new SelectListItem { Text = location.Name, Value = location.Id.ToString()})
             );
-            ViewBag.locationList = (IEnumerable<SelectListItem>) locationList;
+            ViewBag.locationList = locationList;
 
             List<SelectListItem> rolesList = new List<SelectListItem>();
             db.Roles.ToList().ForEach(
                 role => rolesList.Add(new SelectListItem { Text = role.Name, Value = role.Id.ToString() })
-                );
-            ViewBag.rolesList = (IEnumerable<SelectListItem>) rolesList;
+            );
+            ViewBag.rolesList = rolesList;
 
             AutoMedUser user = UserManager.FindById(id);
             EditViewModel viewModel = new EditViewModel { UserName = user.UserName, LocationId = user.LocationId, Id = user.Id, Role = user.Roles.First().RoleId };   
@@ -150,14 +151,16 @@ namespace AutoMed.Controllers
         {
             if (ModelState.IsValid)
             {
-                var editId = UserManager.FindById(model.Id);
-                editId.UserName = model.UserName;
-                editId.LocationId = model.LocationId;
                 RoleManager<IdentityRole> roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
-                UserManager.RemoveFromRole(model.Id, roleManager.FindById(editId.Roles.First().RoleId).Name);
+                AutoMedUser userToEdit = UserManager.FindById(model.Id);
+                userToEdit.UserName = model.UserName;
+                userToEdit.LocationId = model.LocationId;
+
+                UserManager.RemoveFromRole(model.Id, roleManager.FindById(userToEdit.Roles.First().RoleId).Name);
                 UserManager.AddToRole(model.Id, roleManager.FindById(model.Role).Name);
-                UserManager.Update(editId);
-                return RedirectToAction("Index");
+
+                UserManager.Update(userToEdit);
+                return RedirectToAction(nameof(Index));
             }
             return View(model);
         }
@@ -187,10 +190,9 @@ namespace AutoMed.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             AutoMedUser deletion = UserManager.FindById(id);
-            deletion.isDeleted = true;
+            deletion.IsDeleted = true;
             UserManager.Update(deletion);
-            //UserManager.Delete(UserManager.FindById(id));
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         //
@@ -201,17 +203,24 @@ namespace AutoMed.Controllers
             return View();
         }
 
+        [HttpPost]
+        public JsonResult DoesUserNameExist(string userName)
+        {
+            AutoMedUser user = db.Users.FirstOrDefault(x => x.UserName == userName);
+            return Json(user == null);
+        }
+
         //
         // POST: /Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public ActionResult Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                Location location = db.Locations.Where(x => x.Name.Equals(model.Location)).FirstOrDefault();
-                var user = new AutoMedUser { UserName = model.UserName, LocationId = location.Id, isDeleted = false };
+                Location location = db.Locations.Single(x => x.Name.Equals(model.Location));
+                var user = new AutoMedUser { UserName = model.UserName, LocationId = location.Id, IsDeleted = false };
 
                 IdentityResult result = UserManager.Create(user, model.Password);
                 if (model.Role == "Administrator")
@@ -229,7 +238,7 @@ namespace AutoMed.Controllers
 
                 if (result.Succeeded)
                 {                  
-                    return RedirectToAction("Index");
+                    return RedirectToAction(nameof(Index));
                 }
                 AddErrors(result);
             }
@@ -276,24 +285,12 @@ namespace AutoMed.Controllers
         }
 
         #region Helpers
-        // Used for XSRF protection when adding external logins
-        private const string XsrfKey = "XsrfId";
-
         private IAuthenticationManager AuthenticationManager
         {
             get
             {
                 return HttpContext.GetOwinContext().Authentication;
             }
-        }
-
-        private ActionResult RedirectToLocal(string returnUrl)
-        {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            return RedirectToAction("Index", "Home");
         }
         #endregion
     }

@@ -1,4 +1,4 @@
-﻿@model AutoMed.Models.Customer
+﻿@model AutoMed.Models.DataModels.Customer
 
 @{
     ViewBag.Title = "Create";
@@ -116,5 +116,8 @@
 </div>
 
 @section Scripts {
+    <script type="text/javascript">
+        $("#customers-link").addClass("active");
+    </script>
     @Scripts.Render("~/bundles/jqueryval")
 }

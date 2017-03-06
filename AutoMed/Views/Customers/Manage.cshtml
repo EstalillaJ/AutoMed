@@ -1,4 +1,4 @@
-﻿@model AutoMed.Models.Customer
+﻿@model AutoMed.Models.DataModels.Customer
 
 
 
@@ -69,10 +69,21 @@
                                                         @Html.DisplayFor(modelItem => Model.Vehicles[i].LicensePlate)
                                                     </td>
                                                     <td>
+                                                        @if (User.IsInRole("Employee"))
+                                                        {
+                                                            @Html.ActionLink("Details", "Details", "Vehicles", new { id = Model.Vehicles[i].Id }, new { })
+                                                            @Html.Raw(" | ")
+                                                        }
+                                                        @if (User.IsInRole("Employee") || User.IsInRole("Manager") || User.IsInRole("Administrator"))
+                                                        {
+                                                            @Html.ActionLink("Edit", "Edit", "Vehicles", new { id = Model.Vehicles[i].Id }, new { })
+                                                        }
+                                                        @if (User.IsInRole("Manager") || User.IsInRole("Administrator"))
+                                                        {
+                                                            @Html.Raw(" | ")
+                                                            @Html.ActionLink("Delete", "Delete", "Vehicles", new { id = Model.Vehicles[i].Id }, new { })
+                                                        }
 
-                                                        @Html.ActionLink("Edit", "Edit", "Vehicles", new { id = Model.Vehicles[i].Id }, new { }) |
-                                                        @Html.ActionLink("Details", "Details", "Vehicles", new { id = Model.Vehicles[i].Id }, new { }) |
-                                                        @Html.ActionLink("Delete", "Delete", "Vehicles", new { id = Model.Vehicles[i].Id }, new { })
                                                     </td>
                                                 </tr>
                                             }
@@ -117,16 +128,23 @@
                                                     @Html.DisplayFor(modelItem => Model.Quotes[j].DiscountPercentage)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => Model.Quotes[j].TotalCost)
+                                                    @Html.DisplayFor(modelItem => Model.Quotes[j].EligibleCost)
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => Model.Quotes[j].Approval)
                                                 </td>
                                                 <td>
+                                                    @if (User.IsInRole("Employee"))
+                                                    {
+                                                        @Html.ActionLink("Details", "Details", "Quotes", new { id = Model.Quotes[j].Id }, new { })
+                                                    }
+                                                    @if (User.IsInRole("Manager") || User.IsInRole("Administrator"))
+                                                    {
+                                                        @Html.ActionLink("Edit", "Edit", "Quotes", new { id = Model.Quotes[j].Id }, new { })
+                                                        @Html.Raw(" | ")
+                                                        @Html.ActionLink("Delete", "Delete", "Quotes", new { id = Model.Quotes[j].Id }, new { })
+                                                    }
 
-                                                    @Html.ActionLink("Edit", "Edit", "Quotes", new { id = Model.Quotes[j].Id }, new { }) |
-                                                    @Html.ActionLink("Details", "Details", "Quotes", new { id = Model.Quotes[j].Id }, new { }) |
-                                                    @Html.ActionLink("Delete", "Delete", "Quotes", new { id = Model.Quotes[j].Id }, new { })
                                                 </td>
                                             </tr>
                                         }
@@ -142,6 +160,7 @@
     <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
+    $("#customers-link").addClass("active");
         $("#vehicles-table").DataTable();
         $("#quotes-table").DataTable();
     </script>    

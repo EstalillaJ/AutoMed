@@ -1,7 +1,7 @@
 ﻿@using AutoMed.DAL;
 @using Microsoft.AspNet.Identity;
 @using Microsoft.AspNet.Identity.EntityFramework;
-@model List<AutoMed.Models.AutoMedUser>
+@model List<AutoMed.Models.DataModels.AutoMedUser>
 
 @{
     ViewBag.Title = "Index";
@@ -31,7 +31,7 @@
     <tbody>
     @foreach (var item in Model)
     {
-        if (item.isDeleted == false || item.isDeleted == null)
+        if (item.IsDeleted == false || item.IsDeleted == null)
         {
             <tr>
                 <td>
@@ -66,7 +66,14 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#employees-link").addClass("active");
-            $("#accounts-table").DataTable();
+            $('#accounts-table').dataTable({
+                "fnDrawCallback": function (oSettings) {
+                    if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
+                        $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
+                        $(oSettings.nTableWrapper).find('.dataTables_length').hide();
+                    }
+                }
+            });
         });
 </script>
 }

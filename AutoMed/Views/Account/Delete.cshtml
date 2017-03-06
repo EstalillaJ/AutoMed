@@ -1,7 +1,7 @@
 ﻿@using AutoMed.DAL;
 @using Microsoft.AspNet.Identity;
 @using Microsoft.AspNet.Identity.EntityFramework;
-@model AutoMed.Models.AutoMedUser
+@model AutoMed.Models.DataModels.AutoMedUser
 
 @{
     ViewBag.Title = "Delete";
@@ -57,3 +57,8 @@
         </div>
     }
 </div>
+@section Scripts {
+    <script type="text/javascript">
+        $("#employees-link").addClass("active");
+    </script>
+}

@@ -8,11 +8,13 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using AutoMed.DAL;
+using System.Net.Mime;
 using AutoMed.Models;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.Web.Configuration;
+using AutoMed.Models.DataModels;
 
 namespace AutoMed.Controllers
 {
@@ -25,17 +27,21 @@ namespace AutoMed.Controllers
         /// gets a list of quotes unapproved quotes at the current users location returns a view of them
         /// </summary>
         /// <returns>view of quotes</returns>
-        [Authorize(Roles = "Manager,Administrator")]
+        [Authorize(Roles = "Administrator,Manager")]
         public ActionResult Index()
         {
             List<Quote> quotes;
 
             if (User.IsInRole("Administrator"))
-                quotes = db.Quotes.Where(x => x.Approval == QuoteStatus.Pending).ToList();
+                quotes = db.Quotes.Where(x => x.Approval == QuoteStatus.Pending)
+                                  .OrderByDescending(x => x.DateCreated)
+                                  .ToList();
             else
             {
-                int locationId = db.Users.Where(x => x.UserName == User.Identity.Name).First().Location.Id;
-                quotes = db.Quotes.Where(x => x.Approval == QuoteStatus.Pending && locationId == x.Location.Id).ToList();
+                int locationId = db.Users.Single(x => x.UserName == User.Identity.Name).Location.Id;
+                quotes = db.Quotes.Where(x => x.Approval == QuoteStatus.Pending && locationId == x.Location.Id)
+                                  .OrderByDescending(x => x.DateCreated)
+                                  .ToList();
             }
 
             return View(quotes);
@@ -74,10 +80,10 @@ namespace AutoMed.Controllers
             List<SelectListItem> vehicleSelect = new List<SelectListItem>();
             // Get a list of all the vehicles they own. Create a List<SelectListItem> using those vehicles (this will be used in the view)
             db.Customers.Find(id).Vehicles.ForEach(
-                v => vehicleSelect.Add(new SelectListItem { Text = string.Format("{0} {1} {2}", v.Year, v.Make, v.Model), Value = v.Id.ToString() })
+                v => vehicleSelect.Add(new SelectListItem { Text = $"{v.Year} {v.Make} {v.Model}", Value = v.Id.ToString() })
             );
 
-            ViewBag.VehicleSelect = (IEnumerable<SelectListItem>)vehicleSelect;
+            ViewBag.VehicleSelect = vehicleSelect;
             return View(new Quote() { CustomerId = id, Customer = db.Customers.Find(id) });
         }
 
@@ -91,31 +97,35 @@ namespace AutoMed.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Employee,Manager,Administrator")]
-        public ActionResult Create([Bind(Include = "CustomerId,VehicleId,CurrentNumberInHousehold,TotalCost,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
+        public ActionResult Create([Bind(Include = "CustomerId,VehicleId,CurrentNumberInHousehold,MandatoryCost,EligibleCost,Income,Expenses,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
         {
             if (ModelState.IsValid)
             {
                 AutoMedUser loggedIn = db.Users.Where(x => x.UserName.Equals(User.Identity.Name)).Include("Location").First();
 
                 quote.Documents = new List<Document>();
-                files.ForEach(file => { if (file != null) quote.Documents.Add(new Document() { UploadedImage = file }); });
+                for (int i = 0; i < files.Count; i++)
+                { 
+                        if (i != files.Count -1) quote.Documents.Add(new Document() {UploadedImage = files[i]});
+                }
                 quote.DateCreated = DateTime.Now;
                 quote.LocationId = loggedIn.Location.Id;
                 quote.CreatedById = loggedIn.Id;
-                quote.SetDiscountPercentage();
+                quote.Location = db.Locations.Find(quote.LocationId);
+                SetDiscount(quote);
 
                 string redir;
                 if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
                 {
                     quote.Approval = QuoteStatus.Accepted;
                     quote.DateReviewed = quote.DateCreated;
-                    redir = "Edit";
+                    redir = nameof(Edit);
                 }
                 else
                 {
                     quote.Approval = QuoteStatus.Pending;
                     quote.DateReviewed = null;
-                    redir = "Details";
+                    redir = nameof(Details);
                 }
 
                 db.Quotes.Add(quote);
@@ -141,11 +151,15 @@ namespace AutoMed.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Quote quote = db.Quotes.Find(id);
-            if (quote == null)
-            {
-                return HttpNotFound();
-            }
+            Quote quote = db.Quotes.Include(x => x.CreatedBy).First(x => x.Id == id);
+            List<SelectListItem> vehicleSelect = new List<SelectListItem>();
+
+            db.Customers.Find(quote.CustomerId).Vehicles.ForEach(
+                   v => vehicleSelect.Add(new SelectListItem { Text = $"{v.Year} {v.Make} {v.Model}", Value = v.Id.ToString() })
+               );
+
+            ViewBag.VehicleSelect = vehicleSelect;
+
             return View(quote);
         }
 
@@ -159,24 +173,31 @@ namespace AutoMed.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Manager,Administrator")]
-        public ActionResult Edit([Bind(Include = "Id,CurrentNumberInHousehold,DiscountPercentage,TotalCost,Approval,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
+        public ActionResult Edit([Bind(Include = "Id,CurrentNumberInHousehold,Income,Expenses,DiscountPercentage,EligibleCost,LocationId,MandatoryCost,Approval,WorkDescription")] Quote quote, List<HttpPostedFileBase> files)
         {
             if (ModelState.IsValid)
-
             {
+                quote.Location = db.Locations.Find(quote.LocationId);
                 db.Quotes.Attach(quote);
                 quote.Documents = new List<Document>();
-                files.ForEach(x => { if (x != null) quote.Documents.Add(new Document() { UploadedImage = x }); });
+
+                for (int i = 0; i < files.Count; i++)
+                {
+                    if (i != files.Count - 1)
+                        quote.Documents.Add(new Document() { UploadedImage = files[i] });
+                }
+
                 db.Entry(quote).Property(x => x.CurrentNumberInHousehold).IsModified = true;
                 db.Entry(quote).Property(x => x.DiscountPercentage).IsModified = true;
-                db.Entry(quote).Property(x => x.TotalCost).IsModified = true;
+                db.Entry(quote).Property(x => x.EligibleCost).IsModified = true;
                 db.Entry(quote).Property(x => x.Approval).IsModified = true;
                 db.Entry(quote).Property(x => x.WorkDescription).IsModified = true;
-                quote.SetDiscountPercentage();
+
+                SetDiscount(quote);
                 db.SaveChanges();
                 UploadDocumentBlobs(quote.Documents);
 
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Edit), new {id = quote.Id});
             }
 
             return View(quote);
@@ -193,11 +214,12 @@ namespace AutoMed.Controllers
         {
             foreach (Quote quote in quotes)
             {
-                db.Quotes.Attach(quote); // State = Unchanged
+                db.Quotes.Attach(quote);
                 db.Entry(quote).Property(x => x.Approval).IsModified = true;
+                quote.ReviewedBy = db.Users.First(x => x.UserName.Equals(User.Identity.Name));
             }
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Quotes/Delete/5
@@ -234,9 +256,12 @@ namespace AutoMed.Controllers
         {
             
             Quote quote = db.Quotes.Find(id);
-            db.Quotes.Remove(quote);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (quote != null)
+            {
+                db.Quotes.Remove(quote);
+                db.SaveChanges();
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         protected override void Dispose(bool disposing)
@@ -253,7 +278,7 @@ namespace AutoMed.Controllers
         /// </summary>
         /// <param name="documentId"></param>
         /// <returns>returns file image</returns>
-        [Authorize(Roles = "Manager,Administrator")]
+        [Authorize(Roles = "Manager,Administrator,Employee")]
         [Route("Document/Image/{documentId}")]
         // <img src="Document/Image/{documentId}" />
         public ActionResult GetImage(int documentId)
@@ -264,12 +289,12 @@ namespace AutoMed.Controllers
             CloudBlobContainer container = blobClient.GetContainerReference(WebConfigurationManager.AppSettings["BlobContainer"]);
             CloudBlockBlob blockBlob = container.GetBlockBlobReference(documentId.ToString());
 
-            if (!blockBlob.Exists()) // Maybe you could do this with a call to the context instead.
+            if (!blockBlob.Exists())
                 return new HttpNotFoundResult();
 
             MemoryStream ms = new MemoryStream();
             blockBlob.DownloadToStream(ms);
-            return base.File(ms.ToArray(), blockBlob.Properties.ContentType ?? "image/png");
+            return File(ms.ToArray(), blockBlob.Properties.ContentType ?? "image/png");
         }
 
         /// <summary>
@@ -278,7 +303,6 @@ namespace AutoMed.Controllers
         /// <param name="documents"></param>
         private void UploadDocumentBlobs(List<Document> documents)
         {
-
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(WebConfigurationManager.AppSettings["BlobStorageConnection"]);
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
             CloudBlobContainer container = blobClient.GetContainerReference(WebConfigurationManager.AppSettings["BlobContainer"]);
@@ -290,6 +314,42 @@ namespace AutoMed.Controllers
 
                 blockBlob.Properties.ContentType = document.UploadedImage.ContentType;
                 blockBlob.UploadFromStream(document.UploadedImage.InputStream);
+            }
+        }
+
+        private void SetDiscount(Quote quote)
+        {   
+            // Fallback to last year's scale if this year's hasn't been entered
+            Scale scale = db.Scales.SingleOrDefault(x => x.Year == DateTime.Now.Year) ?? db.Scales.Single(x => x.Year == DateTime.Now.Year - 1);
+
+            double baseIncome = quote.CurrentNumberInHousehold < 9 ?
+                                scale.IncomeBrackets.Single(b => b.NumInHousehold == quote.CurrentNumberInHousehold).Income:
+                                scale.IncomeBrackets.Single(b => b.NumInHousehold == 8).Income + scale.AdditionalPersonBase * (quote.CurrentNumberInHousehold - 8);
+
+            quote.Location.BracketMappings.Sort((x, y) => x.PovertyLevel.CompareTo(y.PovertyLevel));
+
+            
+            if (quote.AdjustedIncome >= quote.Location.PovertyLevelCutoff / 100.0 * baseIncome)
+            {
+                quote.DiscountPercentage = 0;
+                return;
+            }
+   
+            if (quote.Location.BracketMappings.First().PovertyLevel / 100.0 * baseIncome > quote.AdjustedIncome)
+            {
+                quote.DiscountPercentage = quote.Location.BracketMappings[0].Discount;
+                return;
+            }
+
+            for (int i = 0; i < quote.Location.BracketMappings.Count; i++)
+            {   
+                if (i == quote.Location.BracketMappings.Count - 1 || // Short circuit at the end
+                    quote.Location.BracketMappings[i].PovertyLevel / 100.0 * baseIncome <= quote.AdjustedIncome
+                    && quote.AdjustedIncome < quote.Location.BracketMappings[i + 1].PovertyLevel / 100.0 * quote.AdjustedIncome)
+                {
+                    quote.DiscountPercentage = quote.Location.BracketMappings[i].Discount;
+                    return;
+                }
             }
         }
     }

@@ -7,7 +7,7 @@ namespace AutoMed.Models
 {
     public enum Color
     {
-        black,
+        Black,
         White,
         Green,
         Yellow,

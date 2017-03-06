@@ -1,7 +1,7 @@
 ﻿@using AutoMed.DAL;
 @using Microsoft.AspNet.Identity;
 @using Microsoft.AspNet.Identity.EntityFramework;
-@model AutoMed.Models.EditViewModel
+@model AutoMed.Models.ViewModels.EditViewModel
 
 @{
     ViewBag.Title = "Edit";
@@ -54,3 +54,8 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+@section Scripts {
+    <script type="text/javascript">
+        $("#employees-link").addClass("active");
+    </script>
+}
