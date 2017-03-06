@@ -16,6 +16,7 @@ namespace AutoMed.Models
             {
                 ColumnsToInclude.Add(new Checkbox<string>() { Item = item });
             }
+            
         }
         public int Id { get; set; }
         public List<Checkbox<string>> ColumnsToInclude { get; set; }
@@ -53,7 +54,7 @@ namespace AutoMed.Models
 
         public List<Filter> Filters { get; set; }
     }
-
+  
     public class ReportDetailsViewModel
     {
         public List<Quote> Quotes { get; set; }

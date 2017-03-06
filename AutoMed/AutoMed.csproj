@@ -242,15 +242,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201701310715138_InitialCreate.cs" />
-    <Compile Include="Migrations\201701310715138_InitialCreate.Designer.cs">
-      <DependentUpon>201701310715138_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201702152358470_Filter.cs" />
-    <Compile Include="Migrations\201702152358470_Filter.Designer.cs">
-      <DependentUpon>201702152358470_Filter.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DataModels\Filter.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="ApplicationDbContext.cs" />
@@ -350,14 +341,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201701310715138_InitialCreate.resx">
-      <DependentUpon>201701310715138_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702152358470_Filter.resx">
-      <DependentUpon>201702152358470_Filter.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

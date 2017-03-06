@@ -23,12 +23,36 @@ namespace AutoMed.Controllers
             viewModel.Filters = Context.Filters.ToList();
             return View(viewModel);
         }*/
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
             CreateReportViewModel viewModel = new CreateReportViewModel();
-            Context.Locations.ToList().ForEach(x => viewModel.Locations.Add(new Checkbox<Location>(x)));
-            viewModel.Filters = Context.Filters.ToList();
-            return View(viewModel);
+            if (id == null)
+            {
+               
+                Context.Locations.ToList().ForEach(x => viewModel.Locations.Add(new Checkbox<Location>(x)));
+                //viewModel.Filters = Context.Filters.ToList();
+                return View(viewModel);
+            }
+            Models.CreateReportViewModel filter = db.Filters.Find(id);
+            
+            /*
+            viewModel.MaxDiscountDollars = Double.Parse(filter.MAX_Money);
+            viewModel.MinDiscountDollars = Double.Parse(filter.MIN_Money);
+            viewModel.MaxDiscountPercentage = Double.Parse(filter.MAX_Percentage);
+            viewModel.MinDiscountPercentage = Double.Parse(filter.Min_Percentage);
+            viewModel.StartDate = filter.StartDate;
+            viewModel.EndDate = filter.EndDate;
+            viewModel.NumberInHousehold = Int32.Parse(filter.household);
+            viewModel.Address = filter.Address;
+            viewModel.ZipCode = Int32.Parse(filter.Zipe_Code);
+            viewModel.City = filter.City;
+            viewModel.State = filter.State;
+            */
+            if (filter == null)
+            {
+                return HttpNotFound();
+            }
+            return View(filter);
         }
         public ActionResult Details(CreateReportViewModel model)
         {
@@ -51,8 +75,9 @@ namespace AutoMed.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager,Administrator")]
         [MultiButton(Name = "action", Aurgument = "Save")]
-        public ActionResult Save([Bind(Include = "Id,Default_Name,MAX_Money,MIN_Money,MAX_Percentage,Min_Percentage,StartDate,EndDate,household,Address,Zipe_Code,State,City")] Models.Filter Filters, ReportDetailsViewModel reports )
+        public ActionResult Save(Models.CreateReportViewModel Filters, ReportDetailsViewModel reports )
         {
             if (ModelState.IsValid)
             {
@@ -63,14 +88,25 @@ namespace AutoMed.Controllers
 
             return View(reports);
         }
-        // GET: Customers/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager,Administrator")]
+        [MultiButton(Name = "action", Aurgument = "Delete")]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Models.CreateReportViewModel filters = db.Filters.Find(id);
+            db.Filters.Remove(filters);
+            db.SaveChanges();
+            return RedirectToAction("Create");
+        }
+       
         public ActionResult addFilter(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Models.Filter filter = db.Filters.Find(id);
+            Models.CreateReportViewModel filter = db.Filters.Find(id);
             if (filter == null)
             {
                 return HttpNotFound();
@@ -78,21 +114,6 @@ namespace AutoMed.Controllers
             return View(filter);
         }
         
-        // POST: Customers/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult addFilter([Bind(Include = "Id,Default_Name,MAX_Money,MIN_Money,MAX_Percentage,Min_Percentage,StartDate,EndDate,household,Address,Zipe_Code,State,City")] Models.Filter Filters, ReportDetailsViewModel reports)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(Filters).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Create");
-            }
-            return View(reports);
-        }
         private List<Quote> GetMatchingQuotes(CreateReportViewModel model)
         {
             List<Quote> matchedQuotes = new List<Quote>();

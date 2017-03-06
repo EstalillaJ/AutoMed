@@ -6,57 +6,66 @@
 
     <h2>Generate A Report</h2>
     <br />
-<style>
-    	.dropdown-toggle {
-		float: right;
-		z-index: 2;
-	}
-        .filter {
-        max-width: 200px;
-         
-         margin-right: 100px;
 
-     }
-</style>
+
+<div class="form-group">
+    <div class="control-label col-md-2 ">
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                Dropdown
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+
+
+                @if (Model.Filters != null)
+                {
+                    for (int i = 0; i < Model.Filters.Count(); i++)
+                    {
+                        using (Html.BeginForm("DeleteConfirmed", "Report", new {id = Model.Filters[i].Id }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+
+                        {
+                        @Html.AntiForgeryToken()
+                        <li>
+                            <a class="dropdown-item">
+                                @Html.ActionLink(@Model.Filters[i].Default_Name, "Create", new { id = Model.Filters[i].Id }, new { })
+                            </a>  |
+                            <button type="submit" name="action" value="Delete">
+                             <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+
+                            @* @Html.ActionLink(
+                                 " ",
+                                "Delete",
+                                new { id = Model.Filters[i].Id },
+                                new { @onclick = "return confirm('Are you sure you want to delete filter?');",
+                                    @class = "glyphicon glyphicon-remove" })*@
+                        </li>
+                    }
+                    }
+                } 
+                <li class="divider"></li>
+                <li><a class="dropdown-item" data-toggle="modal" data-target="#save-default-modal" style="padding-left:0em;">Save New Default</a></li>
+
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+                
+<br/>
+
+
     @using (Html.BeginForm("Details", "Report", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "form-create" }))
     {
      
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-                <div class="filter">
-                    <ul class="nav nav-tabs nav-justified split-button-nav">
-                        
-                        <li>
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <span class="caret"></span>
-                            </a>
-
-                            <a href="#" class="">Fill Default</a>
-                            <ul class="dropdown-menu" role="menu">
-                                @if (Model.Filters != null)
-                                {
-                                    for (int i = 0; i < Model.Filters.Count(); i++)
-                                    {
-                                       
-                                         <li><a class="dropdown-item"> @Html.ActionLink(@Model.Filters[i].Default_Name, "Create", new { id = Model.Filters[i].Id }, new { }) | 
-                                                                       @Html.ActionLink(
-                                                                                 " ",
-                                                                                "Delete",
-                                                                                "Grocery",
-                                                                                new { id = Model.Filters[i].Id },
-                                                                                new { @onclick = "return confirm('Are you sure you want to delete filter?');",
-                                                                                    @class = "glyphicon glyphicon-remove" }) </a></li>
-    }
-    }
-    <li class="divider"></li>
-    <li><a class="dropdown-item" data-toggle="modal" data-target="#save-default-modal" style="padding-left:0em;">Save New Default</a></li>
-</ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
         
+       
+
+    
 
             <div class="form-group">
                 @Html.LabelFor(model => model.MaxDiscountDollars, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -312,19 +321,24 @@
                                     cb();
                                 });
                     }
+                    
+                    $('input').click(function() {
+                       // var value =$('input').attr('value');
+                        //console.log(value)
+                    
+                                                          
+                        $("#form-create").submit(function (event) {
+                            if (!$(".location_checkbox").is(":checked")) {
+                                $("#location-checkbox-error").removeClass('hidden');
+                                event.preventDefault();
+                            }
 
-                    $("#form-create").submit(function (event) {
-                        if (!$(".location_checkbox").is(":checked")) {
-                            $("#location-checkbox-error").removeClass('hidden');
-                            event.preventDefault();
-                        }
-
-                        if (!$(".column_checkbox").is(":checked")) {
-                            $('#data-field-error').removeClass('hidden');
-                            event.preventDefault();
-                        }
+                            if (!$(".column_checkbox").is(":checked")) {
+                                $('#data-field-error').removeClass('hidden');
+                                event.preventDefault();
+                            }
+                        });
                     });
-
                     toggleCheckboxes("#AllLocations", ".location_checkbox", function() {
                         $("#location-checkbox-error").addClass("hidden");
                     });
