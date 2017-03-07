@@ -206,9 +206,9 @@
     
 
 @section Scripts {
-    <script> var numLocations = @Model.Locations.Count; </script>
 <script type="text/javascript">
-        $("#reports-link").addClass("active");
+    $("#reports-link").addClass("active");
+    var numLocations = @Model.Locations.Count;
 </script>
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/Scripts/DateSelect.js")

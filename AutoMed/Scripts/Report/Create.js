@@ -1,7 +1,6 @@
 ﻿
 $("#reports-link").addClass("active");
         
-var numLocations = @Model.Locations.Count;        
 
 function toggleCheckboxes(idOfMaster, classOfSlaves, cb){
     $(idOfMaster).change(

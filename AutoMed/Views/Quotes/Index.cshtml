@@ -64,6 +64,9 @@
                         <div clas="col-md-6">
                             Decline @Html.RadioButtonFor(m => m[i].Approval, QuoteStatus.Declined, new { })
                         </div>
+                        <div>
+                            @Html.RadioButtonFor(m => m[i].Approval, QuoteStatus.Pending, new {@checked = "checked", @class = "hidden"})
+                        </div>
                     </div>
                 </td>
                 @Html.HiddenFor(m => m[i].Id)

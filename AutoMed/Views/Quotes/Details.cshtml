@@ -7,9 +7,10 @@
 }
 
 <h2>Details</h2>
+@Html.ActionLink("Back to Customer", "Manage", "Customers", new { id = Model.CustomerId }, new { })
+
 
 <div>
-    <h4>Quote</h4>
     <hr />
     <dl class="form-horizontal">
         
@@ -93,11 +94,4 @@
 
     </dl>
 </div>
-<p>
-    @if (User.IsInRole("Manager") || User.IsInRole("Administrator"))
-    {
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id })
-        @Html.Raw(" | ")
-    }
-    @Html.ActionLink("Back to List", "Index", "Customers")
-</p>
+
