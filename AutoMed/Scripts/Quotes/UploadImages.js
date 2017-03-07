@@ -1,4 +1,6 @@
-﻿function handleFileSelect(evt) {
+﻿var fileCount = 0;
+
+function handleFileSelect(evt) {
     var files = evt.target.files; // FileList object
 
     // Loop through the FileList and render image files as thumbnails.
@@ -8,7 +10,7 @@
         if (!f.type.match("image.*")) {
             continue;
         }
-
+        fileCount++;
         var reader = new FileReader();
 
         // Closure to capture the file information.
@@ -16,34 +18,36 @@
             return function (e) {
                 // Render thumbnail.
                 var div = document.createElement("div");
-                div.className = "images col-md-12";
-                div.innerHTML = ["<div class=\"imageContainer col-md-offset-4 col-md-8\">" + '<img class="thumb col-md-12" src="', e.target.result,
+                div.className = "images col-md-6";
+                div.innerHTML = ['<img class="thumb col-md-12" src="', e.target.result,
                     '" title="', escape(theFile.name), '"/>' +
-                    "<br/><span class=\"remove col-md-12\">Remove Image</span>" + "</div>"].join("");
+                    "<br/><span id=\"remove-"+ (fileCount - 1) + "\" class=\"remove col-md-12\">Remove <span class=\"glyphicon glyphicon-remove\"></span></span>"].join("");
 
                 document.getElementById("list").insertBefore(div, null);
+                var current = fileCount - 1;
+                var myFileInput = $("#files-" + current);
+                $("#remove-"+ current).click(function () {
 
-                $(".remove").click(function () {
-
-                    $(this).parent(".imageContainer").parent().remove();
-                    document.getElementById("files").value = "";
-
+                    $(this).parent().remove();
+                    myFileInput.remove();
                 });
             };
         })(f);
 
-        var oldInput = $("#files");
-        var newInput = oldInput.clone();
-        newInput.change(function (evt) {
+        var oldInput = $("#files-" + (fileCount - 1));
+        var newInput = document.createElement("label");
+        newInput.innerHTML = ["Upload Picture <input type=\"file\" id=\"files-"+ (fileCount) + "\" name=\"files\" multiple />"];
+        newInput.className = "btn btn-default btn-file text-right";
+        newInput.onchange = function (evt) {
             handleFileSelect(evt);
-        });
-        oldInput.attr("id", "files-old");
+        };
+        oldInput.parent().addClass("hidden");
         oldInput.addClass("hidden");
-        oldInput.after(newInput);
+        document.getElementById("input-div").insertBefore(newInput, null);
 
         // Read in the image file as a data URL.
         reader.readAsDataURL(f);
     }
 }
 
-document.getElementById("files").addEventListener("change", handleFileSelect, false);
+document.getElementById("files-0").addEventListener("change", handleFileSelect, false);

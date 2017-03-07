@@ -15,6 +15,7 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.Web.Configuration;
 using AutoMed.Models.DataModels;
+using Microsoft.Ajax.Utilities;
 
 namespace AutoMed.Controllers
 {
@@ -106,7 +107,7 @@ namespace AutoMed.Controllers
                 quote.Documents = new List<Document>();
                 for (int i = 0; i < files.Count; i++)
                 { 
-                        if (i != files.Count -1) quote.Documents.Add(new Document() {UploadedImage = files[i]});
+                    if (i != files.Count - 1) quote.Documents.Add(new Document() {UploadedImage = files[i]});
                 }
                 quote.DateCreated = DateTime.Now;
                 quote.LocationId = loggedIn.Location.Id;
@@ -183,8 +184,7 @@ namespace AutoMed.Controllers
 
                 for (int i = 0; i < files.Count; i++)
                 {
-                    if (i != files.Count - 1)
-                        quote.Documents.Add(new Document() { UploadedImage = files[i] });
+                    if (i != files.Count - 1)  quote.Documents.Add(new Document() { UploadedImage = files[i] });
                 }
 
                 db.Entry(quote).Property(x => x.CurrentNumberInHousehold).IsModified = true;

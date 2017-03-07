@@ -175,11 +175,7 @@ textarea {
   margin-left: 140px;
 }
 
-.thumb {
-    height: 75px;
-    border: 1px solid #000;
-    padding: 0px 0px 0px 0px;
-}
+
 
 hr {
     border-color: #76323F;
@@ -189,6 +185,7 @@ hr {
     height: 100px;
     width: 100%;
     border: 1px solid #000;
+    cursor: pointer;
 }
 
 .remove {
@@ -216,7 +213,7 @@ hr {
 
 .images{
 	padding-left: 0px;
-
+	margin-left: 0px;
 }
 
 .imageContainer{
