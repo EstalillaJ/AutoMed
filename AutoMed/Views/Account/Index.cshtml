@@ -79,7 +79,7 @@
             $("#employees-link").addClass("active");
             $('#accounts-table').dataTable({
                 "fnDrawCallback": function (oSettings) {
-                    if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
+                    if (@Model.Count() < 10) {
                         $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
                         $(oSettings.nTableWrapper).find('.dataTables_length').hide();
                         $(oSettings.nTableWrapper).find('.dataTables_info').hide();

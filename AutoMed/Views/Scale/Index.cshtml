@@ -56,13 +56,13 @@
     <script type="text/javascript">
         $("#scale-link").addClass("active");
         $('#scale-table').dataTable({
-            "fnDrawCallback": function (oSettings) {
-                if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
+    "fnDrawCallback": function (oSettings) {
+        if (@Model.Count() < 10) {
                     $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
                     $(oSettings.nTableWrapper).find('.dataTables_length').hide();
                     $(oSettings.nTableWrapper).find('.dataTables_info').hide();
-                }
-            }
-        });
+        }
+    }
+});
     </script>
 }

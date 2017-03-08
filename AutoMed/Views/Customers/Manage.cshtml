@@ -174,7 +174,7 @@
         $("#customers-link").addClass("active");
         $('#vehicles-table').dataTable({
             "fnDrawCallback": function (oSettings) {
-                if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
+                if (@Model.Vehicles.Count() < 10) {
                     $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
                     $(oSettings.nTableWrapper).find('.dataTables_length').hide();
                     $(oSettings.nTableWrapper).find('.dataTables_info').hide();
@@ -183,7 +183,7 @@
         });
         $('#quotes-table').dataTable({
             "fnDrawCallback": function (oSettings) {
-                if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
+                if (@Model.Quotes.Count() < 10) {
                     $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
                     $(oSettings.nTableWrapper).find('.dataTables_length').hide();
                     $(oSettings.nTableWrapper).find('.dataTables_info').hide();
