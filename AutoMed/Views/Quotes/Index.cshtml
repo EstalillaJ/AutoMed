@@ -8,6 +8,7 @@
 <!-- DataTables CDN -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css" />
 <h2>Pending Quotes</h2>
+<hr/>
 
 @using (Html.BeginForm("UpdateQuoteStatuses", "Quotes" ))
 {
@@ -55,8 +56,18 @@
                 </td>
 
                 @Html.AntiForgeryToken()
-                <td>
-                    @Html.EnumDropDownListFor(m => m[i].Approval, new { @class = "btn btn-default" })
+                <td>    
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            Accept @Html.RadioButtonFor(m => m[i].Approval, QuoteStatus.Accepted, new { style = "padding-right:5px;" })
+                        </div>
+                        <div clas="col-md-6">
+                            Decline @Html.RadioButtonFor(m => m[i].Approval, QuoteStatus.Declined, new { })
+                        </div>
+                        <div>
+                            @Html.RadioButtonFor(m => m[i].Approval, QuoteStatus.Pending, new {@checked = "checked", @class = "hidden"})
+                        </div>
+                    </div>
                 </td>
                 @Html.HiddenFor(m => m[i].Id)
             </tr>
@@ -65,7 +76,7 @@
     </table>
     <div class="form-group">
         <div class="col-md-offset-10 col-md-2">
-            <input type="submit" class="btn btn-primary maxwidth" value="Submit" />
+            <input type="submit" class="btn btn-default maxwidth" value="Submit" />
         </div>
     </div>
 }
@@ -77,9 +88,10 @@
         $("#quotes-link").addClass("active");
         $('#quotes-table').dataTable({
             "fnDrawCallback": function (oSettings) {
-                if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
+                if (@Model.Count() < 10) {
                     $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
                     $(oSettings.nTableWrapper).find('.dataTables_length').hide();
+                    $(oSettings.nTableWrapper).find('.dataTables_info').hide();
                 }
             }
         });

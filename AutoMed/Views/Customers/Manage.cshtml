@@ -10,17 +10,24 @@
 
 <body>
 
-    <h1>Customer Details</h1>
-
-    @Html.ActionLink("Back to Customers", "Index", "Customers")
 
 
 
-    <h1> @Html.DisplayFor(modelItem => Model.FirstName)  @Html.DisplayFor(modelItem => Model.LastName)</h1>
-    <h2>Vehicles</h2>
 
-                                    @Html.ActionLink("Create New", "Create", "Vehicles", new { id = Model.Id }, new { })
+<h1> @Html.DisplayFor(modelItem => Model.FirstName)  @Html.DisplayFor(modelItem => Model.LastName)</h1>
+    @Html.ActionLink("Back to Customer List", "Index", "Customers")
 
+
+    <hr/>    
+
+
+<h2>Vehicles</h2>
+
+    <a class="btn btn-default" href="/Vehicles/Create/@Model.Id">
+        Create
+        <span class="glyphicon glyphicon-plus-sign"></span>
+    </a>           
+                            
                                     <table class="table table-striped" id="vehicles-table">
                                         <thead>
                                             <tr>
@@ -68,31 +75,29 @@
                                                     <td>
                                                         @Html.DisplayFor(modelItem => Model.Vehicles[i].LicensePlate)
                                                     </td>
-                                                    <td>
-                                                        @if (User.IsInRole("Employee"))
-                                                        {
-                                                            @Html.ActionLink("Details", "Details", "Vehicles", new { id = Model.Vehicles[i].Id }, new { })
-                                                            @Html.Raw(" | ")
-                                                        }
-                                                        @if (User.IsInRole("Employee") || User.IsInRole("Manager") || User.IsInRole("Administrator"))
-                                                        {
-                                                            @Html.ActionLink("Edit", "Edit", "Vehicles", new { id = Model.Vehicles[i].Id }, new { })
-                                                        }
+                                                    <td class="text-right">
+                                                        <a class="btn btn-sm  btn-default" href="/Vehicles/Edit/@Model.Vehicles[i].Id">
+                                                            Edit
+                                                            <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="margin-left: 3px;"></span>
+                                                        </a>
                                                         @if (User.IsInRole("Manager") || User.IsInRole("Administrator"))
                                                         {
-                                                            @Html.Raw(" | ")
-                                                            @Html.ActionLink("Delete", "Delete", "Vehicles", new { id = Model.Vehicles[i].Id }, new { })
+                                                            <a class="btn btn-sm btn-danger" href="/Vehicles/Delete/@Model.Vehicles[i].Id">
+                                                                Delete
+                                                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                                            </a>
                                                         }
-
                                                     </td>
                                                 </tr>
                                             }
                                         </tbody>
                                     </table>
-    <h2>Quotes</h2>
-
-                                    @Html.ActionLink("Create New", "Create", "Quotes", new { id = Model.Id }, new { style="padding-top: 15px;" })
-                               
+                                <h2>Quotes</h2>
+ 
+                                    <a class="btn btn-default" href="/Quotes/Create/@Model.Id">
+                                        Create
+                                        <span class="glyphicon glyphicon-plus-sign"></span>
+                                    </a>                        
                                 <table class="table table-striped" id="quotes-table">
                                     <thead>
                                         <tr>
@@ -133,17 +138,23 @@
                                                 <td>
                                                     @Html.DisplayFor(modelItem => Model.Quotes[j].Approval)
                                                 </td>
-                                                <td>
+                                                <td class="text-right">
                                                     @if (User.IsInRole("Employee"))
                                                     {
-                                                        @Html.ActionLink("Details", "Details", "Quotes", new { id = Model.Quotes[j].Id }, new { })
-                                                    }
+                                                        <a class="btn btn-sm  btn-default" href="/Quotes/Details/@Model.Quotes[j].Id">
+                                                            Details
+                                                            <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="margin-left: 3px;"></span>
+                                                        </a>                                                    }
                                                     @if (User.IsInRole("Manager") || User.IsInRole("Administrator"))
                                                     {
-                                                        @Html.ActionLink("Edit", "Edit", "Quotes", new { id = Model.Quotes[j].Id }, new { })
-                                                        @Html.Raw(" | ")
-                                                        @Html.ActionLink("Delete", "Delete", "Quotes", new { id = Model.Quotes[j].Id }, new { })
-                                                    }
+                                                        <a class="btn btn-sm  btn-default" href="/Quotes/Edit/@Model.Quotes[j].Id">
+                                                            Edit
+                                                            <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="margin-left: 3px;"></span>
+                                                        </a>
+                                                        <a class="btn btn-sm btn-danger" href="/Quotes/Delete/@Model.Quotes[j].Id">
+                                                            Delete
+                                                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                                        </a>                                                    }
 
                                                 </td>
                                             </tr>
@@ -160,8 +171,24 @@
     <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
-    $("#customers-link").addClass("active");
-        $("#vehicles-table").DataTable();
-        $("#quotes-table").DataTable();
+        $("#customers-link").addClass("active");
+        $('#vehicles-table').dataTable({
+            "fnDrawCallback": function (oSettings) {
+                if (@Model.Vehicles.Count() < 10) {
+                    $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
+                    $(oSettings.nTableWrapper).find('.dataTables_length').hide();
+                    $(oSettings.nTableWrapper).find('.dataTables_info').hide();
+                }
+            }
+        });
+        $('#quotes-table').dataTable({
+            "fnDrawCallback": function (oSettings) {
+                if (@Model.Quotes.Count() < 10) {
+                    $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
+                    $(oSettings.nTableWrapper).find('.dataTables_length').hide();
+                    $(oSettings.nTableWrapper).find('.dataTables_info').hide();
+                }
+            }
+        });
     </script>    
 }

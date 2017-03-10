@@ -7,14 +7,14 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css" />
 
 <h2>Edit</h2>
+@Html.ActionLink("Back to Location List", "Index")
+<hr/>
 
 @using (Html.BeginForm("Edit", "Locations", FormMethod.Post, new { id = "location-form" }))
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Location</h4>
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
 
@@ -65,16 +65,13 @@
         </table>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-offset-10 col-md-2">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>

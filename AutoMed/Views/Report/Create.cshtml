@@ -5,7 +5,7 @@
 }
 
     <h2>Generate A Report</h2>
-    <br />
+    <hr />
 
     @using (Html.BeginForm("Details", "Report", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "form-create" }))
     {
@@ -197,7 +197,7 @@
         
         <div class="form-group">
             <div class="col-md-offset-10 col-md-2">
-                <input type="submit" class="btn btn-primary btn-default maxwidth" value="Generate" />
+                <input type="submit" class="btn btn-default btn-default maxwidth" value="Generate" />
             </div>
         </div>
       
@@ -206,7 +206,10 @@
     
 
 @section Scripts {
-    <script> var numLocations = @Model.Locations.Count; </script>
+<script type="text/javascript">
+    $("#reports-link").addClass("active");
+    var numLocations = @Model.Locations.Count;
+</script>
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/Scripts/DateSelect.js")
     @Scripts.Render("~/Scripts/Report/Create.js")

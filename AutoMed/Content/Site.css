@@ -13,6 +13,20 @@ p {
     color: #76323F;
 }
 
+.btn-danger{
+	background-color: #76323F;
+	border-color: #76323F;
+}
+
+
+hr {
+   color: #76323F;
+}
+
+.table>thead>tr>th {
+    border-bottom: 2px solid #76323F;
+}
+
 .header {
 	width:30%;
 	height: 30%;
@@ -51,9 +65,7 @@ textarea {
     max-width: 50%;
 }
 
-.maxwidth {
-    max-width: 100%;
-}
+.maxwidth {min-width: 100%;}
 
 
 
@@ -121,30 +133,36 @@ textarea {
   }
 }
 
-.active {
-  background-color: #eee;
-  font-weight: bolder; 
+.navbar-fixed-left .navbar-nav > li > a:hover {
+  background-color: #f2f2f2;
+  border-radius: 4px;
 }
 
-.navbar-nav > li> .active:hover {
-  background-color: #eee;
+.navbar-fixed-left .navbar-nav > li > a:focus {
+  background-color: #ffffff;
+  color: #000000;
 }
 
 .navbar-fixed-left {
   padding-top:10%;
   width: 140px;
-  border-radius: 0;
 }
 
 .navbar-fixed-left .navbar-nav > li {
   float: none;  /* Cancel default li float: left */
-  margin: 0 0 5px 0;
-
+  margin: 0 0 15px 0;
 }
 
 .navbar-fixed-left .navbar-nav > li > a{
-  color: #565656
+    color: black;
+    padding: 10px;
+}
 
+.navbar-fixed-left .navbar-nav > li > .active {
+  background-color: #76323F;
+  font-weight: bolder;
+  color: #ffffff;
+  border-radius: 4px;
 }
 
 .navbar-fixed-left .navbar-nav > li:hover {
@@ -157,42 +175,45 @@ textarea {
   margin-left: 140px;
 }
 
-.thumb {
-    height: 75px;
-    border: 1px solid #000;
-    padding: 0px 0px 0px 0px;
-}
+
 
 hr {
     border-color: #76323F;
 }
 
 .thumb {
-    height: 75px;
+    height: 100px;
+    width: 100%;
     border: 1px solid #000;
+    cursor: pointer;
 }
 
 .remove {
     display: block;
-    background: #444;
+    background: #76323F;
     border: 1px solid black;
+    border-radius: 4px;
     color: white;
     text-align: center;
     cursor: pointer;
     width: 100%;
+    margin-bottom: 5px;
+    margin-top: 2px;
 }
 
+<<<<<<< HEAD
+=======
 hr {
-    border-color: #e8d7da;
 }
 
+>>>>>>> refs/heads/new-logo
 .imageContainer img {
 	width: 100%;
 }
 
 .images{
 	padding-left: 0px;
-
+	margin-left: 0px;
 }
 
 .imageContainer{

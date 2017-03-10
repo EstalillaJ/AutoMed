@@ -41,7 +41,7 @@ namespace AutoMed.Controllers
         // GET: Vehicles/Create
         public ActionResult Create(int id)
         {
-            return View(new Vehicle() { OwnerId = id });
+            return View(new Vehicle() { OwnerId = id, Owner = db.Customers.Find(id) });
         }
 
         // POST: Vehicles/Create
