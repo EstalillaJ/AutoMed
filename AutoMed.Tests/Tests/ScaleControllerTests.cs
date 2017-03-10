@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using AutoMed.Controllers;
+using AutoMed.Models.DataModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AutoMed.Tests.Tests
@@ -59,11 +61,61 @@ namespace AutoMed.Tests.Tests
         #endregion
 
         [TestMethod]
-        public void TestMethod1()
+        public void Index()
         {
-            //
-            // TODO: Add test logic here
-            //
+            var controller = new ScaleController();
+
+            var result = controller.Index(); 
+
+            Assert.IsNotNull(result);
+
         }
+
+        [TestMethod]
+        public void Create()
+        {
+            var controller = new ScaleController();
+
+            var result = controller.Create();
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [TestMethod]
+        public void CreatePost()
+        {
+            var controller = new ScaleController();
+            var scale = new Scale();
+            var result = controller.Create(scale);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [TestMethod]
+        public void EditGet()
+        {
+            var controller = new ScaleController();
+           
+            var result = controller.Edit(1);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [TestMethod]
+        public void EditPost()
+        {
+            var controller = new ScaleController();
+            var scale = new Scale();
+
+            var result = controller.Edit(scale);
+
+            Assert.IsNotNull(result);
+
+        }
+
+
     }
 }

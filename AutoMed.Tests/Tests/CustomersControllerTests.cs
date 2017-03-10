@@ -1,7 +1,15 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using AutoMed; 
+using AutoMed.Controllers;
+using System.Web;
+using System.Web.Mvc;
+using AutoMed.Models;
+using AutoMed.Models.DataModels;
+
 
 namespace AutoMed.Tests
 {
@@ -59,11 +67,96 @@ namespace AutoMed.Tests
         #endregion
 
         [TestMethod]
-        public void TestMethod1()
+        public void Index()
         {
-            //
-            // TODO: Add test logic here
-            //
+            // Arrange
+            var controller = new CustomersController();
+
+            // Act
+            var response = controller.Index(); 
+
+            // Assert
+            Assert.IsNotNull(response);
         }
+
+        [TestMethod]
+        public void Manage()
+        {
+            var controller = new CustomersController();
+
+            var result = controller.Manage(2);
+            // var customer = (Customer) result.ViewData.Model;
+
+            Assert.IsNotNull(result);
+
+
+        }
+
+        [TestMethod]
+        public void Create()
+        {
+            var controller = new CustomersController();
+
+            var result = controller.Create();
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void CreatePost()
+        {
+            var controller = new CustomersController();
+            var customer = new Customer
+            {
+                Id = 50,
+                FirstName = "Timmy",
+                LastName = "Twoshoes",
+                AddressLine1 = "400 E University Way",
+                State = State.WA,
+                ZipCode = 98926,
+                City = "Ellensburg",
+                Email = "JohnDoe@cwu.edu",
+                PhoneNumber = "5555555555",
+                BirthDate = DateTime.Now,
+                Sex = Sex.Male
+            };
+
+            var context = new ValidationContext(customer, null, null);
+            var result = new List<ValidationResult>();
+
+            // Act
+            var valid = Validator.TryValidateObject(customer, context, result, true);
+
+            Assert.IsTrue(valid);
+
+
+        }
+
+        [TestMethod]
+        public void EditGet()
+        {
+            var controller = new CustomersController();
+            // var customer = new Customer();
+
+            var result = controller.Edit(3) as ViewResult;
+            // var editedCustomer = (Customer) result.ViewData.Model;
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [TestMethod]
+        public void EditPost()
+        {
+            var controller = new CustomersController();
+            var customer = new Customer();
+
+            var result = controller.Edit(customer) as ViewResult;
+            var editCustomer = (Customer)result.ViewData.Model;
+
+            Assert.AreEqual(result, editCustomer);
+        }
+
+
     }
 }

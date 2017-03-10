@@ -2,6 +2,9 @@
 using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Web.Mvc;
+using AutoMed; 
+using AutoMed.Controllers;
 
 namespace AutoMed.Tests
 {
@@ -59,11 +62,17 @@ namespace AutoMed.Tests
         #endregion
 
         [TestMethod]
-        public void TestMethod1()
+        public void Login()
         {
-            //
-            // TODO: Add test logic here
-            //
+            // Arrange
+            // AccountController controller = new AccountController();
+            
+            // Act
+            // ViewResult result = controller.Login() as ViewResult;
+
+            // Assert.IsNotNull(result);
+
+
         }
     }
 }

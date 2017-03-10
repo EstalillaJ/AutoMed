@@ -1,7 +1,14 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using AutoMed;
+using AutoMed.Controllers;
+using System.Web;
+using System.Web.Mvc;
+using AutoMed.Models.DataModels;
+
 
 namespace AutoMed.Tests.Tests
 {
@@ -59,11 +66,97 @@ namespace AutoMed.Tests.Tests
         #endregion
 
         [TestMethod]
-        public void TestMethod1()
+        public void Index()
         {
-            //
-            // TODO: Add test logic here
-            //
+            var controller = new LocationsController();
+
+            var result = controller.Index(); 
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [TestMethod]
+        public void Details()
+        {
+            var controller = new LocationsController();
+
+            var result = controller.Details(2);
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void CreateGet()
+        {
+            var controller = new LocationsController();
+
+            var result = controller.Create();
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void CreatePost()
+        {
+            var controller = new LocationsController();
+            var location = new Location()
+            {
+                Name = "New car shop"
+            };
+
+            var result = controller.Create(location);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [TestMethod]
+        public void EditGet()
+        {
+            var controller = new LocationsController();
+
+            var result = controller.Edit(2);
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void EditPost()
+        {
+            var controller = new LocationsController();
+            // BracketMapping bracket = new BracketMapping();
+            List<BracketMapping> bracketMappings = new List<BracketMapping>();
+            var location = new Location()
+            {
+                Id = 1,
+                Name = "Ellensburg",
+                BracketMappings = new List<BracketMapping>()
+
+            };
+
+            var result = controller.Edit(location, bracketMappings);
+
+            Assert.IsNotNull(result);
+
+     
+           // Assert.AreEqual("Index", result.RouteValues["action"]);
+        }
+
+        [TestMethod]
+        public void DeletGet()
+        {
+            var controller = new LocationsController();
+
+            var result = controller.Delete(2);
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void DeleteConfirmedPost()
+        {
+
         }
     }
 }

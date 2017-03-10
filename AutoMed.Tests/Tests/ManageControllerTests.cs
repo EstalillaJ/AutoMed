@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using AutoMed.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AutoMed.Tests.Tests
@@ -59,11 +60,13 @@ namespace AutoMed.Tests.Tests
         #endregion
 
         [TestMethod]
-        public void TestMethod1()
+        public void ChangePassword()
         {
-            //
-            // TODO: Add test logic here
-            //
+            var controller = new ManageController();
+
+            var result = controller.ChangePassword();
+
+            Assert.IsNotNull(result);
         }
     }
 }

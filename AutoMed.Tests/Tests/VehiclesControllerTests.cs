@@ -2,6 +2,11 @@
 using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using AutoMed;
+using AutoMed.Controllers;
+using System.Web;
+using System.Web.Mvc;
+using AutoMed.Models.DataModels;
 
 namespace AutoMed.Tests.Tests
 {
@@ -59,11 +64,64 @@ namespace AutoMed.Tests.Tests
         #endregion
 
         [TestMethod]
-        public void TestMethod1()
+        public void Index()
         {
-            //
-            // TODO: Add test logic here
-            //
+            var controller = new VehiclesController();
+
+            var result = controller.Index();
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void Details()
+        {
+            var controller = new VehiclesController();
+            var customer = new Customer();
+
+            var result = controller.Details(1, customer);
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void CreateGet()
+        {
+            var controller = new VehiclesController();
+
+            var result = controller.Create(1);
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void CreatePost()
+        {
+            var controller = new VehiclesController();
+
+            var result = controller.Create(1);
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void EditGet()
+        {
+            var controller = new VehiclesController();
+
+            var result = controller.Edit(1);
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void EditPost()
+        {
+            var controller = new VehiclesController();
+
+            var result = controller.Edit(1);
+
+            Assert.IsNotNull(result);
         }
     }
 }

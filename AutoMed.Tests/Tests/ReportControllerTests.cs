@@ -2,6 +2,11 @@
 using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using AutoMed;
+using AutoMed.Controllers;
+using System.Web;
+using System.Web.Mvc;
+using AutoMed.Models.DataModels;
 
 namespace AutoMed.Tests.Tests
 {

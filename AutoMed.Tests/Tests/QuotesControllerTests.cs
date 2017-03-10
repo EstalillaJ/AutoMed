@@ -1,7 +1,14 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Security.Principal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using AutoMed;
+using AutoMed.Controllers;
+using System.Web;
+using System.Web.Mvc;
+using AutoMed.Models.DataModels;
+
 
 namespace AutoMed.Tests.Tests
 {
@@ -59,11 +66,155 @@ namespace AutoMed.Tests.Tests
         #endregion
 
         [TestMethod]
-        public void TestMethod1()
+        public void Index()
+        {
+            var controller = new QuotesController();
+
+            var result = controller.Index(); 
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void Details()
+        {
+            var controller = new QuotesController();
+
+            var result = controller.Details(1);
+
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void CreateGet()
+        {
+            var controller = new QuotesController();
+
+            var result = controller.Create(1);
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void CreatePost()
+        {
+            var controller = new QuotesController();
+            List<HttpPostedFileBase> files = new List<HttpPostedFileBase>();
+            var quote = new Quote()
+            {
+                Id = 1,
+                VehicleId = 2,
+                CurrentNumberInHousehold = 10,
+                MandatoryCost = 5000,
+                EligibleCost = 5500,
+                Income = 20000,
+                Expenses = 2000,
+                WorkDescription = "needs work"
+                
+            };
+            
+            var result = controller.Create(quote, files);
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void EditGet()
+        {
+            var controller = new QuotesController();
+
+            var result = controller.Edit(2); 
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void EditPost()
+        {
+            var controller = new QuotesController();
+            List<HttpPostedFileBase> files = new List<HttpPostedFileBase>();
+            var quote = new Quote()
+            {
+                Id = 1,
+                VehicleId = 1,
+                CurrentNumberInHousehold = 10,
+                MandatoryCost = 1000,
+                EligibleCost = 5000,
+                Income = 20000,
+                Expenses = 10000,
+                WorkDescription = "oil change"
+            };
+
+            var result = controller.Create(quote, files);
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void UpdateQuoteStatuses()
+        {
+            var controller = new QuotesController();
+            var quote = new List<Quote>();
+
+            var result = controller.UpdateQuoteStatuses(quote);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [TestMethod]
+        public void DeleteGet()
+        {
+            var controller = new QuotesController();
+
+            var result = controller.Delete(1);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [TestMethod]
+        public void DeleteConfirmedPost()
+        {
+            var controller = new QuotesController();
+
+            var result = controller.DeleteConfirmed(1);
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void Dispose()
         {
             //
             // TODO: Add test logic here
             //
         }
+
+        [TestMethod]
+        public void GetImage()
+        {
+            //
+            // TODO: Add test logic here
+            //
+        }
+
+        [TestMethod]
+        public void UploadDocumentBlobs()
+        {
+            //
+            // TODO: Add test logic here
+            //
+        }
+
+        [TestMethod]
+        public void SetDiscount()
+        {
+            //
+            // TODO: Add test logic here
+            //
+        }
+
     }
 }
