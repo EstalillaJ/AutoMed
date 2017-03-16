@@ -123,9 +123,15 @@
 
 
 
-    <div class="form-group">
+
+    <div class="form-group" id="image-div">
         <label class="control-label col-md-3 text-right">Images</label>
-        <div class="col-md-6">
+        <div class="col-md-3" id="input-div">
+            <label class="btn btn-default btn-file">
+                Upload Picture(s) <input type="file" id="files-0" name="files" multiple />
+            </label>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
             @foreach (Document document in Model.Documents)
             {   <div class="col-md-6">
                     <img onclick="LoadModal(this.src)" class="thumb" src="/Document/Image/@document.Id" />
@@ -133,12 +139,11 @@
             }
         </div>
     </div>
-    
-    <div class="col-md-3 text-right" style="clear: left;" id="input-div">
-        <label class="btn btn-default btn-file text-right">
-            Upload Picture <input type="file" id="files-0" name="files" multiple />
-        </label>
+
+    <div id="list" class="col-md-offset-3 col-md-6">
+
     </div>
+
     <div class="col-md-9 text-right">
         <button class="btn btn-default">
             Save 
@@ -146,9 +151,7 @@
         </button>
     </div>
 
-    <div id="list" class="col-md-offset-3 col-md-6">
 
-    </div>
         @Html.HiddenFor(m => m.Id)
         @Html.HiddenFor(m => m.LocationId)
         

@@ -73,17 +73,23 @@
                 </div>
             </div>
             @Html.HiddenFor(m => m.CustomerId)
-            <div class="col-md-3 text-right" id="input-div">
-                <label class="btn btn-default btn-file text-right">
-                    Upload Picture <input type="file" id="files-0" name="files" multiple />
+        <div class="row">
+                <label class="control-label col-md-3">
+                    Pictures
+                </label>
+
+            <div class="col-md-6" id="input-div">
+                <label class="btn btn-default btn-file">
+                    Upload Picture(s) <input type="file" id="files-0" name="files" multiple />
                 </label>
             </div>
-            <div class="col-md-9 text-right">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
 
-            <div id="list" class="col-md-offset-3 col-md-6">
-             
+            <div id="list" class="col-md-6 col-md-offset-3" style="clear: right;">
+
+            </div>
+        </div>
+            <div class="col-md-6 col-md-offset-3 text-right">
+                <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
 }

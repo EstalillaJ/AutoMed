@@ -58,6 +58,11 @@ hr {
     white-space: normal;
 }
 
+#input-div {
+    padding-bottom: 2px;
+    padding-top: 4px;
+}
+
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,

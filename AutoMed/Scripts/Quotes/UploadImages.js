@@ -36,7 +36,7 @@ function handleFileSelect(evt) {
 
         var oldInput = $("#files-" + (fileCount - 1));
         var newInput = document.createElement("label");
-        newInput.innerHTML = ["Upload Picture <input type=\"file\" id=\"files-"+ (fileCount) + "\" name=\"files\" multiple />"];
+        newInput.innerHTML = ["Upload Picture(s) <input type=\"file\" id=\"files-"+ (fileCount) + "\" name=\"files\" multiple />"];
         newInput.className = "btn btn-default btn-file text-right";
         newInput.onchange = function (evt) {
             handleFileSelect(evt);
